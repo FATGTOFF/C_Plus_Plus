@@ -1,0 +1,49 @@
+Running Test for Cash Register Program...
+<<<OUTPUT>>> Customer 1
+<<<INPUT>>> Enter the product ID.or press 0 to end the transaction >> 11111
+<<<CATCH ERROR>>> *** item  11111 is a duplicated product ***
+<<<INPUT>>> Enter the product ID.or press 0 to end the transaction >> 99999
+<<<CATCH ERROR>>> *** item 99999 not in inventory ***
+<<<INPUT>>> Enter the product ID.or press 0 to end the transaction >> 33340
+<<<INPUT>>> Input the amount number of the product 33340 >> 3
+<<<OUTPUT>>> Spinach 3 @ 6.78 20.34 TX
+<<<INPUT>>> Enter the product ID.or press 0 to end the transaction >> 22230
+<<<INPUT>>> Input the amount number of the product 22230 >> 4
+<<<OUTPUT>>> Cucumbers 4 @ 6.76 27.04
+<<<INPUT>>> Enter the product ID.or press 0 to end the transaction >> 0
+<<<INPUT>>> Is another customer needs to be processed?>> y
+<<<OUTPUT>>> Subtotal 47.38
+<<<OUTPUT>>> Tax 1.53
+<<<OUTPUT>>> Total: 48.91
+------------------------------
+<<<OUTPUT>>> Customer 2
+<<<INPUT>>> Enter the product ID.or press 0 to end the transaction >> 33430
+<<<INPUT>>> Input the amount number of the product 33430 >> 2
+<<<OUTPUT>>> Squash 2 @ 4.55 9.10 TX
+<<<INPUT>>> Enter the product ID.or press 0 to end the transaction >> 44450
+<<<INPUT>>> Input the amount number of the product 44450 >> -1
+<<<CATCH ERROR>>> *** The number of products [-1] is out of range ***
+<<<INPUT>>> Enter the product ID.or press 0 to end the transaction >> 44450
+<<<INPUT>>> Input the amount number of the product 44450 >> 101
+<<<CATCH ERROR>>> *** The number of products [101] is out of range ***
+<<<INPUT>>> Enter the product ID.or press 0 to end the transaction >> 44450
+<<<INPUT>>> Input the amount number of the product 44450 >> 99
+<<<OUTPUT>>> Jam 99 @ 6.43 636.57
+<<<INPUT>>> Enter the product ID.or press 0 to end the transaction >> 0
+<<<INPUT>>> Is another customer needs to be processed?>> y
+<<<OUTPUT>>> Subtotal 645.67
+<<<OUTPUT>>> Tax 0.68
+<<<OUTPUT>>> Total: 646.35
+------------------------------
+<<<OUTPUT>>> Customer 3
+<<<INPUT>>> Enter the product ID.or press 0 to end the transaction >> 11111
+<<<CATCH ERROR>>> *** item  11111 is a duplicated product ***
+<<<INPUT>>> Enter the product ID.or press 0 to end the transaction >> 12345
+<<<CATCH ERROR>>> *** item 12345 not in inventory ***
+<<<INPUT>>> Enter the product ID.or press 0 to end the transaction >> 0
+<<<INPUT>>> Is another customer needs to be processed?>> n
+<<<OUTPUT>>> Subtotal 0.00
+<<<OUTPUT>>> Tax 0.00
+<<<OUTPUT>>> Total: 0.00
+------------------------------
+Testing is completed. 
