@@ -1,0 +1,33 @@
+Test Data Number 1
+numDays = 7
+timeDeparture = 06.30
+timeArrival = 09.30
+tripAmount = 1250
+rentalAmount = 350
+mileageDriven = 100 * .27 = 27
+parkingFees = (40 / 5(8) - 6 (2)) * 5 (10)
+taxiAmount = (50 / 5 (15)) - 10 (5)) * 5 (25)
+conferenceAmount = 450
+hotelAmount = (600 / 6(100) - 90 (10)) * 6 (60)
+amountOfMeal = 50 - 9 = 41 - 9 = 32
+totalAmount = 2817
+totalAllowance = 2715
+OutOfPocketExpense = 102
+
+
+
+Test Data Number 2
+numDays = 7
+timeDeparture = 06.30 (Breakfast supposed to be allowed)
+timeArrival = 13.30 (Lunch supposed to be allowed)
+tripAmount = 1050 
+rentalAmount = 100
+mileageDriven = 150 * .27 = 40.5
+parkingFees = (20 / 5(4) - 6 (-2)) * 5 (-10)
+taxiAmount = (20 / 5 (4)) - 10 (-6)) * 5 (-30)
+conferenceAmount = 400
+hotelAmount = (500 / 6(83.33) - 90 (-6.67)) * 6 (-40)
+amountOfMeal = 20 - 9 = 11 - 12 = -1
+totalAmount = 2150.50
+totalAllowance = 2231.50
+OutOfPocketExpense = -81
