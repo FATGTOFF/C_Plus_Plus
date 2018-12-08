@@ -1,0 +1,4 @@
+﻿  main.cpp
+c:\users\carlo\documents\github\c_plus_plus\roundfloat\roundfloat\main.cpp(8): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\carlo\documents\github\c_plus_plus\roundfloat\roundfloat\main.cpp(20): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+  RoundFloat.vcxproj -> C:\Users\carlo\Documents\GitHub\C_Plus_Plus\RoundFloat\Debug\RoundFloat.exe
