@@ -3,6 +3,7 @@
 	on the Solution Explorer. The file name is Program Description.jpg
 */
 #include <iostream>
+#include <iomanip>
 #include <cmath> // Needed for pow function.
 
 /*
@@ -87,37 +88,63 @@ double evalPoly(Polynomial p)
 */
 void printPoly(Polynomial p)
 {
+	//std::cout << std::noshowpos;
 	double result{evalPoly(p)}; // Calls the function to obtain the final value of the polynomial calculation.
 	int counterExpOrder{p.polyOrder}; // Initialize the highest exponent count to decrement as each coefficient iteration.
 
 	std::cout << "f (x) = ";
-	for (int count = 0; count <= p.polyOrder; count++)
+	std::cout << *p.coefficients << " x^" << p.polyOrder; // Display the first coefficient prior to begin looping.
+	counterExpOrder--;
+	for (int count = 1; count <= p.polyOrder; count++)
 	{
-		if (p.coefficients[count] != 0) // As long as the coefficient is higher than 0, continue to print to the output.
+		//std::cout << std::noshowpos << " ";
+		if (p.coefficients[count] /*>*/!= 0) // As long as the coefficient is higher than 0, continue to print to the output.
 		{
 			if (counterExpOrder > 1)
 			{
-				std::cout << p.coefficients[count]; 
-				std::cout << " x^" << counterExpOrder << " + ";
+				std::cout << "+ " << p.coefficients[count]; 
+				std::cout << " x^" << counterExpOrder /*<<" + "*/; /*<<*//* std::setw(2) << std::showpos*/ /*<< " "std::showpos <<*/ /*" "*//*" + "*///;
 				--counterExpOrder;
+				//std::cout << std::noshowpoint;
 			}
 
 			else if (counterExpOrder == 1) // If the exponent is 1, then drop the ^ 1 due to is not required to display x ^ 1.
 			{
-				std::cout << p.coefficients[count]; 
+				std::cout << "+ " << p.coefficients[count]; 
 				std::cout << " x ";
 				--counterExpOrder;
 			}
 			else if (counterExpOrder == 0) // If the exponent is 0, then drop the x since x ^ 0 = 1.
 			{
-				std::cout << "+ " << p.coefficients[count];
+				std::cout << "+ " /*<< std::showpos*/ << p.coefficients[count];
 			}
 
 		}
+		//else if (p.coefficients[count] < 0)
+		//{
+		//	if (counterExpOrder > 1)
+		//	{
+		//		std::cout << " - " << p.coefficients[count];
+		//		std::cout << " x^" << counterExpOrder /*<<*/ /*std::showpos <<*/ /*" "*//*" + "*/;
+		//		--counterExpOrder;
+		//	}
+
+		//	else if (counterExpOrder == 1) // If the exponent is 1, then drop the ^ 1 due to is not required to display x ^ 1.
+		//	{
+		//		std::cout << " - " << p.coefficients[count];
+		//		std::cout << " x ";
+		//		--counterExpOrder;
+		//	}
+		//	else if (counterExpOrder == 0) // If the exponent is 0, then drop the x since x ^ 0 = 1.
+		//	{
+		//		std::cout << "- " /*<< std::showpos*/ << p.coefficients[count];
+		//	}
+		//}
 
 		else // If the coefficient is 0, then decrement the exponent and iterate to the next coefficient.
 		{
 			--counterExpOrder;
+			std::cout << " ";
 			continue;
 		}
 
