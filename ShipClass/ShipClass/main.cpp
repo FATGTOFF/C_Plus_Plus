@@ -12,5 +12,9 @@ int main()
 	ships[1]->print();
 	ships[2]->print();
 
+	delete ships[0];
+	delete ships[1];
+	delete ships[2];
+
 	return 0;
 }
