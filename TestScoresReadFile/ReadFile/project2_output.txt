@@ -1,0 +1,13 @@
+Name: Nancy Peterson
+Age: 22
+Address: 510 Tumble Dr., San Gabriel, TX 57981
+Number of Years: 3
+Phone Number: (666) 759 - 2249
+SSN: 492-35-5984
+Test Score # 1 : 80.9
+Test Score # 2 : 90.2
+Test Score # 3 : 98.5
+Test Score # 4 : 89.8
+Test Score # 5 : 97.7
+Percentage: 93.44
+Final Grade: A
