@@ -1,0 +1,6 @@
+﻿  main.cpp
+c:\users\carlo\documents\github\c_plus_plus\playersfilestruct\playersfilestruct\main.cpp(35): error C2040: 'pList': 'std::unique_ptr<playerData [],std::default_delete<_Ty>>' differs in levels of indirection from 'playerData *'
+          with
+          [
+              _Ty=playerData []
+          ]
