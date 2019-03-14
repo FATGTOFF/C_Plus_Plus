@@ -5,11 +5,11 @@
 
 void readFileSauceNames(std::ifstream&, std::string[], std::string, const std::size_t);
 void readFileSaucePrices(std::ifstream&, double[], std::string, const std::size_t);
-void inputAmountSold(std::string[], double[], std::size_t [], const std::size_t);
-double calculateTotalSales(double[], std::size_t[], const std::size_t);
-std::size_t lowestSoldProduct(std::size_t[], const std::size_t);
-std::size_t highestSoldProduct(std::size_t[], const std::size_t);
-void displayTable(std::string[], double[], std::size_t[], const std::size_t);
+void inputAmountSold(std::string[], double[], int [], const std::size_t);
+double calculateTotalSales(double[], int[], const std::size_t);
+std::size_t lowestSoldProduct( int[], const std::size_t);
+std::size_t highestSoldProduct(int[], const std::size_t);
+void displayTable(std::string[], double[], int[], const std::size_t);
 
 int main()
 {
@@ -17,9 +17,9 @@ int main()
 	std::string fileSauceNames{"sauces_names.txt"};
 	std::string fileSaucePrices{"sauces_prices.txt"};
 	const std::size_t size{6};
-	std::string arrSauceNames[size];
-	double arrSaucePrices[size];
-	std::size_t amountSold[size];
+	std::string arrSauceNames[size]{};
+	double arrSaucePrices[size]{};
+	int amountSold[size]{};
 
 	readFileSauceNames(inFile, arrSauceNames, fileSauceNames, size);
 	readFileSaucePrices(inFile, arrSaucePrices, fileSaucePrices, size);
@@ -78,17 +78,25 @@ void readFileSaucePrices(std::ifstream &inFile, double arrSaucePrices[],
 }
 
 void inputAmountSold(std::string arrSauceNames[], double arrSaucePrices[], 
-	std::size_t amountSold[], const std::size_t size)
+	/*std::size_t*/ int amountSold[], const std::size_t size)
 {
 	for (std::size_t count = 0; count < size; count++)
 	{
 		std::cout << "How many " << arrSauceNames[count]
 			<< " has been sold: ";
 		std::cin >> amountSold[count];
+
+		while (amountSold[count] < 0)
+		{
+			std::cout << "Number can not be a negative number.\n";
+			std::cout << "How many " << arrSauceNames[count]
+				<< " has been sold: ";
+			std::cin >> amountSold[count];
+		}
 	}
 }
 
-double calculateTotalSales(double arrSaucePrices[], std::size_t amountSold[], const std::size_t size)
+double calculateTotalSales(double arrSaucePrices[],int amountSold[], const std::size_t size)
 {
 	double total{0.0};
 	for (std::size_t count = 0; count < size; count++)
@@ -98,10 +106,10 @@ double calculateTotalSales(double arrSaucePrices[], std::size_t amountSold[], co
 	return total;
 }
 
-std::size_t lowestSoldProduct(std::size_t amountSold[], const std::size_t size/*, std::size_t &lowest*/)
+std::size_t lowestSoldProduct(int amountSold[], const std::size_t size)
 {
 	std::size_t element{0};
-	std::size_t lowest = amountSold[0];
+	int lowest = amountSold[0];
 	for (std::size_t count = 1; count < size; count++)
 	{
 		if (lowest > amountSold[count])
@@ -113,10 +121,10 @@ std::size_t lowestSoldProduct(std::size_t amountSold[], const std::size_t size/*
 	return element;
 }
 
-std::size_t highestSoldProduct(std::size_t amountSold[], const std::size_t size/*, std::size_t &highest*/)
+std::size_t highestSoldProduct(int amountSold[], const std::size_t size)
 {
 	std::size_t element{ 0 };
-	std::size_t highest = amountSold[0];
+	int highest = amountSold[0];
 	for (std::size_t count = 1; count < size; count++)
 	{
 		if (highest < amountSold[count])
@@ -129,7 +137,7 @@ std::size_t highestSoldProduct(std::size_t amountSold[], const std::size_t size/
 }
 
 void displayTable(std::string arrSauceNames[], double arrSaucePrices[],
-	std::size_t amountSold[], const std::size_t size)
+	int amountSold[], const std::size_t size)
 {
 	std::cout << "-----------------------------------"
 		<< "----------------------------------------\n";
