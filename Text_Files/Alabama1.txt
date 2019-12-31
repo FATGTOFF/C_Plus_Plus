@@ -1,0 +1,15 @@
+ The species in the column "US" is the species list for the entire USA (including Hawaii). The following column, "US49", is the checklist of the birds of the continental USA (including Alaska). The last column, "US48", is the checklist of the birds of the USA for the 48 united states south of Canada. 
+
+ 
+
+On the bases of the checklists of the united states and distribution patterns, we have estimated our presence and state of permanence system. In some cases, this resulted in upgrading species registered as Occasional in several states, to Common for the country as a whole. From a point of view of likeliness to observe the species, that is an overstatement, but we preferred to be consistent. 
+
+ 
+
+In the case of distinguishing between nesting and resident birds, we may have over-categorized resident birds. Particularly in Alaska, a number of species stay within the state all of their lives, but during the winter, they do move south within the state boundaries. So when it is market R, you know that the bird is nesting and may be observed anytime of the year,  but it does not necessarily mean that it actually stays in the same area all year round.
+
+ 
+
+We recommend, that when using the United States checklist, combine your observations of the birds of USA with the checklist of the birds of state where you have observed the bird, as in the end, the national checklist is a composition of observations and interpretations made by checklist commissions for each individual state. As it turns out, there is a considerable disparity in the methodology for assessing the abundance of bird species and the state of presence for each state. WICE has tried to harmonize this worldwide, but we now realize that we should have used a category between Common and Occasional. Still, it is better than nothing at all. 
+
+ 
