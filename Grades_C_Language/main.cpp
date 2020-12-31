@@ -11,6 +11,7 @@ int main()
     /*Stop the loop to quit the program when the user presser q*/
     while (choice != 'q')
     {
+
         printf("----------Enter Grade Percentage (0-100)----------\n");
         printf("Add Grade Percent (0-100)(a) \n");
         printf("Quit / Finish(q) \n");
@@ -23,7 +24,7 @@ int main()
           are inputted, print the grades to the user and free the allocated
           memory for future use.
         */
-        if (choice == 'a')
+        if ('a' == choice)
         {
             printf("How many grades will you enter? ");
             (void)scanf("%d", &numOfGrades);
@@ -61,6 +62,18 @@ int main()
 
             free(p_GradesArr);
         }
+
+        else if ('q' == choice)
+        {
+            break;
+        }
+
+        else
+        {
+            printf("Your choice is not correct\n");
+        }
+
+        (void)getchar();
     }
  
     return 0;
