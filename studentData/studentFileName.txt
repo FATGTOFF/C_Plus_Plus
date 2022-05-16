@@ -1,0 +1,10 @@
+1,00012287,Nat Emmerson,74.2
+2,00003589,Putu Olamide,90.3
+3,00009985,Adetokunbo Sopheap,72.1
+4,00005423,Merlyn Aquila,97.3
+5,00008753,Purnama Vanja,98.1
+6,00025339,Rayan Noor,78.9
+7,00045896,Su Chiyembekezo,85.6
+8,00075213,Mayamiko Gyeong,75.3
+9,00032166,Swaran Chandra,80.7
+10,00000255,Avery Pleun,79.8
