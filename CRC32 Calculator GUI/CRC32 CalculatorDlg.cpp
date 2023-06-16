@@ -57,8 +57,6 @@ CCRC32CalculatorDlg::CCRC32CalculatorDlg(CWnd* pParent /*=nullptr*/)
 
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
-   // Resolve the warning C26495: Variable 'CCRC32CalculatorDlg::crcTable'
-   //std::fill(crcTable, crcTable.size(), 0);
 
    crcInit();
 }
@@ -328,8 +326,6 @@ crc CCRC32CalculatorDlg::getConfFileCRC(std::string getPathName) const
    }
    else
    {
-      //std::string dataFromConfFile{};
-      //std::string CRCInDecFormat{};
 
       unsigned long foundCRCInDecFormat{};
 
@@ -356,7 +352,10 @@ crc CCRC32CalculatorDlg::getConfFileCRC(std::string getPathName) const
 
    for (std::size_t count = 0; count < crcValue.size(); ++count)
    {
-      textLineToStream << std::hex << std::uppercase << crcValue.at(count);
+      // Format the string so it would include leading zeroes. For example, for the
+      // CRC in decimal value 221815283, it would be D38A1F3. So we need to add the
+      // leading 0 so it would look like 0D38A1F3.
+      textLineToStream << std::setfill('0') << std::setw(8) << std::right << std::hex << std::uppercase << crcValue.at(count);
    }
 
    std::string currentHexValue{};
