@@ -1,11 +1,12 @@
-// Tax_Calculator.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <limits>
 #include <iomanip>
+#include <cstdlib>
+
+
+constexpr bool DEBUG{ false };
 
 enum class FilerStatus : unsigned int
 {
@@ -32,8 +33,11 @@ int main()
 {
    // This is a list of the files and should match with the enumerator FilerStatus.
    // The first element is None and should not change since the enumerators start at 1.
-   std::vector<const char*> listOfFilesOfTaxRates{"None", "./Tax Rates/Married Joint Tax Rates.txt", 
-      "./Tax Rates/Head of Households Tax Rates.txt", "./Tax Rates/Unmarried Tax Rates.txt", "./Tax Rates/Married Separate Tax Rates.txt"};
+   std::vector<const char*> listOfFilesOfTaxRates
+     {"None",
+      "./Tax Rates/Married Joint Tax Rates.txt",
+      "./Tax Rates/Head of Households Tax Rates.txt",
+      "./Tax Rates/Unmarried Tax Rates.txt", "./Tax Rates/Married Separate Tax Rates.txt"};
 
    unsigned int choice{};
    float totalTax{};
@@ -72,7 +76,7 @@ int main()
 
       if (keepLooping)
       {
-         std::cout << "\t\t\tTotal Tax: $" << std::fixed << std::setprecision(2) << totalTax << std::endl << std::endl;
+         std::cout << "\t\t\tTotal Tax: $" << std::fixed << std::setprecision(2) << static_cast<int>(totalTax) << std::endl << std::endl;
       }
 
    }
@@ -94,9 +98,23 @@ void readFile(std::vector <TaxRates_ST> &taxRates_st, const char* fileName)
    }
    else
    {
-      while (taxRateFile >> temp.taxRatePercentage >> temp.minTaxIncome >> temp.maxTaxIncome)
+      while (taxRateFile >> temp.taxRatePercentage >> temp.minTaxIncome)
       {
-         taxRates_st.push_back(temp);
+         if (taxRateFile >> temp.maxTaxIncome)
+         {
+            taxRates_st.push_back(temp);
+         }
+         // Since there is no max income earned for the highest tax rate, we just
+         // put the value from the min tax income to the max tax income so,
+         // it goes to the vector. When it calculates the tax for the highest
+         // tax rate, there is no max so the logic cares for the minimum tax income
+         // for the highest tax percentage.
+         else
+         {
+            temp.maxTaxIncome = temp.minTaxIncome;
+            taxRates_st.push_back(temp);
+         }
+
       }
    }
 
@@ -147,6 +165,11 @@ float calculateTaxRate(const char* fileName)
 
    }
 
+   if (DEBUG)
+   {
+      std::cout << "\t\t\tRow Found at " << rowNumFound + 1 << std::endl;
+   }
+
    bool loopOnce{ false };
    for (int count = rowNumFound; count >= 0; --count)
    {
@@ -160,7 +183,13 @@ float calculateTaxRate(const char* fileName)
          totalTax += (listOfTaxRates[count].maxTaxIncome - listOfTaxRates[count].minTaxIncome) * (listOfTaxRates[count].taxRatePercentage / 100);
       }
 
+      if (DEBUG)
+      {
+         std::cout << "Row: " << count << " Running Total Tax: " << static_cast<int>(std::ceil(totalTax)) << " Percentage: " << listOfTaxRates[count].taxRatePercentage / 100 <<
+            " Max Income - Min Income: " << listOfTaxRates[count].maxTaxIncome - listOfTaxRates[count].minTaxIncome << " Max Income: " << listOfTaxRates[count].maxTaxIncome <<
+            " Min Income: " << listOfTaxRates[count].minTaxIncome << std::endl;
+      }
    }
 
-   return totalTax;
+   return std::ceil(totalTax);
 }
