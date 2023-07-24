@@ -12,10 +12,12 @@ constexpr std::uint16_t maxPasswordLength{ 16 };
 
 // The symbols allow to be used in passwords.
 constexpr char specialCharacters[]{
-	'@', '%', '+', '\\', '/', '\'',
-	'!', '#', '$', '^', '?', ':',
-	',', '(', ')', '{', '}', '[',
-	']', '~', '-', '_', '.' };
+	'\'', '-', '!', '\"', '#', '$',
+	'%', '&', '(', ')', '*', ',',
+	'.', '/', ':', ';', '?', '@',
+	'[', ']', '^', '_', '`', '{',
+	'|', '}', '~', '+', '<', '=',
+	'>'};
 
 void printNewPassword(std::uint16_t, std::string&);
 void randomizeUpperCaseLetters(std::uint16_t&, std::string&);
@@ -170,7 +172,7 @@ void randomizeSymbols(std::uint16_t& lengthOfPassword, std::string& newPassword)
 
 	for (std::uint16_t count = 0; count < numOfSymbols; ++count)
 	{
-		newPassword.push_back(specialCharacters[randomNumber(0, 22)]);
+		newPassword.push_back(specialCharacters[randomNumber(0, 30)]);
 	}
 }
 
