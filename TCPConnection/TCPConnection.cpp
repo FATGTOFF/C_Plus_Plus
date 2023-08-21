@@ -7,7 +7,7 @@ bool TCPConnection::initializeWinSock()
 
 	if (0 != wsOk)
 	{
-		std::cerr << "Can't Initialize winsock! Quitting\r\n";
+		std::cerr << "Can't Initialize winsock! Quitting" << endline;
 		return false;
 	}
 
@@ -19,7 +19,7 @@ bool TCPConnection::createASocket()
 	listening = socket(AF_INET, SOCK_STREAM, 0);
 	if (INVALID_SOCKET == listening)
 	{
-		std::cerr << "Can't create a socket! Quitting\r\n";
+		std::cerr << "Can't create a socket! Quitting" << endline;
 		return false;
 	}
 
@@ -57,11 +57,11 @@ bool TCPConnection::createListeningSocket()
 
 		if (getnameinfo(reinterpret_cast<sockaddr*>(&server_in), sizeof(server_in), serverName, NI_MAXHOST, nullptr, 0, 0) == 0)
 		{
-			std::clog << "Server " << serverName << " connected on port " << ntohs(server_in.sin_port) << "\r\n";
+			std::clog << "Server " << serverName << " connected on port " << ntohs(server_in.sin_port) << endline;
 		}
 		else
 		{
-			std::clog << serverIP << " connected on port " << ntohs(server_in.sin_port) << "\r\n";
+			std::clog << serverIP << " connected on port " << ntohs(server_in.sin_port) << endline;
 		}
 
 		return true;
@@ -76,11 +76,7 @@ void TCPConnection::acceptNewConnection()
 	socklen_t clientSize = sizeof(client_in);
 
 	// Accept a new connection
-	SOCKET client = accept(listening, (sockaddr*)&client_in, &clientSize);
-
-	char hostName[NI_MAXHOST]{};      // Client's remote name
-	char hostIP[NI_MAXHOST]{};
-
+	auto client = accept(listening, reinterpret_cast<sockaddr*>(&client_in), &clientSize);
 
 	inet_ntop(AF_INET, &client_in.sin_addr, hostIP, NI_MAXHOST);
 
@@ -97,40 +93,46 @@ void TCPConnection::acceptNewConnection()
 	FD_SET(client, &master);
 
 	// Send a welcome message to the connected client
-	std::string welcomeMsg = "Welcome to the Chat Server!\r\n";
+	std::string welcomeMsg = "Welcome to the Chat Server!:\r\n";
 	send(client, welcomeMsg.c_str(), welcomeMsg.size() + 1, 0);
+	send(client, input.c_str(), input.size() + 1, 0);
 }
 
-void TCPConnection::transmitMessage(char buf[], const SOCKET sock, const SOCKET outSock) const
+void TCPConnection::transmitMessage(char buf[], const SOCKET outSock) const
 {
 	std::ostringstream ss{};
-	ss << "SOCKET #" << sock << ": " << buf;
+	ss << getTimeStamp() << " Client: " << hostName << ": " << buf;
 	auto strOut = ss.str();
 
-	if (strOut.back() != '\n')
+	if (strOut.size() < BUFFER_SIZE)
 	{
-		strOut.push_back('\r');
-		strOut.push_back('\n');
-	}
+		if (strOut.back() != '\n')
+		{
+			strOut.push_back('\r');
+			strOut.push_back('\n');
+		}
 
-	const auto bytesToSend = send(outSock, strOut.c_str(), strOut.size() + 1, 0);
-	if (bytesToSend != -1)
-	{
-		std::clog << "Bytes Transmitted: " << bytesToSend << endline;
-	}
-	else
-	{
-		std::clog << "Failed to send message\r\n";
-	}
+		const auto bytesToSend = send(outSock, strOut.c_str(), strOut.size() + 1, 0);
+		send(outSock, input.c_str(), input.size() + 1, 0);
 
-	ZeroMemory(buf, 512);
+		if (bytesToSend != -1)
+		{
+			std::clog << strOut;
+			std::clog << "Bytes Transmitted: " << bytesToSend << endline;
+		}
+		else
+		{
+			std::clog << "Failed to send message\r\n";
+		}
+	}
+	ZeroMemory(buf, BUFFER_SIZE);
 }
 
 void TCPConnection::sendMessageToOtherClient(char buf[], const SOCKET sock) const
 {
 	for (unsigned i = 0; i < master.fd_count; i++)
 	{
-		SOCKET outSock = master.fd_array[i];
+		const auto outSock = master.fd_array[i];
 
 		if (outSock != listening && outSock != sock)
 		{
@@ -141,7 +143,7 @@ void TCPConnection::sendMessageToOtherClient(char buf[], const SOCKET sock) cons
 			}
 			else
 			{
-				transmitMessage(buf, sock, outSock);
+				transmitMessage(buf, outSock);
 			}
 		}
 	}
@@ -150,7 +152,7 @@ void TCPConnection::sendMessageToOtherClient(char buf[], const SOCKET sock) cons
 void TCPConnection::receiveInboundMessage(char buf[], const SOCKET sock)
 {
 	// Receive message
-	int bytesIn = recv(sock, buf, 512, 0);
+	const auto bytesIn = recv(sock, buf, BUFFER_SIZE, 0);
 
 	if (bytesIn <= 0)
 	{
@@ -184,12 +186,12 @@ void TCPConnection::closeTheSocket()
 	closesocket(listening);
 
 	// Message to let users know what's happening.
-	std::string msg = "Server is shutting down. Goodbye\r\n";
+	const std::string msg = "Server is shutting down. Goodbye\r\n";
 
 	while (master.fd_count > 0)
 	{
 		// Get the socket number
-		SOCKET sock = master.fd_array[0];
+		auto sock = master.fd_array[0];
 
 		// Send the goodbye message
 		send(sock, msg.c_str(), msg.size() + 1, 0);
@@ -203,47 +205,50 @@ void TCPConnection::closeTheSocket()
 	WSACleanup();
 }
 
+std::string TCPConnection::getTimeStamp() const
+{
+	std::time_t time_now{ std::time(nullptr) };
+	const std::tm tm{ *std::localtime(&time_now) };
+	
+	std::ostringstream ss{};
+	ss << std::put_time(&tm, "%m-%d-%y %OH:%OM:%OS");
+	
+	const auto strOut = ss.str();
+
+	return strOut;
+}
+
 TCPConnection::TCPConnection(USHORT port)
 {
-	bool WinSockInitialized = initializeWinSock();
-	bool SocketCreated = createASocket();
-	bool IPAddressBinded = bindTheIPAddress(port);
-	bool ListeningSocketCreated = createListeningSocket();
+	auto WinSockInitialized{ initializeWinSock() };
+	auto SocketCreated {createASocket()};
+	auto IPAddressBinded {bindTheIPAddress(port)};
+	auto ListeningSocketCreated{ createListeningSocket()};
 
 	if (WinSockInitialized && SocketCreated && IPAddressBinded && ListeningSocketCreated)
 	{
-		std::clog << "Ready to listen...\r\n";
+		std::clog << "Ready to listen..." << endline;
 	}
 
 }
-
+ 
 void TCPConnection::run()
 {
 
 	while (running)
 	{
-		// Make a copy of the master file descriptor set, this is SUPER important because
-		// the call to select() is _DESTRUCTIVE_. The copy only contains the sockets that
-		// are accepting inbound connection requests OR messages. 
-
-		// E.g. You have a server and it's master file descriptor set contains 5 items;
-		// the listening socket and four clients. When you pass this set into select(), 
-		// only the sockets that are interacting with the server are returned. Let's say
-		// only one client is sending a message at that time. The contents of 'copy' will
-		// be one socket. You will have LOST all the other sockets.
-
-		// SO MAKE A COPY OF THE MASTER LIST TO PASS INTO select() !!!
-
-		fd_set copy = master;
+		// Make a copy of the master file descriptor set because the call to select
+		// will destroy it. 
+		auto copy{ master };
 
 		// See who's talking to us
-		int socketCount = select(0, &copy, nullptr, nullptr, nullptr);
+		const auto socketCount = select(0, &copy, nullptr, nullptr, nullptr);
 
 		// Loop through all the current connections / potential connect
-		for (int i = 0; i < socketCount; i++)
+		for (auto i = 0; i < socketCount; i++)
 		{
 			// Makes things easy for us doing this assignment
-			SOCKET sock = copy.fd_array[i];
+			auto sock = copy.fd_array[i];
 
 			// Is it an inbound communication?
 			if (sock == listening)
@@ -252,8 +257,8 @@ void TCPConnection::run()
 			}
 			else // It's an inbound message
 			{
-				char buf[512];
-				ZeroMemory(buf, 512);
+				char buf[BUFFER_SIZE];
+				ZeroMemory(buf, BUFFER_SIZE);
 				receiveInboundMessage(buf, sock);
 			}
 		}
