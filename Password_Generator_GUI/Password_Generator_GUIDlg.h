@@ -54,6 +54,7 @@ private:
    static constexpr std::uint16_t maxPasswordLength{ 50 };
    int lengthOfPassword{};
    int lenghtPassCountDown{};
+   int lastSliderCursorPos{};
 
    // The symbols allow to be used in passwords.
    static constexpr char specialCharacters[]{

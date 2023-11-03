@@ -311,19 +311,26 @@ void CPasswordGeneratorGUIDlg::OnBnClickedGenPasswordButton()
 
 void CPasswordGeneratorGUIDlg::OnNMCustomdrawSliderLengthPassword(NMHDR *pNMHDR, LRESULT *pResult)
 {
-   LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
 
    auto slider = reinterpret_cast<CSliderCtrl*>(GetDlgItem(IDC_SLIDER_LENGTH_PASSWORD));
    auto label = reinterpret_cast<CEdit*>(GetDlgItem(IDC_EDIT_LABEL_NUM_PSWD));
-
+   auto currentSliderCursorPos = slider->GetPos();
    slider->SetRange(minPasswordLength, maxPasswordLength);
-   lenghtPassCountDown = lengthOfPassword = slider->GetPos();
+   lenghtPassCountDown = lengthOfPassword = currentSliderCursorPos;
 
    const unsigned int bufferSize{ 10 };
    wchar_t pBuffer[bufferSize]{};
 
    static_cast<void>(_snwprintf_s(pBuffer, bufferSize - 1, L"%d", lengthOfPassword));
    label->SetWindowTextW(pBuffer);
+
+   // Create a new password if the slider move
+   if (currentSliderCursorPos != lastSliderCursorPos)
+   {
+      std::string newPassword{};
+      printNewPassword(newPassword);
+      lastSliderCursorPos = currentSliderCursorPos;
+   }
 
    *pResult = 0;
 }
