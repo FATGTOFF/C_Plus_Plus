@@ -69,6 +69,11 @@ BEGIN_MESSAGE_MAP(CPasswordGeneratorGUIDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
    ON_BN_CLICKED(IDC_GEN_PASSWORD_BUTTON, &CPasswordGeneratorGUIDlg::OnBnClickedGenPasswordButton)
    ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_LENGTH_PASSWORD, &CPasswordGeneratorGUIDlg::OnNMCustomdrawSliderLengthPassword)
+   ON_BN_CLICKED(IDC_CHECK_UPPERCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckUppercases)
+   ON_BN_CLICKED(IDC_CHECK_LOWERCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckLowercases)
+   ON_BN_CLICKED(IDC_CHECK_NUMBERS, &CPasswordGeneratorGUIDlg::OnBnClickedCheckNumbers)
+   ON_BN_CLICKED(IDC_CHECK_SPECIALCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckSpecialcases)
+   ON_BN_CLICKED(IDC_CHECK_ALLOPTIONS, &CPasswordGeneratorGUIDlg::OnBnClickedCheckAlloptions)
 END_MESSAGE_MAP()
 
 
@@ -104,6 +109,19 @@ BOOL CPasswordGeneratorGUIDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+   std::string newPassword{};
+   printNewPassword(newPassword);
+
+   pAllOptionsCheck = reinterpret_cast<CButton*>(GetDlgItem(IDC_CHECK_ALLOPTIONS));
+   pAllOptionsCheck->SetCheck(true);
+   pUpperCasesCheck = reinterpret_cast<CButton*>(GetDlgItem(IDC_CHECK_UPPERCASES));
+   pUpperCasesCheck->EnableWindow(false);
+   pLowerCasesCheck = reinterpret_cast<CButton*>(GetDlgItem(IDC_CHECK_LOWERCASES));
+   pLowerCasesCheck->EnableWindow(false);
+   pNumberCasesCheck = reinterpret_cast<CButton*>(GetDlgItem(IDC_CHECK_NUMBERS));
+   pNumberCasesCheck->EnableWindow(false);
+   pSymbolsCasesCheck = reinterpret_cast<CButton*>(GetDlgItem(IDC_CHECK_SPECIALCASES));
+   pSymbolsCasesCheck->EnableWindow(false);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -154,18 +172,124 @@ void CPasswordGeneratorGUIDlg::OnPaint()
 //  the minimized window.
 HCURSOR CPasswordGeneratorGUIDlg::OnQueryDragIcon()
 {
-	return static_cast<HCURSOR>(m_hIcon);
+	return m_hIcon;
 }
 
 
 void CPasswordGeneratorGUIDlg::printNewPassword(std::string & newPassword)
 {
+
    while (lenghtPassCountDown > 0)
    {
-      randomizeUpperCaseLetters(newPassword);
-      randomizeLowerCaseLetters(newPassword);
-      randomizeNumsForPasswords(newPassword);
-      randomizeSymbols(newPassword);
+
+      if (allCheckMarked())
+      {
+         pUpperCasesCheck->SetCheck(false);
+         pLowerCasesCheck->SetCheck(false);
+         pNumberCasesCheck->SetCheck(false);
+         pSymbolsCasesCheck->SetCheck(false);
+         pAllOptionsCheck->SetCheck(true);
+
+         randomizePasswordsAllOptions(newPassword);
+
+      }
+
+       else if (upperLowerNumChecked())
+      {
+         randomizeUpperCaseLetters(newPassword);
+         randomizeLowerCaseLetters(newPassword);
+         randomizeNumsForPasswords(newPassword);
+      }
+
+      else if (upperLowerSymbolsChecked())
+      {
+         randomizeUpperCaseLetters(newPassword);
+         randomizeLowerCaseLetters(newPassword);
+         randomizeSymbols(newPassword);
+      }
+
+      else if (upperNumSymbolsChecked())
+      {
+         randomizeUpperCaseLetters(newPassword);
+         randomizeNumsForPasswords(newPassword);
+         randomizeSymbols(newPassword);
+      }
+
+      else if (lowerNumSymbolsChecked())
+      {
+         randomizeLowerCaseLetters(newPassword);
+         randomizeNumsForPasswords(newPassword);
+         randomizeSymbols(newPassword);
+      }
+
+      else if ((static_cast<bool>(pUpperCasesCheck->GetCheck())) &&
+         (static_cast<bool>(pNumberCasesCheck->GetCheck())))
+      {
+         randomizeUpperCaseLetters(newPassword);
+         randomizeNumsForPasswords(newPassword);
+      }
+
+      else if ((static_cast<bool>(pUpperCasesCheck->GetCheck())) &&
+         (static_cast<bool>(pSymbolsCasesCheck->GetCheck())))
+      {
+         randomizeUpperCaseLetters(newPassword);
+         randomizeSymbols(newPassword);
+      }
+
+      else if ((static_cast<bool>(pUpperCasesCheck->GetCheck())) &&
+         (static_cast<bool>(pLowerCasesCheck->GetCheck())))
+      {
+         randomizeUpperCaseLetters(newPassword);
+         randomizeLowerCaseLetters(newPassword);
+      }
+
+      else if ((static_cast<bool>(pLowerCasesCheck->GetCheck())) &&
+         (static_cast<bool>(pNumberCasesCheck->GetCheck())))
+      {
+         randomizeLowerCaseLetters(newPassword);
+         randomizeNumsForPasswords(newPassword);
+      }
+
+      else if ((static_cast<bool>(pLowerCasesCheck->GetCheck())) &&
+         (static_cast<bool>(pSymbolsCasesCheck->GetCheck())))
+      {
+         randomizeLowerCaseLetters(newPassword);
+         randomizeSymbols(newPassword);
+      }
+
+      else if ((static_cast<bool>(pNumberCasesCheck->GetCheck())) &&
+         (static_cast<bool>(pSymbolsCasesCheck->GetCheck())))
+      {
+         randomizeNumsForPasswords(newPassword);
+         randomizeSymbols(newPassword);
+      }
+
+      else if (static_cast<bool>(pUpperCasesCheck->GetCheck()))
+      {
+         randomizeUpperCaseLetters(newPassword);
+      }
+
+      else if (static_cast<bool>(pLowerCasesCheck->GetCheck()))
+      {
+         randomizeLowerCaseLetters(newPassword);
+      }
+
+      else if (static_cast<bool>(pNumberCasesCheck->GetCheck()))
+      {
+         randomizeNumsForPasswords(newPassword);
+      }
+
+      else if (static_cast<bool>(pSymbolsCasesCheck->GetCheck()))
+      {
+         randomizeSymbols(newPassword);
+      }
+
+      else
+      {
+         pAllOptionsCheck->SetCheck(true);
+         randomizePasswordsAllOptions(newPassword);
+      }
+
    }
 
    // Let's shuffle the generated password before we print it.
@@ -274,7 +398,7 @@ void CPasswordGeneratorGUIDlg::randomizeNumsForPasswords(std::string & newPasswo
 
    std::uint16_t numOfNumbers{};
 
-   if (lengthOfPassword > 1)
+   if (lenghtPassCountDown > 1)
    {
       numOfNumbers = randomNumber(1, 2);
    }
@@ -292,6 +416,14 @@ void CPasswordGeneratorGUIDlg::randomizeNumsForPasswords(std::string & newPasswo
    }
 }
 
+void CPasswordGeneratorGUIDlg::randomizePasswordsAllOptions(std::string & newPassword)
+{
+   randomizeUpperCaseLetters(newPassword);
+   randomizeLowerCaseLetters(newPassword);
+   randomizeNumsForPasswords(newPassword);
+   randomizeSymbols(newPassword);
+}
+
 std::uint16_t CPasswordGeneratorGUIDlg::randomNumber(std::uint16_t min, std::uint16_t max) const
 {
    std::mt19937_64 rng(std::random_device{}());
@@ -302,10 +434,63 @@ std::uint16_t CPasswordGeneratorGUIDlg::randomNumber(std::uint16_t min, std::uin
    return random;
 }
 
+bool CPasswordGeneratorGUIDlg::allCheckMarked() const
+{
+   return (static_cast<bool>(pUpperCasesCheck->GetCheck())) &&
+      (static_cast<bool>(pLowerCasesCheck->GetCheck())) &&
+      (static_cast<bool>(pNumberCasesCheck->GetCheck())) &&
+      (static_cast<bool>(pSymbolsCasesCheck->GetCheck()));
+}
+
+bool CPasswordGeneratorGUIDlg::upperLowerNumChecked() const
+{
+   return (static_cast<bool>(pUpperCasesCheck->GetCheck())) &&
+      (static_cast<bool>(pLowerCasesCheck->GetCheck())) &&
+      (static_cast<bool>(pNumberCasesCheck->GetCheck()));
+}
+
+bool CPasswordGeneratorGUIDlg::upperLowerSymbolsChecked() const
+{
+   return (static_cast<bool>(pUpperCasesCheck->GetCheck())) &&
+      (static_cast<bool>(pLowerCasesCheck->GetCheck())) &&
+      (static_cast<bool>(pSymbolsCasesCheck->GetCheck()));
+}
+
+bool CPasswordGeneratorGUIDlg::upperNumSymbolsChecked() const
+{
+   return (static_cast<bool>(pUpperCasesCheck->GetCheck())) &&
+      (static_cast<bool>(pNumberCasesCheck->GetCheck())) &&
+      (static_cast<bool>(pSymbolsCasesCheck->GetCheck()));
+}
+
+bool CPasswordGeneratorGUIDlg::lowerNumSymbolsChecked() const
+{
+   return (static_cast<bool>(pLowerCasesCheck->GetCheck())) &&
+      (static_cast<bool>(pNumberCasesCheck->GetCheck())) &&
+      (static_cast<bool>(pSymbolsCasesCheck->GetCheck()));
+}
+
 void CPasswordGeneratorGUIDlg::OnBnClickedGenPasswordButton()
 {
+   auto label = reinterpret_cast<CEdit*>(GetDlgItem(IDC_EDIT_LABEL_NUM_PSWD));
    std::string newPassword{};
+
+   if (lengthOfPassword == 0)
+   {
+      lenghtPassCountDown = lengthOfPassword = 8;
+   }
+
+   const unsigned int bufferSize{ 10 };
+   wchar_t pBuffer[bufferSize]{};
+   static_cast<void>(_snwprintf_s(pBuffer, bufferSize - 1, L"%d", lengthOfPassword));
+   label->SetWindowTextW(pBuffer);
+
    printNewPassword(newPassword);
+
+   pUpperCasesCheck->EnableWindow(true);
+   pLowerCasesCheck->EnableWindow(true);
+   pNumberCasesCheck->EnableWindow(true);
+   pSymbolsCasesCheck->EnableWindow(true);
 }
 
 
@@ -315,6 +500,7 @@ void CPasswordGeneratorGUIDlg::OnNMCustomdrawSliderLengthPassword(NMHDR *pNMHDR,
    auto slider = reinterpret_cast<CSliderCtrl*>(GetDlgItem(IDC_SLIDER_LENGTH_PASSWORD));
    auto label = reinterpret_cast<CEdit*>(GetDlgItem(IDC_EDIT_LABEL_NUM_PSWD));
    auto currentSliderCursorPos = slider->GetPos();
+
    slider->SetRange(minPasswordLength, maxPasswordLength);
    lenghtPassCountDown = lengthOfPassword = currentSliderCursorPos;
 
@@ -330,8 +516,72 @@ void CPasswordGeneratorGUIDlg::OnNMCustomdrawSliderLengthPassword(NMHDR *pNMHDR,
       std::string newPassword{};
       printNewPassword(newPassword);
       lastSliderCursorPos = currentSliderCursorPos;
+
+      pUpperCasesCheck->EnableWindow(true);
+      pLowerCasesCheck->EnableWindow(true);
+      pNumberCasesCheck->EnableWindow(true);
+      pSymbolsCasesCheck->EnableWindow(true);
    }
 
    *pResult = 0;
+}
+
+void CPasswordGeneratorGUIDlg::OnBnClickedCheckUppercases()
+{
+   UpdateData(true);
+
+   if (static_cast<bool>(pUpperCasesCheck->GetCheck()))
+   {
+      pAllOptionsCheck->SetCheck(false);
+   }
+
+}
+
+
+void CPasswordGeneratorGUIDlg::OnBnClickedCheckLowercases()
+{
+   UpdateData(true);
+
+   if (static_cast<bool>(pLowerCasesCheck->GetCheck()))
+   {
+      pAllOptionsCheck->SetCheck(false);
+   }
+}
+
+
+void CPasswordGeneratorGUIDlg::OnBnClickedCheckNumbers()
+{
+   UpdateData(true);
+
+   if (static_cast<bool>(pNumberCasesCheck->GetCheck()))
+   {
+      pAllOptionsCheck->SetCheck(false);
+   }
+}
+
+
+void CPasswordGeneratorGUIDlg::OnBnClickedCheckSpecialcases()
+{
+   UpdateData(true);
+
+   if (static_cast<bool>(pSymbolsCasesCheck->GetCheck()))
+   {
+      pAllOptionsCheck->SetCheck(false);
+   }
+}
+
+
+void CPasswordGeneratorGUIDlg::OnBnClickedCheckAlloptions()
+{
+   UpdateData(true);
+
+   if (static_cast<bool>(pAllOptionsCheck->GetCheck()))
+   {
+
+      pUpperCasesCheck->SetCheck(false);
+      pLowerCasesCheck->SetCheck(false);
+      pNumberCasesCheck->SetCheck(false);
+      pSymbolsCasesCheck->SetCheck(false);
+   }
 }
 
