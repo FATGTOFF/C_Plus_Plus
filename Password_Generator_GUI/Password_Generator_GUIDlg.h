@@ -1,7 +1,6 @@
 
 // Password_Generator_GUIDlg.h : header file
 //
-
 #pragma once
 #include <iostream>
 #include <cctype>
@@ -9,17 +8,6 @@
 #include <random>
 #include <string>
 #include <algorithm>
-#include <limits>
-
-#include <fstream>
-#include <string>
-#include <iterator>
-#include <vector>
-#include <iomanip>
-#include <cstdint>
-#include <sstream>
-#include <array>
-#include <cstdint>
 
 
 // CPasswordGeneratorGUIDlg dialog
@@ -50,19 +38,24 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
+
    static constexpr std::uint16_t minPasswordLength{ 8 };
-   static constexpr std::uint16_t maxPasswordLength{ 50 }; 
+   static constexpr std::uint16_t maxPasswordLength{ 50 };
+
    int lengthOfPassword{ minPasswordLength };
    int lenghtPassCountDown{};
    int lastSliderCursorPos{};
+
    CButton* pAllOptionsCheck{};
    CButton* pUpperCasesCheck{};
    CButton* pLowerCasesCheck{};
    CButton* pNumberCasesCheck{};
    CButton* pSymbolsCasesCheck{};
+   CButton* pAllSpecialCharactersCheck{};
+   CButton* pMyPaySpecialCharactersCheck{};
 
    // The symbols allow to be used in passwords.
-   static constexpr char specialCharacters[]{
+   static constexpr char specialCharactersForAll[]{
       '\'', '-', '!', '\"', '#', '$',
       '%', '&', '(', ')', '*', ',',
       '.', '/', ':', ';', '?', '@',
@@ -70,12 +63,18 @@ private:
       '|', '}', '~', '+', '<', '=',
       '>' };
 
+   // https://www.dfas.mil/mypayinfo/password/
+   static constexpr char specialCharactersForMyPay[]{
+   '#', '@', '$', '=', '+', '%',
+   '^', '!', '*', '_' };
+
    void printNewPassword(std::string& newPassword);
    void randomizeUpperCaseLetters(std::string& newPassword);
    void randomizeLowerCaseLetters(std::string& newPassword);
    void randomizeSymbols(std::string& newPassword);
    void randomizeNumsForPasswords(std::string& newPassword);
    void randomizePasswordsAllOptions(std::string& newPassword);
+
    std::uint16_t randomNumber(std::uint16_t min, std::uint16_t max) const;
    bool allCheckMarked() const;
    bool upperLowerNumChecked() const;
@@ -91,4 +90,6 @@ public:
    afx_msg void OnBnClickedCheckNumbers();
    afx_msg void OnBnClickedCheckSpecialcases();
    afx_msg void OnBnClickedCheckAlloptions();
+   afx_msg void OnBnClickedRadioMypay();
+   afx_msg void OnBnClickedRadioAll();
 };
