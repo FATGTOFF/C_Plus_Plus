@@ -593,7 +593,7 @@ void CPasswordGeneratorGUIDlg::OnBnClickedCheckSpecialcases()
    if (static_cast<bool>(pSymbolsCasesCheck->GetCheck()))
    {
       pAllOptionsCheck->SetCheck(false);
-      pAllSpecialCharactersCheck->SetCheck(false);
+      pAllSpecialCharactersCheck->SetCheck(true);
       pMyPaySpecialCharactersCheck->SetCheck(false);
       pAllSpecialCharactersCheck->EnableWindow(true);
       pMyPaySpecialCharactersCheck->EnableWindow(true);
@@ -612,7 +612,7 @@ void CPasswordGeneratorGUIDlg::OnBnClickedCheckAlloptions()
       pLowerCasesCheck->SetCheck(false);
       pNumberCasesCheck->SetCheck(false);
       pSymbolsCasesCheck->SetCheck(false);
-      pAllSpecialCharactersCheck->SetCheck(false);
+      pAllSpecialCharactersCheck->SetCheck(true);
       pMyPaySpecialCharactersCheck->SetCheck(false);
       pAllSpecialCharactersCheck->EnableWindow(true);
       pMyPaySpecialCharactersCheck->EnableWindow(true);
