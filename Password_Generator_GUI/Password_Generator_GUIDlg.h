@@ -15,30 +15,29 @@ class CPasswordGeneratorGUIDlg : public CDialogEx
 {
 // Construction
 public:
-	CPasswordGeneratorGUIDlg(CWnd* pParent = nullptr);	// standard constructor
+	explicit CPasswordGeneratorGUIDlg(CWnd* pParent = nullptr);	// standard constructor
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_PASSWORD_GENERATOR_GUI_DIALOG };
 #endif
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+protected:
+	void DoDataExchange(CDataExchange* pDX) override;	// DDX/DDV support
 
 
 // Implementation
-protected:
-	HICON m_hIcon;
+
 
 	// Generated message map functions
-	virtual BOOL OnInitDialog();
+	BOOL OnInitDialog() override;
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 
 private:
-
+   HICON m_hIcon;
    static constexpr std::uint16_t minPasswordLength{ 8 };
    static constexpr std::uint16_t maxPasswordLength{ 50 };
 
@@ -74,6 +73,7 @@ private:
    void randomizeSymbols(std::string& newPassword);
    void randomizeNumsForPasswords(std::string& newPassword);
    void randomizePasswordsAllOptions(std::string& newPassword);
+   void printToLabel(const int nameID, const std::string&) const;
 
    std::uint16_t randomNumber(std::uint16_t min, std::uint16_t max) const;
    bool allCheckMarked() const;
@@ -84,7 +84,15 @@ private:
 
 public:
    afx_msg void OnBnClickedGenPasswordButton();
-   afx_msg void OnNMCustomdrawSliderLengthPassword(NMHDR *pNMHDR, LRESULT *pResult);
+
+   // For Visual Studio 2017 version 15.7 or later, it should use the /Zc:__cplusplus compiler 
+   // option to report the correct value.
+   // https://learn.microsoft.com/en-us/cpp/build/reference/zc-cplusplus?view=msvc-170
+#if __cplusplus < 201703L
+   afx_msg void OnNMCustomdrawSliderLengthPassword(NMHDR* pNMHDR, LRESULT* pResult);
+#else
+   afx_msg void OnNMCustomdrawSliderLengthPassword([[maybe_unused]] NMHDR *pNMHDR, LRESULT *pResult);
+#endif
    afx_msg void OnBnClickedCheckUppercases();
    afx_msg void OnBnClickedCheckLowercases();
    afx_msg void OnBnClickedCheckNumbers();
@@ -92,4 +100,5 @@ public:
    afx_msg void OnBnClickedCheckAlloptions();
    afx_msg void OnBnClickedRadioMypay();
    afx_msg void OnBnClickedRadioAll();
+   afx_msg void OnBnClickedButtonCopy();
 };

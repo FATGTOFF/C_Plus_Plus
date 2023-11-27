@@ -25,11 +25,10 @@ public:
 	enum { IDD = IDD_ABOUTBOX };
 #endif
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+protected:
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 // Implementation
-protected:
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -67,15 +66,16 @@ BEGIN_MESSAGE_MAP(CPasswordGeneratorGUIDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-   ON_BN_CLICKED(IDC_GEN_PASSWORD_BUTTON, &CPasswordGeneratorGUIDlg::OnBnClickedGenPasswordButton)
-   ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_LENGTH_PASSWORD, &CPasswordGeneratorGUIDlg::OnNMCustomdrawSliderLengthPassword)
-   ON_BN_CLICKED(IDC_CHECK_UPPERCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckUppercases)
-   ON_BN_CLICKED(IDC_CHECK_LOWERCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckLowercases)
-   ON_BN_CLICKED(IDC_CHECK_NUMBERS, &CPasswordGeneratorGUIDlg::OnBnClickedCheckNumbers)
-   ON_BN_CLICKED(IDC_CHECK_SPECIALCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckSpecialcases)
-   ON_BN_CLICKED(IDC_CHECK_ALLOPTIONS, &CPasswordGeneratorGUIDlg::OnBnClickedCheckAlloptions)
-   ON_BN_CLICKED(IDC_RADIO_MYPAY, &CPasswordGeneratorGUIDlg::OnBnClickedRadioMypay)
-   ON_BN_CLICKED(IDC_RADIO_ALL, &CPasswordGeneratorGUIDlg::OnBnClickedRadioAll)
+    ON_BN_CLICKED(IDC_GEN_PASSWORD_BUTTON, &CPasswordGeneratorGUIDlg::OnBnClickedGenPasswordButton)
+    ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_LENGTH_PASSWORD, &CPasswordGeneratorGUIDlg::OnNMCustomdrawSliderLengthPassword)
+    ON_BN_CLICKED(IDC_CHECK_UPPERCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckUppercases)
+    ON_BN_CLICKED(IDC_CHECK_LOWERCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckLowercases)
+    ON_BN_CLICKED(IDC_CHECK_NUMBERS, &CPasswordGeneratorGUIDlg::OnBnClickedCheckNumbers)
+    ON_BN_CLICKED(IDC_CHECK_SPECIALCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckSpecialcases)
+    ON_BN_CLICKED(IDC_CHECK_ALLOPTIONS, &CPasswordGeneratorGUIDlg::OnBnClickedCheckAlloptions)
+    ON_BN_CLICKED(IDC_RADIO_MYPAY, &CPasswordGeneratorGUIDlg::OnBnClickedRadioMypay)
+    ON_BN_CLICKED(IDC_RADIO_ALL, &CPasswordGeneratorGUIDlg::OnBnClickedRadioAll)
+    ON_BN_CLICKED(IDC_BUTTON_COPY, &CPasswordGeneratorGUIDlg::OnBnClickedButtonCopy)
 END_MESSAGE_MAP()
 
 
@@ -110,8 +110,7 @@ BOOL CPasswordGeneratorGUIDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	// TODO: Add extra initialization here
-
+	//Add extra initialization here  
    pAllOptionsCheck = reinterpret_cast<CButton*>(GetDlgItem(IDC_CHECK_ALLOPTIONS));
    pAllOptionsCheck->SetCheck(true);
    pUpperCasesCheck = reinterpret_cast<CButton*>(GetDlgItem(IDC_CHECK_UPPERCASES));
@@ -300,13 +299,17 @@ void CPasswordGeneratorGUIDlg::printNewPassword(std::string & newPassword)
 
    // Let's shuffle the generated password before we print it.
    std::mt19937_64 rng(std::random_device{}());
+
+   // For Visual Studio 2017 version 15.7 or later, it should use the /Zc:__cplusplus compiler 
+   // option to report the correct value.
+   // https://learn.microsoft.com/en-us/cpp/build/reference/zc-cplusplus?view=msvc-170
+#if __cplusplus < 202002L
    std::shuffle(newPassword.begin(), newPassword.end(), rng);
+#else
+   std::ranges::shuffle(newPassword.begin(), newPassword.end(), rng);
+#endif
 
-   const unsigned int bufferSize{ maxPasswordLength + 1 };
-   wchar_t pBuffer[bufferSize]{};
-
-   static_cast<void>(_snwprintf_s(pBuffer, bufferSize - 1, L"%hs", newPassword.c_str()));
-   GetDlgItem(IDC_EDIT_PASSWORD)->SetWindowTextW(pBuffer);
+   printToLabel(IDC_EDIT_PASSWORD, newPassword);
 
    lenghtPassCountDown = lengthOfPassword;
 }
@@ -334,8 +337,8 @@ void CPasswordGeneratorGUIDlg::randomizeUpperCaseLetters(std::string & newPasswo
 
    for (std::uint16_t count = 0; count < numOfUpperCaseLetters; ++count)
    {
-      const char upperCaseLetter{ static_cast<char>(randomNumber(65, 90)) };
-      newPassword.push_back(upperCaseLetter);
+      // Get random characters (A-Z) from the ANSI table.
+      newPassword.push_back(static_cast<char>(randomNumber(static_cast<int>('A'), static_cast<int>('Z'))));
    }
 }
 
@@ -362,8 +365,8 @@ void CPasswordGeneratorGUIDlg::randomizeLowerCaseLetters(std::string & newPasswo
 
    for (std::uint16_t count = 0; count < numOfLowerCaseLetters; ++count)
    {
-      const char lowerCaseLetter{ static_cast<char>(randomNumber(97, 122)) };
-      newPassword.push_back(lowerCaseLetter);
+      // Get random characters (a-z) from the ANSI table.
+      newPassword.push_back(static_cast<char>(randomNumber(static_cast<int>('a'), static_cast<int>('z'))));
    }
 }
 
@@ -425,8 +428,8 @@ void CPasswordGeneratorGUIDlg::randomizeNumsForPasswords(std::string & newPasswo
 
    for (std::uint16_t count = 0; count < numOfNumbers; ++count)
    {
-      const char number{ static_cast<char>(randomNumber(48, 57)) };
-      newPassword.push_back(number);
+      // Get random characters (0-9) from the ANSI table.
+      newPassword.push_back(static_cast<char>(randomNumber(static_cast<int>('0'), static_cast<int>('9'))));
    }
 }
 
@@ -436,6 +439,14 @@ void CPasswordGeneratorGUIDlg::randomizePasswordsAllOptions(std::string & newPas
    randomizeLowerCaseLetters(newPassword);
    randomizeNumsForPasswords(newPassword);
    randomizeSymbols(newPassword);
+}
+
+void CPasswordGeneratorGUIDlg::printToLabel(const int nameID, const std::string& textToPrint) const
+{
+    auto label = reinterpret_cast<CEdit*>(GetDlgItem(nameID));
+    const std::string pBuffer = textToPrint.c_str();
+    const std::wstring w_pBuffer{ pBuffer.begin(), pBuffer.end() };
+    label->SetWindowTextW(w_pBuffer.c_str());
 }
 
 std::uint16_t CPasswordGeneratorGUIDlg::randomNumber(std::uint16_t min, std::uint16_t max) const
@@ -486,19 +497,16 @@ bool CPasswordGeneratorGUIDlg::lowerNumSymbolsChecked() const
 
 void CPasswordGeneratorGUIDlg::OnBnClickedGenPasswordButton()
 {
-   auto label = reinterpret_cast<CEdit*>(GetDlgItem(IDC_EDIT_LABEL_NUM_PSWD));
-   std::string newPassword{};
 
    if (lengthOfPassword == 0)
    {
       lenghtPassCountDown = lengthOfPassword = minPasswordLength;
    }
 
-   const unsigned int bufferSize{ 10 };
-   wchar_t pBuffer[bufferSize]{};
-   static_cast<void>(_snwprintf_s(pBuffer, bufferSize - 1, L"%d", lengthOfPassword));
-   label->SetWindowTextW(pBuffer);
+   const std::string lengthOfPasswordString = std::to_string(lengthOfPassword);
+   printToLabel(IDC_EDIT_LABEL_NUM_PSWD, lengthOfPasswordString);
 
+   std::string newPassword{};
    printNewPassword(newPassword);
 
    pUpperCasesCheck->EnableWindow(true);
@@ -507,22 +515,24 @@ void CPasswordGeneratorGUIDlg::OnBnClickedGenPasswordButton()
    pSymbolsCasesCheck->EnableWindow(true);
 }
 
-
-void CPasswordGeneratorGUIDlg::OnNMCustomdrawSliderLengthPassword(NMHDR *pNMHDR, LRESULT *pResult)
+// For Visual Studio 2017 version 15.7 or later, it should use the /Zc:__cplusplus compiler 
+// option to report the correct value.
+// https://learn.microsoft.com/en-us/cpp/build/reference/zc-cplusplus?view=msvc-170
+#if __cplusplus < 201703L
+afx_msg void CPasswordGeneratorGUIDlg::OnNMCustomdrawSliderLengthPassword(NMHDR* pNMHDR, LRESULT* pResult)
+#else
+afx_msg void CPasswordGeneratorGUIDlg::OnNMCustomdrawSliderLengthPassword([[maybe_unused]] NMHDR* pNMHDR, LRESULT* pResult)
+#endif
 {
 
    auto slider = reinterpret_cast<CSliderCtrl*>(GetDlgItem(IDC_SLIDER_LENGTH_PASSWORD));
-   auto label = reinterpret_cast<CEdit*>(GetDlgItem(IDC_EDIT_LABEL_NUM_PSWD));
    auto currentSliderCursorPos = slider->GetPos();
 
    slider->SetRange(minPasswordLength, maxPasswordLength);
    lenghtPassCountDown = lengthOfPassword = currentSliderCursorPos;
 
-   const unsigned int bufferSize{ 10 };
-   wchar_t pBuffer[bufferSize]{};
-
-   static_cast<void>(_snwprintf_s(pBuffer, bufferSize - 1, L"%d", lengthOfPassword));
-   label->SetWindowTextW(pBuffer);
+   const std::string lengthOfPasswordString = std::to_string(lengthOfPassword);
+   printToLabel(IDC_EDIT_LABEL_NUM_PSWD, lengthOfPasswordString);
 
    // Create a new password if the slider move
    if (currentSliderCursorPos != lastSliderCursorPos)
@@ -544,7 +554,8 @@ void CPasswordGeneratorGUIDlg::OnBnClickedCheckUppercases()
 {
    UpdateData(true);
 
-   if (static_cast<bool>(pUpperCasesCheck->GetCheck()))
+   if (static_cast<bool>(pUpperCasesCheck->GetCheck())
+      && !static_cast<bool>(pSymbolsCasesCheck->GetCheck()))
    {
       pAllOptionsCheck->SetCheck(false);
       pAllSpecialCharactersCheck->SetCheck(false);
@@ -560,7 +571,8 @@ void CPasswordGeneratorGUIDlg::OnBnClickedCheckLowercases()
 {
    UpdateData(true);
 
-   if (static_cast<bool>(pLowerCasesCheck->GetCheck()))
+   if (static_cast<bool>(pLowerCasesCheck->GetCheck())
+      && !static_cast<bool>(pSymbolsCasesCheck->GetCheck()))
    {
       pAllOptionsCheck->SetCheck(false);
       pAllSpecialCharactersCheck->SetCheck(false);
@@ -575,7 +587,8 @@ void CPasswordGeneratorGUIDlg::OnBnClickedCheckNumbers()
 {
    UpdateData(true);
 
-   if (static_cast<bool>(pNumberCasesCheck->GetCheck()))
+   if (static_cast<bool>(pNumberCasesCheck->GetCheck())
+      && !static_cast<bool>(pSymbolsCasesCheck->GetCheck()))
    {
       pAllOptionsCheck->SetCheck(false);
       pAllSpecialCharactersCheck->SetCheck(false);
@@ -598,12 +611,18 @@ void CPasswordGeneratorGUIDlg::OnBnClickedCheckSpecialcases()
       pAllSpecialCharactersCheck->EnableWindow(true);
       pMyPaySpecialCharactersCheck->EnableWindow(true);
    }
+   else
+   {
+      pAllSpecialCharactersCheck->SetCheck(false);
+      pMyPaySpecialCharactersCheck->SetCheck(false);
+      pAllSpecialCharactersCheck->EnableWindow(false);
+      pMyPaySpecialCharactersCheck->EnableWindow(false);
+   }
 }
 
 
 void CPasswordGeneratorGUIDlg::OnBnClickedCheckAlloptions()
 {
-   UpdateData(true);
 
    if (static_cast<bool>(pAllOptionsCheck->GetCheck()))
    {
@@ -616,6 +635,13 @@ void CPasswordGeneratorGUIDlg::OnBnClickedCheckAlloptions()
       pMyPaySpecialCharactersCheck->SetCheck(false);
       pAllSpecialCharactersCheck->EnableWindow(true);
       pMyPaySpecialCharactersCheck->EnableWindow(true);
+      UpdateData(true);
+   }
+   // Don't let the user unchecked the "All Options"
+   // checkbox unless another checkboxed is selected.
+   else if (!allCheckMarked() || 0 == lengthOfPassword)
+   {
+      pAllOptionsCheck->SetCheck(true);
    }
 }
 
@@ -635,4 +661,18 @@ void CPasswordGeneratorGUIDlg::OnBnClickedRadioAll()
    {
       pMyPaySpecialCharactersCheck->SetCheck(false);
    }
+}
+
+void CPasswordGeneratorGUIDlg::OnBnClickedButtonCopy()
+{
+    // If there is no password, no point on trying to copy...
+    if (0 == lengthOfPassword)
+    {
+        return;
+    }
+
+    auto label = reinterpret_cast<CEdit*>(GetDlgItem(IDC_EDIT_PASSWORD));
+    label->SetFocus();
+    label->SetSel(0, lengthOfPassword);
+    label->Copy();
 }
