@@ -52,6 +52,7 @@ private:
    CButton* pSymbolsCasesCheck{};
    CButton* pAllSpecialCharactersCheck{};
    CButton* pMyPaySpecialCharactersCheck{};
+   CButton* pCopyPasswordButton{};
 
    // The symbols allow to be used in passwords.
    static constexpr char specialCharactersForAll[]{

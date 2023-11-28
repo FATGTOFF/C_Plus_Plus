@@ -66,16 +66,16 @@ BEGIN_MESSAGE_MAP(CPasswordGeneratorGUIDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-    ON_BN_CLICKED(IDC_GEN_PASSWORD_BUTTON, &CPasswordGeneratorGUIDlg::OnBnClickedGenPasswordButton)
-    ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_LENGTH_PASSWORD, &CPasswordGeneratorGUIDlg::OnNMCustomdrawSliderLengthPassword)
-    ON_BN_CLICKED(IDC_CHECK_UPPERCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckUppercases)
-    ON_BN_CLICKED(IDC_CHECK_LOWERCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckLowercases)
-    ON_BN_CLICKED(IDC_CHECK_NUMBERS, &CPasswordGeneratorGUIDlg::OnBnClickedCheckNumbers)
-    ON_BN_CLICKED(IDC_CHECK_SPECIALCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckSpecialcases)
-    ON_BN_CLICKED(IDC_CHECK_ALLOPTIONS, &CPasswordGeneratorGUIDlg::OnBnClickedCheckAlloptions)
-    ON_BN_CLICKED(IDC_RADIO_MYPAY, &CPasswordGeneratorGUIDlg::OnBnClickedRadioMypay)
-    ON_BN_CLICKED(IDC_RADIO_ALL, &CPasswordGeneratorGUIDlg::OnBnClickedRadioAll)
-    ON_BN_CLICKED(IDC_BUTTON_COPY, &CPasswordGeneratorGUIDlg::OnBnClickedButtonCopy)
+   ON_BN_CLICKED(IDC_GEN_PASSWORD_BUTTON, &CPasswordGeneratorGUIDlg::OnBnClickedGenPasswordButton)
+   ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_LENGTH_PASSWORD, &CPasswordGeneratorGUIDlg::OnNMCustomdrawSliderLengthPassword)
+   ON_BN_CLICKED(IDC_CHECK_UPPERCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckUppercases)
+   ON_BN_CLICKED(IDC_CHECK_LOWERCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckLowercases)
+   ON_BN_CLICKED(IDC_CHECK_NUMBERS, &CPasswordGeneratorGUIDlg::OnBnClickedCheckNumbers)
+   ON_BN_CLICKED(IDC_CHECK_SPECIALCASES, &CPasswordGeneratorGUIDlg::OnBnClickedCheckSpecialcases)
+   ON_BN_CLICKED(IDC_CHECK_ALLOPTIONS, &CPasswordGeneratorGUIDlg::OnBnClickedCheckAlloptions)
+   ON_BN_CLICKED(IDC_RADIO_MYPAY, &CPasswordGeneratorGUIDlg::OnBnClickedRadioMypay)
+   ON_BN_CLICKED(IDC_RADIO_ALL, &CPasswordGeneratorGUIDlg::OnBnClickedRadioAll)
+   ON_BN_CLICKED(IDC_BUTTON_COPY, &CPasswordGeneratorGUIDlg::OnBnClickedButtonCopy)
 END_MESSAGE_MAP()
 
 
@@ -121,6 +121,11 @@ BOOL CPasswordGeneratorGUIDlg::OnInitDialog()
    pNumberCasesCheck->EnableWindow(false);
    pSymbolsCasesCheck = reinterpret_cast<CButton*>(GetDlgItem(IDC_CHECK_SPECIALCASES));
    pSymbolsCasesCheck->EnableWindow(false);
+
+   // For now, do not display the copy password button since the password
+   // is not displayed, yet.
+   pCopyPasswordButton = reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON_COPY));
+   pCopyPasswordButton->ShowWindow(false);
 
    pAllSpecialCharactersCheck = reinterpret_cast<CButton*>(GetDlgItem(IDC_RADIO_ALL));
    pAllSpecialCharactersCheck->SetCheck(true);
@@ -311,6 +316,10 @@ void CPasswordGeneratorGUIDlg::printNewPassword(std::string & newPassword)
 
    printToLabel(IDC_EDIT_PASSWORD, newPassword);
 
+   // Now the password is printed in the Edit box, the user
+   // have the ability to copy it.
+   pCopyPasswordButton->ShowWindow(true);
+
    lenghtPassCountDown = lengthOfPassword;
 }
 
@@ -447,6 +456,8 @@ void CPasswordGeneratorGUIDlg::printToLabel(const int nameID, const std::string&
     const std::string pBuffer = textToPrint.c_str();
     const std::wstring w_pBuffer{ pBuffer.begin(), pBuffer.end() };
     label->SetWindowTextW(w_pBuffer.c_str());
+
+    //pCopyPasswordButton->ShowWindow(true);
 }
 
 std::uint16_t CPasswordGeneratorGUIDlg::randomNumber(std::uint16_t min, std::uint16_t max) const
