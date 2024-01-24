@@ -10,11 +10,10 @@
 #include <iostream>
 #include <iomanip>
 #include <chrono>
+#include <limits>
 
 using uint_64 = unsigned long long; //typedef unsigned long long uint_64
 using u_char = unsigned char; // typedef unsigned short u_char
-
-void InputNumberOnly(uint_64&);
 
 struct bytes_s
 {
@@ -28,6 +27,12 @@ struct bytes_s
    u_char byte_8;
 };
 
+void InputNumberOnly(uint_64&);
+void CalculateBigEndian(bytes_s &bytes, const uint_64 num);
+void CalculateLittleEndian(bytes_s &bytes, const uint_64 num);
+void PrintInHexValues(const char* endianType, const bytes_s &bytes);
+
+
 int main()
 {
    bytes_s bytes{};
@@ -38,6 +43,30 @@ int main()
 
    const auto startTime = std::chrono::high_resolution_clock::now();
 
+   CalculateBigEndian(bytes, num);
+   PrintInHexValues("Big Endian", bytes);
+
+   CalculateLittleEndian(bytes, num);
+   PrintInHexValues("Little Endian", bytes);
+
+   const auto stopTime = std::chrono::high_resolution_clock::now();
+
+   const std::chrono::duration<double> totalTime{ stopTime - startTime };
+   std::cout << totalTime.count() << "s" << std::endl;
+}
+
+void InputNumberOnly(uint_64& num)
+{
+   while ((std::cin >> num).fail() || std::cin.peek() != '\n')
+   {
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      std::cout << "Your choice is incorrect. Try again: ";
+   }
+}
+
+void CalculateBigEndian(bytes_s &bytes, const uint_64 num)
+{
    // Big Endian
    bytes.byte_1 = (num >> 56) & 0xFF;
    bytes.byte_2 = (num >> 48) & 0xFF;
@@ -47,14 +76,10 @@ int main()
    bytes.byte_6 = (num >> 16) & 0xFF;
    bytes.byte_7 = (num >> 8) & 0xFF;
    bytes.byte_8 = num & 0xFF;
+}
 
-   std::cout << "Big Endian: " << std::hex << std::setfill('0') << std::uppercase << std::setw(2) 
-      << static_cast<uint_64>(bytes.byte_1) << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_2)
-      << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_3) << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_4)
-      << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_5) << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_6)
-      << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_7) << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_8)
-      << std::endl;
-
+void CalculateLittleEndian(bytes_s &bytes, const uint_64 num)
+{
    // Little Endian
    bytes.byte_8 = (num >> 56) & 0xFF;
    bytes.byte_7 = (num >> 48) & 0xFF;
@@ -64,31 +89,18 @@ int main()
    bytes.byte_3 = (num >> 16) & 0xFF;
    bytes.byte_2 = (num >> 8) & 0xFF;
    bytes.byte_1 = num & 0xFF;
+}
 
-   std::cout << "Little Endian: " << std::hex << std::setfill('0') << std::uppercase << std::setw(2)
+void PrintInHexValues(const char *endianType, const bytes_s &bytes)
+{
+   std::cout << endianType << ": " << std::hex << std::setfill('0') << std::uppercase << std::setw(2)
       << static_cast<uint_64>(bytes.byte_1) << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_2)
       << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_3) << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_4)
       << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_5) << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_6)
       << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_7) << " " << std::setw(2) << static_cast<uint_64>(bytes.byte_8)
       << std::endl;
-
-   const auto stopTime = std::chrono::high_resolution_clock::now();
-
-   const std::chrono::duration<double> totalTime{ stopTime - startTime };
-   std::cout << totalTime.count() << "s" << std::endl;
 }
-void InputNumberOnly(uint_64& num)
-{
-   while ((std::cin >> num).fail() || std::cin.peek() != '\n')
-   {
-      std::cin.clear();
-      while (std::cin.get() != '\n')
-      {
-         continue;
-      }
-      std::cout << "Your choice is incorrect. Try again: ";
-   }
-}
+
 /*
 Below is a quick note about the endianess...
 Source: https://chortle.ccsu.edu/assemblytutorial/Chapter-15/ass15_3.html
