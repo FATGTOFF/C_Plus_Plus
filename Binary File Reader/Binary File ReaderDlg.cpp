@@ -209,8 +209,8 @@ void CBinaryFileReaderDlg::OnBnClickedButtonOpenFile()
    std::string getFileTitle{ pszConvertedAnsiString_3 };
 
    LPCTSTR pfileFilterSave =
-        _T("Comma Separated Values (*.csv)|*.csv|")
-        _T("Text Documents (*.txt)|*.txt|");
+      _T("Text Documents (*.txt)|*.txt|")
+      _T("Comma Separated Values (*.csv)|*.csv|");
 
    CFileDialog dialogFileSave(FALSE, _T("txt"), dialogFileOpen.GetFileTitle(),
       OFN_OVERWRITEPROMPT | OFN_FILEMUSTEXIST, pfileFilterSave, AfxGetMainWnd());
