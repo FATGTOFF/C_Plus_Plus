@@ -193,6 +193,9 @@ void CBinaryFileReaderDlg::OnBnClickedButtonOpenFile()
    std::ostringstream pbuffer{};
    pbuffer << "File Size: " << buffer.size() << " bytes";
    MessageBoxA(nullptr, pbuffer.str().c_str(), "Total of Bytes", MB_OK);
+   // Clear the buffer.
+   pbuffer.str("");
+   pbuffer.clear();
 
    // convert from CString to std::string.
    // From https://stackoverflow.com/questions/258050/how-do-you-convert-cstring-and-stdstring-stdwstring-to-each-other
@@ -250,7 +253,11 @@ void CBinaryFileReaderDlg::OnBnClickedButtonOpenFile()
 
       outputFile.close();
 
-      MessageBoxA(nullptr, "File is saved", "Save File", MB_OK);
+      pbuffer <<  getFileTitle.c_str() << "." << getFileExtension.c_str() << " saved.";
+      MessageBoxA(nullptr, pbuffer.str().c_str(), "Binary File Reader", MB_OK);
+      // Clear the buffer.
+      pbuffer.str("");
+      pbuffer.clear();
 
       // Open the *.csv file for the user to see the contents of the file.
       ShellExecute(nullptr, _T("open"), dialogFileSave.GetPathName(), nullptr, nullptr, SW_SHOW);
