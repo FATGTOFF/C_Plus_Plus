@@ -7,7 +7,7 @@
 #include "Binary File Reader.h"
 #include "Binary File ReaderDlg.h"
 #include "afxdialogex.h"
-#include <errno.h>
+//#include <errno.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -61,7 +61,7 @@ void CBinaryFileReaderDlg::DoDataExchange(CDataExchange* pDX)
    CDialogEx::DoDataExchange(pDX);
    DDX_Text(pDX, IDC_EDIT_NUM_BYTES_PER_LINE, numOfBytesPerLine);
    // The 16384 is the max columns on the Excel (As of 2 Jun 23)
-   DDV_MinMaxUInt(pDX, numOfBytesPerLine, 1, 16383);
+   DDV_MinMaxUInt(pDX, numOfBytesPerLine, minExcelColumns, maxExcelColumns);
 }
 
 BEGIN_MESSAGE_MAP(CBinaryFileReaderDlg, CDialogEx)
@@ -167,7 +167,7 @@ void CBinaryFileReaderDlg::OnBnClickedButtonOpenFile()
 
    // Don't try to look for the file
    // if the bytes value is not validated.
-   if (numOfBytesPerLine < 0 || numOfBytesPerLine > 16384)
+   if (numOfBytesPerLine <= minExcelColumns || numOfBytesPerLine >= maxExcelColumns)
    {
       // Placed a default value to the edit box.
       GetDlgItem(IDC_EDIT_NUM_BYTES_PER_LINE)->SetWindowTextW(L"20");
@@ -186,6 +186,7 @@ void CBinaryFileReaderDlg::OnBnClickedButtonOpenFile()
       return;
    }
 
+   // Open the binary file and use the standard iterator to put each byte into the vector.
    std::ifstream binaryFile(dialogFileOpen.GetPathName(), std::ios::in | std::ios::binary);
    std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(binaryFile), {});
 
@@ -193,6 +194,7 @@ void CBinaryFileReaderDlg::OnBnClickedButtonOpenFile()
    std::ostringstream pbuffer{};
    pbuffer << "File Size: " << buffer.size() << " bytes";
    MessageBoxA(nullptr, pbuffer.str().c_str(), "Total of Bytes", MB_OK);
+
    // Clear the buffer.
    pbuffer.str("");
    pbuffer.clear();
@@ -230,7 +232,7 @@ void CBinaryFileReaderDlg::OnBnClickedButtonOpenFile()
          MessageBoxA(nullptr, "Error: The file could not be opened", nullptr, MB_OK);
       }
 
-      for (unsigned count = 0; count < buffer.size(); count++)
+      for (unsigned count = 0; count < buffer.size(); ++count)
       {
 
          if ((0 == count % std::stoi(numOfBytesPerLine_str)) && 0 != count)
@@ -255,11 +257,12 @@ void CBinaryFileReaderDlg::OnBnClickedButtonOpenFile()
 
       pbuffer <<  getFileTitle.c_str() << "." << getFileExtension.c_str() << " saved.";
       MessageBoxA(nullptr, pbuffer.str().c_str(), "Binary File Reader", MB_OK);
+
       // Clear the buffer.
       pbuffer.str("");
       pbuffer.clear();
 
-      // Open the *.csv file for the user to see the contents of the file.
+      // Open the file for the user to see the contents of the file.
       ShellExecute(nullptr, _T("open"), dialogFileSave.GetPathName(), nullptr, nullptr, SW_SHOW);
    }
 

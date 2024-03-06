@@ -10,6 +10,8 @@
 #include <iomanip>
 #include <sstream>
 
+constexpr UINT minExcelColumns{ 1 };
+constexpr UINT maxExcelColumns{ 16383 };
 
 // CBinaryFileReaderDlg dialog
 class CBinaryFileReaderDlg : public CDialogEx
