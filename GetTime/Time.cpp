@@ -2,59 +2,65 @@
 
 std::string Time::getMonth(const Month month) const
 {
+    std::string monthInString{"Error"};
+
     switch (month)
     {
         case Month::JAN:
-            return "Jan";
+            monthInString = "Jan";
         break;
 
         case Month::FEB:
-            return "Feb";
+            monthInString = "Feb";
         break;
 
         case Month::MAR:
-            return "Mar";
+            monthInString = "Mar";
         break;
 
         case Month::APR:
-            return "Apr";
+            monthInString = "Apr";
         break;
 
         case Month::MAY:
-            return "May";
+            monthInString = "May";
         break;
 
         case Month::JUN:
-            return "Jun";
+            monthInString = "Jun";
         break;
 
         case Month::JUL:
-            return "Jul";
+            monthInString = "Jul";
         break;
 
         case Month::AUG:
-            return "Aug";
+            monthInString = "Aug";
         break;
 
         case Month::SEP:
-            return "Sep";
+            monthInString = "Sep";
         break;
 
         case Month::OCT:
-            return "Oct";
+            monthInString = "Oct";
         break;
 
         case Month::NOV:
-            return "Nov";
+            monthInString = "Nov";
         break;
 
         case Month::DEC:
-            return "Dec";
+            monthInString = "Dec";
+        break;
+
+        default:
+            monthInString = "Month Not Selected";
         break;
 
     }
 
-    return "Error";
+    return monthInString;
 }
 
 void Time::clearPBuffer()
