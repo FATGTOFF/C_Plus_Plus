@@ -1,11 +1,15 @@
 #ifndef _TIME_
 #define _TIME_
 
+#include <iostream>
 #include <ctime>  
 #include <iomanip>
 #include <sstream>
 #include <string>
+#include <cerrno>
+#include <map>
 #include <sys/timeb.h>
+#include "ErrorList.h"
 
 class Time
 {
@@ -17,6 +21,22 @@ private:
         JUL, AUG, SEP, OCT, NOV, DEC
     };
 
+    const std::map<const Month, const std::string> listOfMonths
+    {
+        {Month::JAN, "Jan"},
+        {Month::FEB, "Feb"},
+        {Month::MAR, "Mar"},
+        {Month::APR, "Apr"},
+        {Month::MAY, "May"},
+        {Month::JUN, "Jun"},
+        {Month::JUL, "Jul"},
+        {Month::AUG, "Aug"},
+        {Month::SEP, "Sep"},
+        {Month::OCT, "Oct"},
+        {Month::NOV, "Nov"},
+        {Month::DEC, "Dec"},
+    };
+
     long long aclock{};
     struct _timeb tstruct{};
     struct tm newtime{};
@@ -26,6 +46,7 @@ private:
 
 public:
     Time();
+    ~Time() = default;
     std::string getDayMonthYrHrMinSecMs();
     std::string getHrMinSecMs();
     std::string getHrMinSecs();

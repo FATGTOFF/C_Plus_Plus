@@ -2,65 +2,7 @@
 
 std::string Time::getMonth(const Month month) const
 {
-    std::string monthInString{"Error"};
-
-    switch (month)
-    {
-        case Month::JAN:
-            monthInString = "Jan";
-        break;
-
-        case Month::FEB:
-            monthInString = "Feb";
-        break;
-
-        case Month::MAR:
-            monthInString = "Mar";
-        break;
-
-        case Month::APR:
-            monthInString = "Apr";
-        break;
-
-        case Month::MAY:
-            monthInString = "May";
-        break;
-
-        case Month::JUN:
-            monthInString = "Jun";
-        break;
-
-        case Month::JUL:
-            monthInString = "Jul";
-        break;
-
-        case Month::AUG:
-            monthInString = "Aug";
-        break;
-
-        case Month::SEP:
-            monthInString = "Sep";
-        break;
-
-        case Month::OCT:
-            monthInString = "Oct";
-        break;
-
-        case Month::NOV:
-            monthInString = "Nov";
-        break;
-
-        case Month::DEC:
-            monthInString = "Dec";
-        break;
-
-        default:
-            monthInString = "Month Not Selected";
-        break;
-
-    }
-
-    return monthInString;
+    return listOfMonths.at(month);
 }
 
 void Time::clearPBuffer()
@@ -71,14 +13,27 @@ void Time::clearPBuffer()
 
 Time::Time()
 {
+    ErrorList errorList;
     // Set time zone from TZ environment variable. If TZ is not set,
     // the operating system is queried to obtain the default value
     // for the variable.
     _tzset();
 
-    _time64(&aclock);
-    _ftime64_s(&tstruct);
-    _localtime64_s(&newtime, &aclock);
+    static_cast<void>(_time64(&aclock));
+
+    errorList.setErrorNumber(_ftime64_s(&tstruct));
+    if (0 != errorList.getErrorNumber())
+    {
+        std::cerr << errorList.getErrorMessage() << std::endl;
+        exit(errorList.getErrorNumber());
+    }
+    
+    errorList.setErrorNumber(_localtime64_s(&newtime, &aclock));
+    if (0 != errorList.getErrorNumber())
+    {
+        std::cerr << errorList.getErrorMessage() << std::endl;
+        exit(errorList.getErrorNumber());
+    }
 
 }
 
