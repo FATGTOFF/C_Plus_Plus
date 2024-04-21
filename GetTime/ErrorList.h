@@ -5,6 +5,7 @@
 #include <cerrno>
 #include <string>
 #include <iostream>
+#include <fstream>
 
 #define DEBUG false
 
@@ -115,6 +116,7 @@ protected:
 	void setErrorNumber(const int errNum) noexcept;
 	int getErrorNumber() const noexcept;
 	std::string getErrorMessage(const int errNum) const;
+	void printErrorMessage(const int errNum) const;
 };
 
 #endif

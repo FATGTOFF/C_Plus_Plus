@@ -7,9 +7,10 @@
 #include <sstream>
 #include <string>
 #include <map>
-#include <fstream>
 #include <sys/timeb.h> // struct _timeb
 #include "ErrorList.h"
+#include "GetFTimeException.h"
+#include "GetLocalTimeException.h"
 
 class Time : public ErrorList
 {
@@ -43,9 +44,13 @@ private:
     mutable std::ostringstream pBuffer{};
     std::string getMonth(const Month) const;
     void clearPBuffer() const;
-    void printErrorMessage(const int errNum) const;
 
 public:
+
+// Supress the warning on Time default constructor.
+// warning C26455: Default constructor may not throw. 
+// Declare it 'noexcept' (f.6).
+#pragma warning( disable : 26455)
     Time();
     std::string getDayMonthYrHrMinSecMs() const;
     std::string getHrMinSecMs() const;

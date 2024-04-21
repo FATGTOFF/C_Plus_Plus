@@ -37,3 +37,15 @@ std::string ErrorList::getErrorMessage(const int errNum) const
 
 	return errorMessage;
 }
+
+void ErrorList::printErrorMessage(const int errNum) const
+{
+
+	std::fstream outErrorFile{};
+	outErrorFile.open("errorLog.out", std::ios::out);
+
+	std::cerr << errNum << "\t" << getErrorMessage(errNum) << std::endl;
+	outErrorFile << errNum << "\t" << getErrorMessage(errNum) << std::endl;
+	outErrorFile.close();
+
+}

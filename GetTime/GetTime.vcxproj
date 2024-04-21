@@ -150,11 +150,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ErrorList.cpp" />
+    <ClCompile Include="GetFTimeException.cpp" />
+    <ClCompile Include="GetLocalTimeException.cpp" />
+    <ClCompile Include="GetTimeExceptionBase.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ErrorList.h" />
+    <ClInclude Include="GetFTimeException.h" />
+    <ClInclude Include="GetLocalTimeException.h" />
+    <ClInclude Include="GetTimeExceptionBase.h" />
     <ClInclude Include="Time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

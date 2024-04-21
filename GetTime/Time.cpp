@@ -11,17 +11,6 @@ void Time::clearPBuffer() const
     pBuffer.clear();
 }
 
-[[noreturn]] void Time::printErrorMessage(const int errNum) const
-{
-    std::fstream outErrorFile{};
-    outErrorFile.open("errorLog.out", std::ios::out);
-
-    std::cerr << errNum << "\t" << getErrorMessage(errNum) << std::endl;
-    outErrorFile << errNum << "\t" << getErrorMessage(errNum) << std::endl;
-    outErrorFile.close();
-    exit(errNum);
-}
-
 Time::Time() : ErrorList()
 {
     // Set time zone from TZ environment variable. If TZ is not set,
@@ -30,17 +19,31 @@ Time::Time() : ErrorList()
     _tzset();
 
     static_cast<void>(_time64(&aclock));
+    try
+    {
+        setErrorNumber(_ftime64_s(&tstruct));
+        if (0 != getErrorNumber())
+        {
+            throw GetFTimeException(getErrorNumber());
+        }
 
-    setErrorNumber(_ftime64_s(&tstruct));
-    if (0 != getErrorNumber())
-    {
-        printErrorMessage(getErrorNumber());
+        setErrorNumber(_localtime64_s(&newtime, &aclock));
+        if (0 != getErrorNumber())
+        {
+            throw GetLocalTimeException(getErrorNumber());
+        }
     }
-   
-    setErrorNumber(_localtime64_s(&newtime, &aclock));
-    if (0 != getErrorNumber())
+    catch (const GetFTimeException&)
     {
-        printErrorMessage(getErrorNumber());
+        GetFTimeException ftime64Exception(getErrorNumber());
+        printErrorMessage(ftime64Exception.getTimeException());
+        exit(ftime64Exception.getTimeException());
+    }
+    catch (const GetLocalTimeException&)
+    {
+        GetLocalTimeException localtime64Exception(getErrorNumber());
+        printErrorMessage(localtime64Exception.getTimeException());
+        exit(localtime64Exception.getTimeException());
     }
 
 
