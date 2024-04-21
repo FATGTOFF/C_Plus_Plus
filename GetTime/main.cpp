@@ -16,5 +16,6 @@ int main()
     std::cout << time.getMins() << std::endl;
     std::cout << time.getSecs() << std::endl;
     std::cout << time.getMills() << std::endl;
+    
 
 }

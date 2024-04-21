@@ -5,15 +5,25 @@ std::string Time::getMonth(const Month month) const
     return listOfMonths.at(month);
 }
 
-void Time::clearPBuffer()
+void Time::clearPBuffer() const
 {
     pBuffer.str("");
     pBuffer.clear();
 }
 
-Time::Time()
+[[noreturn]] void Time::printErrorMessage(const int errNum) const
 {
-    ErrorList errorList;
+    std::fstream outErrorFile{};
+    outErrorFile.open("errorLog.out", std::ios::out);
+
+    std::cerr << errNum << "\t" << getErrorMessage(errNum) << std::endl;
+    outErrorFile << errNum << "\t" << getErrorMessage(errNum) << std::endl;
+    outErrorFile.close();
+    exit(errNum);
+}
+
+Time::Time() : ErrorList()
+{
     // Set time zone from TZ environment variable. If TZ is not set,
     // the operating system is queried to obtain the default value
     // for the variable.
@@ -21,23 +31,22 @@ Time::Time()
 
     static_cast<void>(_time64(&aclock));
 
-    errorList.setErrorNumber(_ftime64_s(&tstruct));
-    if (0 != errorList.getErrorNumber())
+    setErrorNumber(_ftime64_s(&tstruct));
+    if (0 != getErrorNumber())
     {
-        std::cerr << errorList.getErrorMessage() << std::endl;
-        exit(errorList.getErrorNumber());
+        printErrorMessage(getErrorNumber());
     }
-    
-    errorList.setErrorNumber(_localtime64_s(&newtime, &aclock));
-    if (0 != errorList.getErrorNumber())
+   
+    setErrorNumber(_localtime64_s(&newtime, &aclock));
+    if (0 != getErrorNumber())
     {
-        std::cerr << errorList.getErrorMessage() << std::endl;
-        exit(errorList.getErrorNumber());
+        printErrorMessage(getErrorNumber());
     }
+
 
 }
 
-std::string Time::getDayMonthYrHrMinSecMs()
+std::string Time::getDayMonthYrHrMinSecMs() const
 {
     clearPBuffer();
 
@@ -52,7 +61,7 @@ std::string Time::getDayMonthYrHrMinSecMs()
     return pBuffer.str();
 }
 
-std::string Time::getHrMinSecMs()
+std::string Time::getHrMinSecMs() const
 {
     clearPBuffer();
 
@@ -64,7 +73,7 @@ std::string Time::getHrMinSecMs()
     return pBuffer.str();
 }
 
-std::string Time::getHrMinSecs()
+std::string Time::getHrMinSecs() const
 {
     clearPBuffer();
 
@@ -75,7 +84,7 @@ std::string Time::getHrMinSecs()
     return pBuffer.str();
 }
 
-std::string Time::getHrMins()
+std::string Time::getHrMins() const
 {
     clearPBuffer();
 
@@ -85,7 +94,7 @@ std::string Time::getHrMins()
     return pBuffer.str();
 }
 
-std::string Time::getDay()
+std::string Time::getDay() const
 {
     clearPBuffer();
 
@@ -96,7 +105,7 @@ std::string Time::getDay()
     return pBuffer.str();
 }
 
-std::string Time::getMonth()
+std::string Time::getMonth() const
 {
     clearPBuffer();
 
@@ -107,7 +116,7 @@ std::string Time::getMonth()
     return pBuffer.str();
 }
 
-std::string Time::getYear()
+std::string Time::getYear() const
 {
     clearPBuffer();
 
@@ -118,7 +127,7 @@ std::string Time::getYear()
     return pBuffer.str();
 }
 
-std::string Time::getHrs()
+std::string Time::getHrs() const
 {
     clearPBuffer();
 
@@ -129,7 +138,7 @@ std::string Time::getHrs()
     return pBuffer.str();
 }
 
-std::string Time::getMins()
+std::string Time::getMins() const
 {
     clearPBuffer();
 
@@ -140,7 +149,7 @@ std::string Time::getMins()
     return pBuffer.str();
 }
 
-std::string Time::getSecs()
+std::string Time::getSecs() const
 {
     clearPBuffer();
 
@@ -151,7 +160,7 @@ std::string Time::getSecs()
     return pBuffer.str();
 }
 
-std::string Time::getMills()
+std::string Time::getMills() const
 {
     clearPBuffer();
 

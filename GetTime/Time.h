@@ -6,12 +6,12 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
-#include <cerrno>
 #include <map>
-#include <sys/timeb.h>
+#include <fstream>
+#include <sys/timeb.h> // struct _timeb
 #include "ErrorList.h"
 
-class Time
+class Time : public ErrorList
 {
 private:
 
@@ -40,24 +40,24 @@ private:
     long long aclock{};
     struct _timeb tstruct{};
     struct tm newtime{};
-    std::ostringstream pBuffer{};
+    mutable std::ostringstream pBuffer{};
     std::string getMonth(const Month) const;
-    void clearPBuffer();
+    void clearPBuffer() const;
+    void printErrorMessage(const int errNum) const;
 
 public:
     Time();
-    ~Time() = default;
-    std::string getDayMonthYrHrMinSecMs();
-    std::string getHrMinSecMs();
-    std::string getHrMinSecs();
-    std::string getHrMins();
-    std::string getDay();
-    std::string getMonth();
-    std::string getYear();
-    std::string getHrs();
-    std::string getMins();
-    std::string getSecs();
-    std::string getMills();
+    std::string getDayMonthYrHrMinSecMs() const;
+    std::string getHrMinSecMs() const;
+    std::string getHrMinSecs() const;
+    std::string getHrMins() const;
+    std::string getDay() const;
+    std::string getMonth() const;
+    std::string getYear() const;
+    std::string getHrs() const;
+    std::string getMins() const;
+    std::string getSecs() const;
+    std::string getMills() const;
 };
 
 #endif
