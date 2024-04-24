@@ -5,7 +5,17 @@ GetLocalTimeException::GetLocalTimeException(const int errNum) noexcept : GetTim
 {
 }
 
-int GetLocalTimeException::getTimeException() noexcept
+void GetLocalTimeException::setErrorNumber(const int errNum) noexcept
+{
+   errorNumber = errNum;
+}
+
+int GetLocalTimeException::getTimeException() const noexcept
 {
 	return errorNumber;
+}
+
+std::string GetLocalTimeException::what() const noexcept
+{
+   return exceptionTypeMessage;
 }

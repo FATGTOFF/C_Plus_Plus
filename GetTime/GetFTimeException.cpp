@@ -5,7 +5,17 @@ GetFTimeException::GetFTimeException(const int errNum) noexcept : GetTimeExcepti
 {
 }
 
-int GetFTimeException::getTimeException() noexcept
+void GetFTimeException::setErrorNumber(const int errNum) noexcept
+{
+   errorNumber = errNum;
+}
+
+int GetFTimeException::getTimeException() const noexcept
 {
 	return errorNumber;
+}
+
+std::string GetFTimeException::what() const noexcept
+{
+   return exceptionTypeMessage;
 }

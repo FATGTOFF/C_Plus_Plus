@@ -27,10 +27,10 @@
     <ClCompile Include="GetFTimeException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GetTimeExceptionBase.cpp">
+    <ClCompile Include="GetLocalTimeException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GetLocalTimeException.cpp">
+    <ClCompile Include="GetTimeExceptionBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

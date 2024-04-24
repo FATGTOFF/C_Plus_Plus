@@ -3,4 +3,3 @@
 GetTimeExceptionBase::GetTimeExceptionBase(const int errNum) noexcept : errorNumber(errNum)
 {
 }
-

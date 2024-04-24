@@ -8,6 +8,8 @@
 #include <string>
 #include <map>
 #include <sys/timeb.h> // struct _timeb
+#include <memory>
+#include <array>
 #include "ErrorList.h"
 #include "GetFTimeException.h"
 #include "GetLocalTimeException.h"
@@ -36,6 +38,18 @@ private:
         {Month::OCT, "Oct"},
         {Month::NOV, "Nov"},
         {Month::DEC, "Dec"},
+    };
+
+    enum class TypesOfTimeException : int
+    {
+       FTimeException,
+       LocalTimeException
+    };
+
+    std::array<std::unique_ptr<GetTimeExceptionBase>, 2> exceptionsTypes
+    {
+       std::make_unique<GetFTimeException>(),
+       std::make_unique<GetLocalTimeException>()
     };
 
     long long aclock{};

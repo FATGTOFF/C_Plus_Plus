@@ -12,11 +12,6 @@ ErrorList::ErrorList()
 }
 #endif // DEBUG
 
-void ErrorList::setErrorNumber(const int errNum) noexcept
-{
-	errorNumber = errNum;
-}
-
 int ErrorList::getErrorNumber() const noexcept
 {
 	return errorNumber;
@@ -38,14 +33,14 @@ std::string ErrorList::getErrorMessage(const int errNum) const
 	return errorMessage;
 }
 
-void ErrorList::printErrorMessage(const int errNum) const
+void ErrorList::printErrorMessage(const std::string& errTypeMsg, const int errNum) const
 {
 
 	std::fstream outErrorFile{};
 	outErrorFile.open("errorLog.out", std::ios::out);
 
-	std::cerr << errNum << "\t" << getErrorMessage(errNum) << std::endl;
-	outErrorFile << errNum << "\t" << getErrorMessage(errNum) << std::endl;
+	std::cerr << errTypeMsg <<  errNum << " - " << getErrorMessage(errNum) << std::endl;
+	outErrorFile << errTypeMsg << errNum << " - " << getErrorMessage(errNum) << std::endl;
 	outErrorFile.close();
 
 }

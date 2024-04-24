@@ -13,6 +13,7 @@ void Time::clearPBuffer() const
 
 Time::Time() : ErrorList()
 {
+
     // Set time zone from TZ environment variable. If TZ is not set,
     // the operating system is queried to obtain the default value
     // for the variable.
@@ -21,29 +22,33 @@ Time::Time() : ErrorList()
     static_cast<void>(_time64(&aclock));
     try
     {
-        setErrorNumber(_ftime64_s(&tstruct));
-        if (0 != getErrorNumber())
+        exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->setErrorNumber(_ftime64_s(&tstruct));
+        if (0 != exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->getTimeException())
         {
-            throw GetFTimeException(getErrorNumber());
+            throw GetFTimeException(exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->getTimeException());
         }
 
-        setErrorNumber(_localtime64_s(&newtime, &aclock));
-        if (0 != getErrorNumber())
+        exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->setErrorNumber(_localtime64_s(&newtime, &aclock));
+        if (0 != exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->getTimeException())
         {
-            throw GetLocalTimeException(getErrorNumber());
+
+           throw GetLocalTimeException(exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->getTimeException());
         }
     }
     catch (const GetFTimeException&)
     {
-        GetFTimeException ftime64Exception(getErrorNumber());
-        printErrorMessage(ftime64Exception.getTimeException());
-        exit(ftime64Exception.getTimeException());
+        printErrorMessage(exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->what(), 
+           exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->getTimeException());
+
+        exit(exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->getTimeException());
     }
     catch (const GetLocalTimeException&)
     {
-        GetLocalTimeException localtime64Exception(getErrorNumber());
-        printErrorMessage(localtime64Exception.getTimeException());
-        exit(localtime64Exception.getTimeException());
+
+       printErrorMessage(exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->what(), 
+          exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->getTimeException());
+
+       exit(exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->getTimeException());
     }
 
 
