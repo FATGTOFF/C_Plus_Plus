@@ -115,6 +115,8 @@ public:
 protected:
 	int getErrorNumber() const noexcept;
 	std::string getErrorMessage(const int errNum) const;
+
+ public:
 	void printErrorMessage(const std::string& errTypeMsg, const int errNum) const;
 };
 

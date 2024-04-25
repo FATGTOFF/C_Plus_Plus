@@ -21,6 +21,7 @@ public:
    void setErrorNumber(const int errNum) noexcept override;
 	int getTimeException() const noexcept override;
    std::string what() const noexcept override;
+
 };
 
 #endif // !_GETLOCALTIMEEXCEPTION_

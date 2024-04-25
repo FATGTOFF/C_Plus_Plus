@@ -19,39 +19,20 @@ Time::Time() : ErrorList()
     // for the variable.
     _tzset();
 
-    static_cast<void>(_time64(&aclock));
-    try
-    {
-        exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->setErrorNumber(_ftime64_s(&tstruct));
-        if (0 != exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->getTimeException())
-        {
-            throw GetFTimeException(exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->getTimeException());
-        }
+   static_cast<void>(_time64(&aclock));
 
-        exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->setErrorNumber(_localtime64_s(&newtime, &aclock));
-        if (0 != exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->getTimeException())
-        {
+   exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->setErrorNumber(_ftime64_s(&tstruct));
+   if (0 != exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->getTimeException())
+   {
+      throw GetFTimeException(exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->getTimeException());
+   }
 
-           throw GetLocalTimeException(exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->getTimeException());
-        }
-    }
-    catch (const GetFTimeException&)
-    {
-        printErrorMessage(exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->what(), 
-           exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->getTimeException());
+   exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->setErrorNumber(34/*_localtime64_s(&newtime, &aclock)*/);
+   if (0 != exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->getTimeException())
+   {
 
-        exit(exceptionsTypes[static_cast<int>(TypesOfTimeException::FTimeException)]->getTimeException());
-    }
-    catch (const GetLocalTimeException&)
-    {
-
-       printErrorMessage(exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->what(), 
-          exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->getTimeException());
-
-       exit(exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->getTimeException());
-    }
-
-
+      throw GetLocalTimeException(exceptionsTypes[static_cast<int>(TypesOfTimeException::LocalTimeException)]->getTimeException());
+   }
 }
 
 std::string Time::getDayMonthYrHrMinSecMs() const
