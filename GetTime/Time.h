@@ -11,6 +11,7 @@
 #include <memory>
 #include <array>
 #include "ErrorList.h"
+#include "GetTimeExceptionBase.h"
 #include "GetFTimeException.h"
 #include "GetLocalTimeException.h"
 
@@ -65,7 +66,12 @@ public:
 // warning C26455: Default constructor may not throw. 
 // Declare it 'noexcept' (f.6).
 #pragma warning( disable : 26455)
+// Supress the warning on Time default constructor.
+// warning C26823: Dereferencing a possibly null pointer 
+// (lifetime.1).
+#pragma warning( disable : 26823)
     Time();
+
     std::string getDayMonthYrHrMinSecMs() const;
     std::string getHrMinSecMs() const;
     std::string getHrMinSecs() const;
@@ -77,6 +83,7 @@ public:
     std::string getMins() const;
     std::string getSecs() const;
     std::string getMills() const;
+
 };
 
 #endif

@@ -1,7 +1,7 @@
 #include "GetFTimeException.h"
 
 
-GetFTimeException::GetFTimeException(const int errNum) noexcept : GetTimeExceptionBase(errNum), errorNumber(errNum)
+GetFTimeException::GetFTimeException(const int errNum) : GetTimeExceptionBase(errNum), errorNumber(errNum)
 {
 }
 
@@ -15,7 +15,7 @@ int GetFTimeException::getTimeException() const noexcept
 	return errorNumber;
 }
 
-std::string GetFTimeException::what() const noexcept
+std::string GetFTimeException::what() const
 {
    return exceptionTypeMessage;
 }
