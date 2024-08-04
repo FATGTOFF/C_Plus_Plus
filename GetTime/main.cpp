@@ -1,11 +1,11 @@
 #include <iostream>
-#include "Time.h"
+#include "DateTime.h"
 
 
 int main()
 {
 
-	Time time;
+	DateTime time;
 
 	std::cout << time.getDayMonthYrHrMinSecMs() << std::endl;
 	std::cout << time.getHrMinSecMs() << std::endl;
