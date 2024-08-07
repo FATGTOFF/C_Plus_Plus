@@ -153,6 +153,7 @@
     <ClCompile Include="GetFTimeException.cpp" />
     <ClCompile Include="GetLocalTimeException.cpp" />
     <ClCompile Include="GetTimeExceptionBase.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DateTime.cpp" />
   </ItemGroup>
@@ -162,6 +163,7 @@
     <ClInclude Include="GetLocalTimeException.h" />
     <ClInclude Include="GetTimeExceptionBase.h" />
     <ClInclude Include="DateTime.h" />
+    <ClInclude Include="Logger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
