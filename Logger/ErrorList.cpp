@@ -35,12 +35,21 @@ std::string ErrorList::getErrorMessage(const int errNum) const
 
 void ErrorList::printErrorMessage(const std::string& errTypeMsg, const int errNum) const
 {
-
 	std::fstream outErrorFile{};
-	outErrorFile.open("errorLog.out", std::ios::out);
+	outErrorFile.open("errorLog.out", std::ios::app);
 
 	std::cerr << errTypeMsg <<  errNum << " - " << getErrorMessage(errNum) << std::endl;
 	outErrorFile << errTypeMsg << errNum << " - " << getErrorMessage(errNum) << std::endl;
 	outErrorFile.close();
 
+}
+
+void ErrorList::printErrorMessage(const int errNum) const
+{
+   std::fstream outErrorFile{};
+   outErrorFile.open("errorLog.out", std::ios::app);
+
+   std::cerr << errNum << " - " << getErrorMessage(errNum) << std::endl;
+   outErrorFile << errNum << " - " << getErrorMessage(errNum) << std::endl;
+   outErrorFile.close();
 }

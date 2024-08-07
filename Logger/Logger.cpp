@@ -3,12 +3,26 @@
 
 Logger::Logger()
 {
-	logfile.open(logFileName, std::ios::app);
+   logfile.open(logFileName, std::ios::app);
+   if (!logfile.is_open())
+   {
+      ErrorList::printErrorMessage(ENOENT);
+   }
 }
 
 Logger::Logger(std::string const& lFN)
 {
-	logfile.open(lFN, std::ios::app);
+
+   logfile.open(lFN, std::ios::app);
+   if (!logfile.is_open())
+   {
+      ErrorList::printErrorMessage(ENOENT);
+   }
+}
+
+Logger::~Logger()
+{
+   logfile.close();
 }
 
 std::string Logger::getLogFileName() const
@@ -18,7 +32,6 @@ std::string Logger::getLogFileName() const
 
 void Logger::log(const std::string& logMessage)
 {
-	DateTime time{};
 
 	logEntry << time.getDayMonthYrHrMinSecMs() << logMessage << std::endl;
 
@@ -33,4 +46,16 @@ void Logger::log(const std::string& logMessage)
 	// Clear the buffer.
 	logEntry.str("");
 	logEntry.clear();
+}
+
+std::ostream& Logger::consoleOutPut() const
+{
+   return std::cout << time.getDayMonthYrHrMinSecMs();
+}
+
+std::ofstream& Logger::fileOutPut() const
+{
+   logfile << time.getDayMonthYrHrMinSecMs();
+
+   return logfile;
 }

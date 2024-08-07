@@ -118,6 +118,7 @@ protected:
 
  public:
 	void printErrorMessage(const std::string& errTypeMsg, const int errNum) const;
+   void printErrorMessage(const int errNum) const;
 };
 
 #endif

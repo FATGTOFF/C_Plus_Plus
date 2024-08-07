@@ -15,48 +15,46 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DateTime.h">
+    <ClInclude Include="Headers\DateTime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorList.h">
+    <ClInclude Include="Headers\ErrorList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GetFTimeException.h">
+    <ClInclude Include="Headers\GetFTimeException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GetLocalTimeException.h">
+    <ClInclude Include="Headers\GetLocalTimeException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GetTimeExceptionBase.h">
+    <ClInclude Include="Headers\GetTimeExceptionBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Logger.h">
+    <ClInclude Include="Headers\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Sources\DateTime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="OLs\DateTime.obj">
+    <ClCompile Include="Sources\ErrorList.cpp">
       <Filter>Source Files</Filter>
-    </Object>
-    <Object Include="OLs\ErrorList.obj">
+    </ClCompile>
+    <ClCompile Include="Sources\GetFTimeException.cpp">
       <Filter>Source Files</Filter>
-    </Object>
-    <Object Include="OLs\GetFTimeException.obj">
+    </ClCompile>
+    <ClCompile Include="Sources\GetLocalTimeException.cpp">
       <Filter>Source Files</Filter>
-    </Object>
-    <Object Include="OLs\GetLocalTimeException.obj">
+    </ClCompile>
+    <ClCompile Include="Sources\GetTimeExceptionBase.cpp">
       <Filter>Source Files</Filter>
-    </Object>
-    <Object Include="OLs\GetTimeExceptionBase.obj">
+    </ClCompile>
+    <ClCompile Include="Sources\Logger.cpp">
       <Filter>Source Files</Filter>
-    </Object>
-    <Object Include="OLs\Logger.obj">
+    </ClCompile>
+    <ClCompile Include="Sources\main.cpp">
       <Filter>Source Files</Filter>
-    </Object>
+    </ClCompile>
   </ItemGroup>
 </Project>
