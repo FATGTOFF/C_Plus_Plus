@@ -1,8 +1,14 @@
 #include "Logger.h"
 
-Logger::Logger(std::string const& logFileName)
+
+Logger::Logger()
 {
 	logfile.open(logFileName, std::ios::app);
+}
+
+Logger::Logger(std::string const& lFN)
+{
+	logfile.open(lFN, std::ios::app);
 }
 
 std::string Logger::getLogFileName() const

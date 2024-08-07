@@ -11,11 +11,11 @@ class Logger
 {
 private:
 	const std::string logFileName = "LogFile.txt";
-	std::ofstream logfile;
+	std::ofstream logfile{};
 	mutable std::ostringstream logEntry{};
 
 public:
-	explicit Logger() = default;
+	explicit Logger();
 	explicit Logger(std::string const& logFileName);
 	explicit Logger(const Logger& copyConstructorMember) = default;
 	Logger(Logger&& moveConstructorMember) = default;
