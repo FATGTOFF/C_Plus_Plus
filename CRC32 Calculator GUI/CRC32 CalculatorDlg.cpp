@@ -52,7 +52,6 @@ END_MESSAGE_MAP()
 
 CCRC32CalculatorDlg::CCRC32CalculatorDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_CRC32CALCULATOR_DIALOG, pParent)
-   , crc32(0xFFFFFFFF)
 {
 
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -200,14 +199,11 @@ void CCRC32CalculatorDlg::OnBnClickedButtonOpenFile()
 void CCRC32CalculatorDlg::crcInit() noexcept
 {
    crc			   remainder{};
-   int			   dividend{};
-   unsigned char  bit{};
-
 
    /*
     * Compute the remainder of each possible dividend.
     */
-   for (dividend = 0; dividend < 256; ++dividend)
+   for (int dividend = 0; dividend < 256; ++dividend)
    {
       /*
        * Start with the dividend followed by zeros.
@@ -217,7 +213,7 @@ void CCRC32CalculatorDlg::crcInit() noexcept
       /*
        * Perform modulo-2 division, a bit at a time.
        */
-      for (bit = 8; bit > 0; --bit)
+      for (unsigned char bit = 8; bit > 0; --bit)
       {
          /*
           * Try to divide the current data bit.
@@ -242,12 +238,11 @@ void CCRC32CalculatorDlg::crcInit() noexcept
 crc CCRC32CalculatorDlg::reflect(unsigned long data, bits nBits) const
 {
    unsigned long  reflection = 0x00000000;
-   bits  bit;
 
    /*
     * Reflect the data about the center bit.
     */
-   for (bit = 0; bit < nBits; ++bit)
+   for (bits bit = 0; bit < nBits; ++bit)
    {
       /*
        * If the LSB bit is set, set the reflection of it.
@@ -265,19 +260,18 @@ crc CCRC32CalculatorDlg::reflect(unsigned long data, bits nBits) const
 
 crc CCRC32CalculatorDlg::REFLECT_DATA(unsigned long X) const
 {
-   return static_cast<crc>(reflect((X), 8));
+   return reflect(X, 8);
 }
 
 crc CCRC32CalculatorDlg::REFLECT_REMAINDER(unsigned long X) const
 {
-   return static_cast<crc>(reflect((X), WIDTH));
+   return reflect(X, WIDTH);
 }
 
-crc CCRC32CalculatorDlg::getBinaryFileCRC(std::string getPathName) const
+crc CCRC32CalculatorDlg::getBinaryFileCRC(std::string const &getPathName) const
 {
    crc	         remainder{ 0 ^ INITIAL_REMAINDER };
    bits           data{};
-   bytes          byte{};
 
    /* Get the file size by opening in binary mode */
    std::ifstream binaryFile(getPathName, std::ios::in | std::ios::binary);
@@ -293,7 +287,7 @@ crc CCRC32CalculatorDlg::getBinaryFileCRC(std::string getPathName) const
    /*
     * Divide the message by the polynomial, a byte at a time.
     */
-   for (byte = 0; byte < static_cast<bytes>(buffer.size()); ++byte)
+   for (bytes byte = 0; byte < static_cast<bytes>(buffer.size()); ++byte)
    {
       data = static_cast<bits>(REFLECT_DATA(buffer.at(byte)) ^ (remainder >> (WIDTH - 8)));
       remainder = crcTable.at(data) ^ (remainder << 8);
@@ -304,16 +298,15 @@ crc CCRC32CalculatorDlg::getBinaryFileCRC(std::string getPathName) const
    /*
     * The final remainder is the CRC.
     */
-   return static_cast<crc>(REFLECT_REMAINDER(remainder) ^ FINAL_XOR_VALUE);
+   return REFLECT_REMAINDER(remainder) ^ FINAL_XOR_VALUE;
 }
 
-crc CCRC32CalculatorDlg::getConfFileCRC(std::string getPathName) const
+crc CCRC32CalculatorDlg::getConfFileCRC(std::string const &getPathName) const
 {
    crc remainder{ 0 ^ INITIAL_REMAINDER };
    std::vector<crc> crcValue{};
    std::stringstream textLineToStream{};
    bits data{};
-   bytes byte{};
    std::string dataFromConfFile{};
    std::string CRCInDecFormat{};
 
@@ -367,7 +360,7 @@ crc CCRC32CalculatorDlg::getConfFileCRC(std::string getPathName) const
    for (size_t i = 0; i < currentHexValue.size(); i += 2)
    {
       std::string twoBytes = currentHexValue.substr(i, 2);
-      const char chr = static_cast<char>(static_cast<int>(strtol(twoBytes.c_str(), nullptr, 16)));
+      const auto chr = static_cast<char>(static_cast<int>(strtol(twoBytes.c_str(), nullptr, 16)));
       newHexValue.push_back(chr);
    }
 
@@ -391,7 +384,7 @@ crc CCRC32CalculatorDlg::getConfFileCRC(std::string getPathName) const
       /*
       * Divide the message by the polynomial, a byte at a time.
       */
-      for (byte = 0; byte < static_cast<bytes>(newHexValue.size()); ++byte)
+      for (bytes byte = 0; byte < static_cast<bytes>(newHexValue.size()); ++byte)
       {
          data = static_cast<bits>(REFLECT_DATA(newHexValue.at(byte)) ^ (remainder >> (WIDTH - 8)));
          remainder = crcTable.at(data) ^ (remainder << 8);
@@ -400,17 +393,17 @@ crc CCRC32CalculatorDlg::getConfFileCRC(std::string getPathName) const
       /*
       * The final remainder is the CRC.
       */
-      return static_cast<crc>(REFLECT_REMAINDER(remainder) ^ FINAL_XOR_VALUE);
+      return REFLECT_REMAINDER(remainder) ^ FINAL_XOR_VALUE;
    }
 }
 
-void CCRC32CalculatorDlg::DisplayCRC()
+void CCRC32CalculatorDlg::DisplayCRC() const
 {
    const unsigned int bufferSize = 20;
    wchar_t pbuffer[bufferSize];
 
    // Hexadecimal Format
-   static_cast<void>(_snwprintf_s(pbuffer, bufferSize - 1, L"0x%X", crc32));
+   static_cast<void>(_snwprintf_s(pbuffer, bufferSize - 1, L"0x%08X", crc32));
    GetDlgItem(IDC_EDIT_CRC32_HEX)->SetWindowTextW(pbuffer);
 
    // Decimal Format

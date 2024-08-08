@@ -61,11 +61,11 @@ private:
    crc reflect(unsigned long data, bits nBits) const;
    crc REFLECT_DATA(unsigned long X) const;
    crc REFLECT_REMAINDER(unsigned long X) const;
-   crc getBinaryFileCRC(std::string) const;
-   crc getConfFileCRC(std::string) const;
-   void DisplayCRC();
+   crc getBinaryFileCRC(std::string const &) const;
+   crc getConfFileCRC(std::string const &) const;
+   void DisplayCRC() const;
    void crcInit() noexcept;
 
-   crc crc32;
+   crc crc32 = 0xFFFFFFFF;
    std::array<crc, SIZEOFCRCTABLE> crcTable{};
 };
