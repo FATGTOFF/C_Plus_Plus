@@ -53,7 +53,7 @@ END_MESSAGE_MAP()
 CCRC32CalculatorDlg::CCRC32CalculatorDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_CRC32CALCULATOR_DIALOG, pParent)
 {
-
+   log.fileOutPut() << "Program Started\n" << std::flush;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
    crcInit();
@@ -179,7 +179,10 @@ void CCRC32CalculatorDlg::OnBnClickedButtonOpenFile()
 
       CT2CA pszConvertedAnsiString(dialogFileOpen.GetPathName());
       std::string getPathName = pszConvertedAnsiString;
+      log.fileOutPut() << "File selected: " << getPathName << std::endl << std::flush;
+
       GetDlgItem(IDC_STATIC_FILE_LOCATION)->SetWindowTextW(dialogFileOpen.GetFileName());
+      std::wstring getFileName = dialogFileOpen.GetFileName();
 
       if (L"conf" == dialogFileOpen.GetFileExt())
       {
@@ -190,7 +193,7 @@ void CCRC32CalculatorDlg::OnBnClickedButtonOpenFile()
          crc32 = getBinaryFileCRC(getPathName);
       }
 
-      DisplayCRC();
+      DisplayCRC(getFileName);
    }
 
 }
@@ -231,6 +234,14 @@ void CCRC32CalculatorDlg::crcInit() noexcept
        * Store the result into the table.
        */
       crcTable.at(dividend) = remainder;
+
+      if (DEBUG_LOGGER)
+      {
+         log.fileOutPut() << std::setfill('0') << std::setw(8) 
+            << std::right << std::hex << std::uppercase 
+            << crcTable.at(dividend) << std::endl;
+      }
+
    }
 }
 
@@ -396,7 +407,7 @@ crc CCRC32CalculatorDlg::getConfFileCRC(const std::string &getPathName) const
    }
 }
 
-void CCRC32CalculatorDlg::DisplayCRC() const
+void CCRC32CalculatorDlg::DisplayCRC(const std::wstring &fileName) const
 {
    const unsigned int bufferSize = 20;
    wchar_t pbuffer[bufferSize];
@@ -405,7 +416,11 @@ void CCRC32CalculatorDlg::DisplayCRC() const
    static_cast<void>(_snwprintf_s(pbuffer, bufferSize - 1, L"0x%08X", crc32));
    GetDlgItem(IDC_EDIT_CRC32_HEX)->SetWindowTextW(pbuffer);
 
+   log.fileOutPut_w() << fileName << L" CRC32(Hex): " << pbuffer << std::endl << std::flush;
+
    // Decimal Format
    static_cast<void>(_snwprintf_s(pbuffer, bufferSize - 1, L"%lu", crc32));
    GetDlgItem(IDC_EDIT_CRC32_DEC)->SetWindowTextW(pbuffer);
+
+   log.fileOutPut_w() << fileName << L" CRC32(Dec): " << pbuffer << std::endl << std::flush;
 }

@@ -11,6 +11,8 @@
 #include <cstdint>
 #include <sstream>
 #include <array>
+#include <iostream>
+#include "Logger.h"
 
 // Provide some meaningful names with the known data types.
 using crc = unsigned long;
@@ -48,6 +50,7 @@ public:
    afx_msg void OnBnClickedButtonOpenFile();
 
 private:
+   Logger log{};
    /* Constant values that we can define it at compile time. */
    static constexpr uint32_t POLYNOMIAL{ 0x04C11DB7 };
    static constexpr uint32_t INITIAL_REMAINDER{ 0xFFFFFFFF };
@@ -61,7 +64,7 @@ private:
    crc REFLECT_REMAINDER(unsigned long X) const;
    crc getBinaryFileCRC(const std::string &) const;
    crc getConfFileCRC(const std::string &) const;
-   void DisplayCRC() const;
+   void DisplayCRC(const std::wstring &) const;
    void crcInit() noexcept;
 
    crc crc32{ 0xFFFFFFFF };
