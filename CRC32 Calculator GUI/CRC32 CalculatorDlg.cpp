@@ -56,7 +56,6 @@ CCRC32CalculatorDlg::CCRC32CalculatorDlg(CWnd* pParent /*=nullptr*/)
 
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
-
    crcInit();
 }
 
@@ -213,7 +212,7 @@ void CCRC32CalculatorDlg::crcInit() noexcept
       /*
        * Perform modulo-2 division, a bit at a time.
        */
-      for (unsigned char bit = 8; bit > 0; --bit)
+      for (bits bit = 8; bit > 0; --bit)
       {
          /*
           * Try to divide the current data bit.
@@ -268,7 +267,7 @@ crc CCRC32CalculatorDlg::REFLECT_REMAINDER(unsigned long X) const
    return reflect(X, WIDTH);
 }
 
-crc CCRC32CalculatorDlg::getBinaryFileCRC(std::string const &getPathName) const
+crc CCRC32CalculatorDlg::getBinaryFileCRC(const std::string &getPathName) const
 {
    crc	         remainder{ 0 ^ INITIAL_REMAINDER };
    bits           data{};
@@ -301,7 +300,7 @@ crc CCRC32CalculatorDlg::getBinaryFileCRC(std::string const &getPathName) const
    return REFLECT_REMAINDER(remainder) ^ FINAL_XOR_VALUE;
 }
 
-crc CCRC32CalculatorDlg::getConfFileCRC(std::string const &getPathName) const
+crc CCRC32CalculatorDlg::getConfFileCRC(const std::string &getPathName) const
 {
    crc remainder{ 0 ^ INITIAL_REMAINDER };
    std::vector<crc> crcValue{};

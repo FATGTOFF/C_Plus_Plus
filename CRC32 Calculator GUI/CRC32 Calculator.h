@@ -21,8 +21,7 @@ public:
 	CCRC32CalculatorApp() noexcept;
 
 // Overrides
-public:
-	virtual BOOL InitInstance();
+	BOOL InitInstance() override;
 
 // Implementation
 
