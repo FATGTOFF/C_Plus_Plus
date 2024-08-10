@@ -26,10 +26,9 @@ public:
 #endif
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 // Implementation
-protected:
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -409,18 +408,32 @@ crc CCRC32CalculatorDlg::getConfFileCRC(const std::string &getPathName) const
 
 void CCRC32CalculatorDlg::DisplayCRC(const std::wstring &fileName) const
 {
-   const unsigned int bufferSize = 20;
-   wchar_t pbuffer[bufferSize];
+   std::wstringstream logEntry_w{};
+   std::wstring pBuffer_w{};
 
    // Hexadecimal Format
-   static_cast<void>(_snwprintf_s(pbuffer, bufferSize - 1, L"0x%08X", crc32));
-   GetDlgItem(IDC_EDIT_CRC32_HEX)->SetWindowTextW(pbuffer);
+   logEntry_w << L"0x" << std::setfill(L'0') << std::setw(8) << std::right << std::hex << std::uppercase << crc32;
+   logEntry_w >> pBuffer_w;
+   GetDlgItem(IDC_EDIT_CRC32_HEX)->SetWindowTextW(pBuffer_w.c_str());
+   log.fileOutPut_w() << fileName << L" CRC32(Hex): " << pBuffer_w << std::endl << std::flush;
 
-   log.fileOutPut_w() << fileName << L" CRC32(Hex): " << pbuffer << std::endl << std::flush;
-
+   // Clear the stream
+   logEntry_w.str(L"");
+   logEntry_w.clear();
+   pBuffer_w.erase();
+   
    // Decimal Format
-   static_cast<void>(_snwprintf_s(pbuffer, bufferSize - 1, L"%lu", crc32));
-   GetDlgItem(IDC_EDIT_CRC32_DEC)->SetWindowTextW(pbuffer);
+   logEntry_w << std::dec << crc32;
+   logEntry_w >> pBuffer_w;
+   GetDlgItem(IDC_EDIT_CRC32_DEC)->SetWindowTextW(pBuffer_w.c_str());
+   log.fileOutPut_w() << fileName << L" CRC32(Dec): " << pBuffer_w << std::endl << std::flush;
 
-   log.fileOutPut_w() << fileName << L" CRC32(Dec): " << pbuffer << std::endl << std::flush;
+   // Clear the stream
+   logEntry_w.str(L"");
+   logEntry_w.clear();
+}
+
+bool CCRC32CalculatorDlg::operator==(const CCRC32CalculatorDlg& other) const
+{
+    return false;
 }

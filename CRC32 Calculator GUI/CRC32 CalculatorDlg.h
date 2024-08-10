@@ -59,6 +59,8 @@ private:
    static constexpr uint32_t WIDTH{ 8 * sizeof(crc) };
    static constexpr int TOPBIT{ 1 << (WIDTH - 1) };
 
+   //mutable std::wostringstream logEntry_w{};
+
    crc reflect(unsigned long data, bits nBits) const;
    crc REFLECT_DATA(unsigned long X) const;
    crc REFLECT_REMAINDER(unsigned long X) const;
@@ -69,4 +71,6 @@ private:
 
    crc crc32{ 0xFFFFFFFF };
    std::array<crc, SIZEOFCRCTABLE> crcTable{};
+public:
+	bool operator==(const CCRC32CalculatorDlg& other) const;
 };
