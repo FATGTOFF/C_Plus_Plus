@@ -185,6 +185,9 @@ private:
 		{EWOULDBLOCK,     L"Operation would block."}
 	};
 
+   const std::wstring path{L".\\"};
+   const std::wstring errorLogFileName{ L"errorLog.out" };
+   const std::wstring getErrorLogPathName{ path + errorLogFileName };
 	int errorNumber{};
 	mutable std::string errorMessage{};
 	mutable std::wstring errorMessage_w{};

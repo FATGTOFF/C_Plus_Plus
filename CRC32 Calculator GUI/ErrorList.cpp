@@ -53,30 +53,39 @@ std::wstring ErrorList::getErrorMessage_w(const int errNum) const
 void ErrorList::printErrorMessage(const std::string& errTypeMsg, const int errNum) const
 {
 	std::fstream outErrorFile{};
-	outErrorFile.open("errorLog.out", std::ios::app);
+	outErrorFile.open(errorLogFileName, std::ios::app);
 
 	std::cerr << errTypeMsg <<  errNum << " - " << getErrorMessage(errNum) << std::endl;
 	outErrorFile << errTypeMsg << errNum << " - " << getErrorMessage(errNum) << std::endl;
 	outErrorFile.close();
+
+   // Open the file for the user to see the contents of the file.
+   ShellExecute(nullptr, _T("open"), getErrorLogPathName.c_str(), nullptr, nullptr, SW_SHOW);
 
 }
 
 void ErrorList::printErrorMessage_w(const std::wstring& errTypeMsg, const int errNum) const
 {
 	std::wofstream outErrorFile{};
-	outErrorFile.open("errorLog.out", std::ios::app);
+	outErrorFile.open(errorLogFileName, std::ios::app);
 
 	std::wcerr << errTypeMsg << errNum << " - " << getErrorMessage_w(errNum) << std::endl;
 	outErrorFile << errTypeMsg << errNum << " - " << getErrorMessage_w(errNum) << std::endl;
 	outErrorFile.close();
+
+   // Open the file for the user to see the contents of the file.
+   ShellExecute(nullptr, _T("open"), getErrorLogPathName.c_str(), nullptr, nullptr, SW_SHOW);
 }
 
 void ErrorList::printErrorMessage(const int errNum) const
 {
    std::fstream outErrorFile{};
-   outErrorFile.open("errorLog.out", std::ios::app);
+   outErrorFile.open(errorLogFileName, std::ios::app);
 
    std::cerr << errNum << " - " << getErrorMessage(errNum) << std::endl;
    outErrorFile << errNum << " - " << getErrorMessage(errNum) << std::endl;
    outErrorFile.close();
+
+   // Open the file for the user to see the contents of the file.
+   ShellExecute(nullptr, _T("open"), getErrorLogPathName.c_str(), nullptr, nullptr, SW_SHOW);
 }

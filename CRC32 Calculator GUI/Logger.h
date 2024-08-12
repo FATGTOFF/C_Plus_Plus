@@ -9,7 +9,7 @@
 
 constexpr bool DEBUG_LOGGER{ false };
 
-class Logger : private ErrorList
+class Logger : public ErrorList
 {
 private:
 	const std::string logFileName{ "LogFile.txt" };

@@ -84,7 +84,6 @@ std::wstring DateTime::getDayMonthYrHrMinSecMs_w() const
 
 
    return pBuffer_w.str();
-  // return std::wstring();
 }
 
 std::string DateTime::getHrMinSecMs() const
