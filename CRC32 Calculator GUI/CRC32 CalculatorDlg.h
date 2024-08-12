@@ -26,26 +26,26 @@ class CCRC32CalculatorDlg : public CDialogEx
 {
 // Construction
 public:
-	explicit CCRC32CalculatorDlg(CWnd* pParent = nullptr);	// standard constructor
+   explicit CCRC32CalculatorDlg(CWnd* pParent = nullptr);	// standard constructor
 
 // Dialog Data
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_CRC32CALCULATOR_DIALOG };
+   enum { IDD = IDD_CRC32CALCULATOR_DIALOG };
 #endif
 
 protected:
-	void DoDataExchange(CDataExchange* pDX) override;	// DDX/DDV support
+   void DoDataExchange(CDataExchange* pDX) override;	// DDX/DDV support
 
 
 // Implementation
-	HICON m_hIcon;
+   HICON m_hIcon;
 
-	// Generated message map functions
-	BOOL OnInitDialog() override;
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon() noexcept;
-	DECLARE_MESSAGE_MAP()
+   // Generated message map functions
+   BOOL OnInitDialog() override;
+   afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+   afx_msg void OnPaint();
+   afx_msg HCURSOR OnQueryDragIcon() noexcept;
+   DECLARE_MESSAGE_MAP()
 public:
    afx_msg void OnBnClickedButtonOpenFile();
 
@@ -70,5 +70,5 @@ private:
    crc crc32{ 0xFFFFFFFF };
    std::array<crc, SIZEOFCRCTABLE> crcTable{};
 public:
-	bool operator==(const CCRC32CalculatorDlg& other) const;
+   bool operator==(const CCRC32CalculatorDlg& other) const;
 };
