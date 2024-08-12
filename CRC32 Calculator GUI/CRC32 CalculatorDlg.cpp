@@ -420,6 +420,7 @@ void CCRC32CalculatorDlg::DisplayCRC(const std::wstring &fileName) const
    // Clear the stream
    logEntry_w.str(L"");
    logEntry_w.clear();
+
    pBuffer_w.erase();
    
    // Decimal Format
