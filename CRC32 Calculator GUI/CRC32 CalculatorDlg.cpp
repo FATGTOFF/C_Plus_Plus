@@ -199,7 +199,7 @@ void CCRC32CalculatorDlg::OnBnClickedButtonOpenFile()
 
 void CCRC32CalculatorDlg::crcInit() noexcept
 {
-   crc			   remainder{};
+   crc   remainder{};
 
    /*
     * Compute the remainder of each possible dividend.
