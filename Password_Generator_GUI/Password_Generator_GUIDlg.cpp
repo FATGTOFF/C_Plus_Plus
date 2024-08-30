@@ -76,6 +76,7 @@ BEGIN_MESSAGE_MAP(CPasswordGeneratorGUIDlg, CDialogEx)
    ON_BN_CLICKED(IDC_RADIO_MYPAY, &CPasswordGeneratorGUIDlg::OnBnClickedRadioMypay)
    ON_BN_CLICKED(IDC_RADIO_ALL, &CPasswordGeneratorGUIDlg::OnBnClickedRadioAll)
    ON_BN_CLICKED(IDC_BUTTON_COPY, &CPasswordGeneratorGUIDlg::OnBnClickedButtonCopy)
+    ON_BN_CLICKED(IDC_RADIO_CERTAIN_SITES, &CPasswordGeneratorGUIDlg::OnBnClickedRadioCertainSites)
 END_MESSAGE_MAP()
 
 
@@ -132,6 +133,9 @@ BOOL CPasswordGeneratorGUIDlg::OnInitDialog()
 
    pMyPaySpecialCharactersCheck = reinterpret_cast<CButton*>(GetDlgItem(IDC_RADIO_MYPAY));
    pMyPaySpecialCharactersCheck->SetCheck(false);
+
+   pCertainSitesSpecialCharactersCheck = reinterpret_cast<CButton*>(GetDlgItem(IDC_RADIO_CERTAIN_SITES));
+   pCertainSitesSpecialCharactersCheck->SetCheck(false);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -406,6 +410,10 @@ void CPasswordGeneratorGUIDlg::randomizeSymbols(std::string & newPassword)
       {
          newPassword.push_back(specialCharactersForMyPay[randomNumber(0, 9)]);
       }
+      else if (static_cast<bool>(pCertainSitesSpecialCharactersCheck->GetCheck()))
+      {
+          newPassword.push_back(specialCharactersForCertainSites[randomNumber(0, 5)]);
+      }
       else
       {
          newPassword.push_back(specialCharactersForAll[randomNumber(0, 30)]);
@@ -571,8 +579,10 @@ void CPasswordGeneratorGUIDlg::OnBnClickedCheckUppercases()
       pAllOptionsCheck->SetCheck(false);
       pAllSpecialCharactersCheck->SetCheck(false);
       pMyPaySpecialCharactersCheck->SetCheck(false);
+      pCertainSitesSpecialCharactersCheck->SetCheck(false);
       pAllSpecialCharactersCheck->EnableWindow(false);
       pMyPaySpecialCharactersCheck->EnableWindow(false);
+      pCertainSitesSpecialCharactersCheck->EnableWindow(false);
    }
 
 }
@@ -588,8 +598,10 @@ void CPasswordGeneratorGUIDlg::OnBnClickedCheckLowercases()
       pAllOptionsCheck->SetCheck(false);
       pAllSpecialCharactersCheck->SetCheck(false);
       pMyPaySpecialCharactersCheck->SetCheck(false);
+      pCertainSitesSpecialCharactersCheck->SetCheck(false);
       pAllSpecialCharactersCheck->EnableWindow(false);
       pMyPaySpecialCharactersCheck->EnableWindow(false);
+      pCertainSitesSpecialCharactersCheck->EnableWindow(false);
    }
 }
 
@@ -604,8 +616,10 @@ void CPasswordGeneratorGUIDlg::OnBnClickedCheckNumbers()
       pAllOptionsCheck->SetCheck(false);
       pAllSpecialCharactersCheck->SetCheck(false);
       pMyPaySpecialCharactersCheck->SetCheck(false);
+      pCertainSitesSpecialCharactersCheck->SetCheck(false);
       pAllSpecialCharactersCheck->EnableWindow(false);
       pMyPaySpecialCharactersCheck->EnableWindow(false);
+      pCertainSitesSpecialCharactersCheck->EnableWindow(false);
    }
 }
 
@@ -619,15 +633,19 @@ void CPasswordGeneratorGUIDlg::OnBnClickedCheckSpecialcases()
       pAllOptionsCheck->SetCheck(false);
       pAllSpecialCharactersCheck->SetCheck(true);
       pMyPaySpecialCharactersCheck->SetCheck(false);
+      pCertainSitesSpecialCharactersCheck->SetCheck(false);
       pAllSpecialCharactersCheck->EnableWindow(true);
       pMyPaySpecialCharactersCheck->EnableWindow(true);
+      pCertainSitesSpecialCharactersCheck->EnableWindow(true);
    }
    else
    {
       pAllSpecialCharactersCheck->SetCheck(false);
       pMyPaySpecialCharactersCheck->SetCheck(false);
+      pCertainSitesSpecialCharactersCheck->SetCheck(false);
       pAllSpecialCharactersCheck->EnableWindow(false);
       pMyPaySpecialCharactersCheck->EnableWindow(false);
+      pCertainSitesSpecialCharactersCheck->EnableWindow(false);
    }
 }
 
@@ -644,8 +662,10 @@ void CPasswordGeneratorGUIDlg::OnBnClickedCheckAlloptions()
       pSymbolsCasesCheck->SetCheck(false);
       pAllSpecialCharactersCheck->SetCheck(true);
       pMyPaySpecialCharactersCheck->SetCheck(false);
+      pCertainSitesSpecialCharactersCheck->SetCheck(false);
       pAllSpecialCharactersCheck->EnableWindow(true);
       pMyPaySpecialCharactersCheck->EnableWindow(true);
+      pCertainSitesSpecialCharactersCheck->EnableWindow(true);
       UpdateData(true);
    }
    // Don't let the user unchecked the "All Options"
@@ -663,6 +683,11 @@ void CPasswordGeneratorGUIDlg::OnBnClickedRadioMypay()
    {
       pAllSpecialCharactersCheck->SetCheck(false);
    }
+
+   if (pCertainSitesSpecialCharactersCheck->GetCheck())
+   {
+       pCertainSitesSpecialCharactersCheck->SetCheck(false);
+   }
 }
 
 
@@ -671,6 +696,11 @@ void CPasswordGeneratorGUIDlg::OnBnClickedRadioAll()
    if (pMyPaySpecialCharactersCheck->GetCheck())
    {
       pMyPaySpecialCharactersCheck->SetCheck(false);
+   }
+
+   if (pCertainSitesSpecialCharactersCheck->GetCheck())
+   {
+       pCertainSitesSpecialCharactersCheck->SetCheck(false);
    }
 }
 
@@ -686,4 +716,18 @@ void CPasswordGeneratorGUIDlg::OnBnClickedButtonCopy()
     label->SetFocus();
     label->SetSel(0, lengthOfPassword);
     label->Copy();
+}
+
+
+void CPasswordGeneratorGUIDlg::OnBnClickedRadioCertainSites()
+{
+    if (pMyPaySpecialCharactersCheck->GetCheck())
+    {
+        pMyPaySpecialCharactersCheck->SetCheck(false);
+    }
+
+    if (pAllSpecialCharactersCheck->GetCheck())
+    {
+        pAllSpecialCharactersCheck->SetCheck(false);
+    }
 }

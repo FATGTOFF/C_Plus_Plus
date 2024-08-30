@@ -52,6 +52,7 @@ private:
    CButton* pSymbolsCasesCheck{};
    CButton* pAllSpecialCharactersCheck{};
    CButton* pMyPaySpecialCharactersCheck{};
+   CButton* pCertainSitesSpecialCharactersCheck{};
    CButton* pCopyPasswordButton{};
 
    // The symbols allow to be used in passwords.
@@ -67,6 +68,10 @@ private:
    static constexpr char specialCharactersForMyPay[]{
    '#', '@', '$', '=', '+', '%',
    '^', '!', '*', '_' };
+
+
+   static constexpr char specialCharactersForCertainSites[]{
+   '-', '!', '@', '#', '$', ' ' };
 
    void printNewPassword(std::string& newPassword);
    void randomizeUpperCaseLetters(std::string& newPassword);
@@ -102,4 +107,5 @@ public:
    afx_msg void OnBnClickedRadioMypay();
    afx_msg void OnBnClickedRadioAll();
    afx_msg void OnBnClickedButtonCopy();
+   afx_msg void OnBnClickedRadioCertainSites();
 };

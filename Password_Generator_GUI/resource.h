@@ -21,6 +21,7 @@
 #define IDC_RADIO_ALL                   1013
 #define IDC_STATIC_GROUP_SYMBOLS        1014
 #define IDC_BUTTON_COPY                 1015
+#define IDC_RADIO_CERTAIN_SITES         1016
 
 // Next default values for new objects
 // 
