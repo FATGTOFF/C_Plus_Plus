@@ -12,10 +12,15 @@ void GetLocalTimeException::setErrorNumber(const int errNum) noexcept
 
 int GetLocalTimeException::getTimeException() const noexcept
 {
-	return errorNumber;
+   return errorNumber;
 }
 
 std::string GetLocalTimeException::what() const 
 {
    return exceptionTypeMessage;
+}
+
+std::wstring GetLocalTimeException::what_w() const
+{
+   return exceptionTypeMessage_w;
 }

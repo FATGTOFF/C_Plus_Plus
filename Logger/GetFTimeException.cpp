@@ -12,10 +12,15 @@ void GetFTimeException::setErrorNumber(const int errNum) noexcept
 
 int GetFTimeException::getTimeException() const noexcept
 {
-	return errorNumber;
+   return errorNumber;
 }
 
 std::string GetFTimeException::what() const
 {
    return exceptionTypeMessage;
+}
+
+std::wstring GetFTimeException::what_w() const
+{
+   return exceptionTypeMessage_w;
 }

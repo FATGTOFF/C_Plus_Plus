@@ -19,6 +19,7 @@ public:
    virtual void setErrorNumber(const int errNum) = 0;
    virtual int getTimeException() const = 0;
    virtual std::string what() const = 0;
+   virtual std::wstring what_w() const = 0;
 };
 
 #endif // !_GETTIMEEXCEPTIONBASE_

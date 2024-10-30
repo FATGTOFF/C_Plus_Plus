@@ -1,13 +1,14 @@
 #ifndef _GETLOCALTIMEEXCEPTION_
 #define _GETLOCALTIMEEXCEPTION_
-#include <string>
 #include "GetTimeExceptionBase.h"
+#include <string>
 
 class GetLocalTimeException : public GetTimeExceptionBase
 {
 private:
    int errorNumber{};
    const std::string exceptionTypeMessage{ "Local Time Exception: " };
+   const std::wstring exceptionTypeMessage_w{ L"Local Time Exception: " };
 
 public:
    explicit GetLocalTimeException() = default;
@@ -19,6 +20,7 @@ public:
    void setErrorNumber(const int errNum) noexcept override;
    int getTimeException() const noexcept override;
    std::string what() const override;
+   std::wstring what_w() const override;
 
 };
 
