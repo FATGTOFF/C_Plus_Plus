@@ -81,6 +81,24 @@ private:
 
 public:
 
+    enum class TimeStamp
+    {
+        LOG_NO_DATE_TIME_GROUP,
+        LOG_DAY_MON_YR_HR_MIN_SEC_MS,
+        LOG_DAY_MON_YR_HR_MIN_SEC,
+        LOG_DAY_MON_YR_HR_MIN,
+        LOG_DAY_MON_YR, 
+        LOG_HR_MIN_SEC_MS,
+        LOG_HR_MIN_SEC,
+        LOG_HR_MIN,
+        LOG_DAY,
+        LOG_MONTH,
+        LOG_YEAR,
+        LOG_HRS,
+        LOG_MINS,
+        LOG_SECS,
+        LOG_MS
+    };
 // Supress the warning on Time default constructor.
 // warning C26455: Default constructor may not throw. 
 // Declare it 'noexcept' (f.6).
@@ -93,6 +111,12 @@ public:
 
    std::string getDayMonthYrHrMinSecMs() const;
    std::wstring getDayMonthYrHrMinSecMs_w() const;
+   std::string getDayMonthYrHrMinSecs() const;
+   std::wstring getDayMonthYrHrMinSecs_w() const;
+   std::string getDayMonthYrHrMins() const;
+   std::wstring getDayMonthYrHrMins_w() const;
+   std::string getDayMonthYr() const;
+   std::wstring getDayMonthYr_w() const;
    std::string getHrMinSecMs() const;
    std::wstring getHrMinSecMs_w() const;
    std::string getHrMinSecs() const;
@@ -113,6 +137,8 @@ public:
    std::wstring getSecs_w() const;
    std::string getMills() const;
    std::wstring getMills_w() const;
+   std::string getNoTimeStamp() const;
+   std::wstring getNoTimeStamp_w() const;
 
 };
 

@@ -85,6 +85,88 @@ std::wstring DateTime::getDayMonthYrHrMinSecMs_w() const
    return pBuffer_w.str();
 }
 
+std::string DateTime::getDayMonthYrHrMinSecs() const
+{
+    clearPBuffer();
+
+    pBuffer << std::setw(2) << std::setfill('0') << newtime.tm_mday << ' '
+        << std::setw(2) << std::setfill('0') << getMonth(static_cast<Month>(newtime.tm_mon)) << ' '
+        << std::setw(2) << std::setfill('0') << (newtime.tm_year - 100) << ' '
+        << std::setw(2) << std::setfill('0') << newtime.tm_hour << ':'
+        << std::setw(2) << std::setfill('0') << newtime.tm_min << ':'
+        << std::setw(2) << std::setfill('0') << newtime.tm_sec << " ";
+
+
+    return pBuffer.str();
+}
+
+std::wstring DateTime::getDayMonthYrHrMinSecs_w() const
+{
+    clearPBuffer_w();
+
+    pBuffer_w << std::setw(2) << std::setfill(L'0') << newtime.tm_mday << L' '
+        << std::setw(2) << std::setfill(L'0') << getMonth_w(static_cast<Month>(newtime.tm_mon)) << L' '
+        << std::setw(2) << std::setfill(L'0') << (newtime.tm_year - 100) << L' '
+        << std::setw(2) << std::setfill(L'0') << newtime.tm_hour << L':'
+        << std::setw(2) << std::setfill(L'0') << newtime.tm_min << L':'
+        << std::setw(2) << std::setfill(L'0') << newtime.tm_sec << L" ";
+
+
+    return pBuffer_w.str();
+}
+
+std::string DateTime::getDayMonthYrHrMins() const
+{
+    clearPBuffer();
+
+    pBuffer << std::setw(2) << std::setfill('0') << newtime.tm_mday << ' '
+        << std::setw(2) << std::setfill('0') << getMonth(static_cast<Month>(newtime.tm_mon)) << ' '
+        << std::setw(2) << std::setfill('0') << (newtime.tm_year - 100) << ' '
+        << std::setw(2) << std::setfill('0') << newtime.tm_hour << ':'
+        << std::setw(2) << std::setfill('0') << newtime.tm_min << " ";
+
+
+    return pBuffer.str();
+}
+
+std::wstring DateTime::getDayMonthYrHrMins_w() const
+{
+    clearPBuffer_w();
+
+    pBuffer_w << std::setw(2) << std::setfill(L'0') << newtime.tm_mday << L' '
+        << std::setw(2) << std::setfill(L'0') << getMonth_w(static_cast<Month>(newtime.tm_mon)) << L' '
+        << std::setw(2) << std::setfill(L'0') << (newtime.tm_year - 100) << L' '
+        << std::setw(2) << std::setfill(L'0') << newtime.tm_hour << L':'
+        << std::setw(2) << std::setfill(L'0') << newtime.tm_min << L" ";
+
+
+    return pBuffer_w.str();
+}
+
+std::string DateTime::getDayMonthYr() const
+{
+    clearPBuffer();
+
+    pBuffer << std::setw(2) << std::setfill('0') << newtime.tm_mday << ' '
+        << std::setw(2) << std::setfill('0') << getMonth(static_cast<Month>(newtime.tm_mon)) << ' '
+        << std::setw(2) << std::setfill('0') << (newtime.tm_year - 100) << " ";
+
+
+    return pBuffer.str();
+}
+
+std::wstring DateTime::getDayMonthYr_w() const
+{
+    clearPBuffer_w();
+
+    pBuffer_w << std::setw(2) << std::setfill(L'0') << newtime.tm_mday << L' '
+        << std::setw(2) << std::setfill(L'0') << getMonth_w(static_cast<Month>(newtime.tm_mon)) << L' '
+        << std::setw(2) << std::setfill(L'0') << (newtime.tm_year - 100) << L" ";
+
+
+    return pBuffer_w.str();
+}
+
 std::string DateTime::getHrMinSecMs() const
 {
     clearPBuffer();
@@ -301,6 +383,24 @@ std::wstring DateTime::getMills_w() const
     pBuffer_w << std::setw(4) <<
         std::setfill(L'0') <<
         tstruct.millitm << L" ";
+
+    return pBuffer_w.str();
+}
+
+std::string DateTime::getNoTimeStamp() const
+{
+    clearPBuffer();
+
+    pBuffer << "";
+
+    return pBuffer.str();
+}
+
+std::wstring DateTime::getNoTimeStamp_w() const
+{
+    clearPBuffer_w();
+
+    pBuffer_w << L"";
 
     return pBuffer_w.str();
 }

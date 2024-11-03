@@ -20,17 +20,21 @@ private:
 
 public:
    explicit Logger();
-   explicit Logger(std::string const& logFileName);
+   explicit Logger(std::string const&);
    explicit Logger(const Logger& copyConstructorMember) = default;
    Logger(Logger&& moveConstructorMember) = default;
    ~Logger();
 
    std::string getLogFileName() const;
-   void log(const std::string& logMessage);
-   void log(const std::wstring& logMessage);
+   void log(const std::string&);
+   void log(const std::wstring&);
+   std::ostream& consoleOutPut(const DateTime::TimeStamp) const;
    std::ostream& consoleOutPut() const;
+   std::wostream& consoleOutput_w(const DateTime::TimeStamp) const;
    std::wostream& consoleOutput_w() const;
+   std::ofstream& fileOutPut(const DateTime::TimeStamp) const;
    std::ofstream& fileOutPut() const;
+   std::wofstream& fileOutPut_w(const DateTime::TimeStamp) const;
    std::wofstream& fileOutPut_w() const;
    void closeProgram() noexcept;
 

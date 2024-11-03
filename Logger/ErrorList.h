@@ -179,7 +179,7 @@ private:
       {EOWNERDEAD,      L"Not a stream."},
       {EPROTO,          L"Protocol error."},
       {EPROTONOSUPPORT, L"Protocol not supported."},
-      {EPROTOTYPE,	  L"Wrong protocol type."},
+      {EPROTOTYPE,	    L"Wrong protocol type."},
       {ETIME,           L"Stream timeout."},
       {ETIMEDOUT,       L"Timed out."},
       {ETXTBSY,         L"Text file busy."},
