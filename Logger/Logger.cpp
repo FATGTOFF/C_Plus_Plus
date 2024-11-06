@@ -137,7 +137,7 @@ std::ostream& Logger::consoleOutPut(const DateTime::TimeStamp logTimeEnum) const
 std::ostream& Logger::consoleOutPut() const
 {
    DateTime logTime{};
-   return std::cout << logTime.getDayMonthYrHrMinSecMs();
+   return std::cout << logTime.getNoTimeStamp();
 }
 
 std::wostream& Logger::consoleOutput_w(const DateTime::TimeStamp logTimeEnum) const
@@ -199,7 +199,7 @@ std::wostream& Logger::consoleOutput_w(const DateTime::TimeStamp logTimeEnum) co
 std::wostream& Logger::consoleOutput_w() const
 {
    DateTime logTime{};
-   return std::wcout << logTime.getDayMonthYrHrMinSecMs_w();
+   return std::wcout << logTime.getNoTimeStamp_w();
 }
 
 std::ofstream& Logger::fileOutPut(const DateTime::TimeStamp logTimeEnum) const
