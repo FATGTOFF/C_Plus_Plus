@@ -21,12 +21,18 @@
     <ClInclude Include="Enumerators_List.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CPUID_EAX_1_EAX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPUID_EAX_1_ECX.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CPUID_EAX_1_EAX.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -42,6 +42,42 @@ enum class BitLocation : unsigned
     BIT_31,
 };
 
+enum class CPUID_EAX_1_EAX_BITS : unsigned
+{
+    Stepping_ID_BIT_0,
+    Stepping_ID_BIT_1,
+    Stepping_ID_BIT_2,
+    Stepping_ID_BIT_3,
+    Model_BIT_4,
+    Model_BIT_5,
+    Model_BIT_6,
+    Model_BIT_7,
+    Family_ID_BIT_8,
+    Family_ID_BIT_9,
+    Family_ID_BIT_10,
+    Family_ID_BIT_11,
+    Processor_Type_BIT_12,
+    Processor_Type_BIT_13,
+    Reserved_BIT_14,
+    Reserved_BIT_15,
+    Extended_Model_ID_BIT_16,
+    Extended_Model_ID_BIT_17,
+    Extended_Model_ID_BIT_18,
+    Extended_Model_ID_BIT_19,
+    Extended_Model_Family_BIT_20,
+    Extended_Model_Family_BIT_21,
+    Extended_Model_Family_BIT_22,
+    Extended_Model_Family_BIT_23,
+    Extended_Model_Family_BIT_24,
+    Extended_Model_Family_BIT_25,
+    Extended_Model_Family_BIT_26,
+    Extended_Model_Family_BIT_27,
+    Reserved_BIT_28,
+    Reserved_BIT_29,
+    Reserved_BIT_30,
+    Reserved_BIT_31,
+};
+
 
 
 #endif
