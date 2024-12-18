@@ -13,6 +13,12 @@ CPUID_EAX_1_EAX::CPUID_EAX_1_EAX()
         data.push_back(cpui);
     }
 
+    // Get the vendor string ID
+    Get_Vendor_ID(data[0][static_cast<unsigned>(Registers::EBX)],
+                  data[0][static_cast<unsigned>(Registers::EDX)],
+                  data[0][static_cast<unsigned>(Registers::ECX)]);
+    Display_Vendor_ID();
+
     // load bitset with flags for function 0x00000001
     if (numOfIDs >= 1)
     {
@@ -165,6 +171,11 @@ constexpr int CPUID_EAX_1_EAX::Get_Model_ID(const unsigned long verInfoByCPUIDin
 
 }
 
+void CPUID_EAX_1_EAX::Get_Vendor_ID(const unsigned long ebx, const unsigned long ecx, const unsigned long edx) const
+{
+    vendorIDInHex << std::hex << byteSwap(ebx) << byteSwap(ecx) << byteSwap(edx);
+}
+
 void CPUID_EAX_1_EAX::Display_Family(const int family_ID) const
 {
     std::cout << "Family ID: " << std::setfill('0') << std::setw(2) << std::hex << std::uppercase << family_ID << std::endl;
@@ -180,5 +191,35 @@ void CPUID_EAX_1_EAX::DisplayFamily_DisplayModel(const int family_ID, const int 
     std::cout << std::hex << std::uppercase;
     std::cout << "DisplayFamily_DisplayModel: " << std::setfill('0') << std::setw(2) 
         << family_ID << "_" << model_ID << "H" << std::endl;
+}
+
+std::string CPUID_EAX_1_EAX::hexToAscii(const std::string& hex) const
+{
+    std::string ascii{};
+
+    for (auto byteCounter = 0; byteCounter < hex.size(); byteCounter += 2)
+    {
+        const auto byte{ hex.substr(byteCounter, 2) };
+        const auto chr{ static_cast<char>(strtol(byte.c_str(), nullptr, 16)) };
+        ascii += chr;
+    }
+
+    return ascii;
+}
+
+constexpr unsigned long CPUID_EAX_1_EAX::byteSwap(unsigned long num) const
+{
+    return ((num & 0xFF000000) >> 24) |
+           ((num & 0x00FF0000) >> 8)  |
+           ((num & 0x0000FF00) << 8)  |
+           ((num & 0x000000FF) << 24);
+}
+
+void CPUID_EAX_1_EAX::Display_Vendor_ID() const
+{
+    // Convert the hex to string.
+    std::string vendorID{ hexToAscii(vendorIDInHex.str()) };
+
+    std::cout << "Vendor ID: " << vendorID << std::endl;
 }
 
