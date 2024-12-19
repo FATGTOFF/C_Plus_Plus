@@ -3,8 +3,8 @@
 CPUID_EAX_1_EAX::CPUID_EAX_1_EAX()
 {
     // Calling __cpuid with 0x0 as the function_id argument
-// gets the number of the highest valid function ID.
-    __cpuid(cpui.data(), 0);
+    // gets the number of the highest valid function ID.
+    __cpuid(cpui.data(), static_cast<unsigned>(INITIAL_EAX_VALUE::EAX_00H));
     numOfIDs = cpui[static_cast<unsigned>(Registers::EAX)];
 
     for (int i = 0; i <= numOfIDs; ++i)
@@ -14,19 +14,38 @@ CPUID_EAX_1_EAX::CPUID_EAX_1_EAX()
     }
 
     // Get the vendor string ID
-    Get_Vendor_ID(data[0][static_cast<unsigned>(Registers::EBX)],
-                  data[0][static_cast<unsigned>(Registers::EDX)],
-                  data[0][static_cast<unsigned>(Registers::ECX)]);
+    Get_Vendor_ID(data[static_cast<unsigned>(INITIAL_EAX_VALUE::EAX_00H)][static_cast<unsigned>(Registers::EBX)],
+                  data[static_cast<unsigned>(INITIAL_EAX_VALUE::EAX_00H)][static_cast<unsigned>(Registers::EDX)],
+                  data[static_cast<unsigned>(INITIAL_EAX_VALUE::EAX_00H)][static_cast<unsigned>(Registers::ECX)]);
     Display_Vendor_ID();
 
     // load bitset with flags for function 0x00000001
     if (numOfIDs >= 1)
     {
-        cpuid_EAX_1_EAX = data[1][static_cast<unsigned>(Registers::EAX)];
+        cpuid_EAX_1_EAX = data[static_cast<unsigned>(INITIAL_EAX_VALUE::EAX_01H)][static_cast<unsigned>(Registers::EAX)];
     }
 
     DisplayFamily_DisplayModel(Get_Family_ID(cpuid_EAX_1_EAX.to_ulong()),
                                Get_Model_ID(cpuid_EAX_1_EAX.to_ulong()));
+
+    // Calling __cpuid with 0x80000000 as the function_id argument
+    // gets the number of the highest valid extended ID.
+    __cpuid(cpui.data(), static_cast<unsigned>(INITIAL_EAX_VALUE::EAX_80000000H));
+    numOFExIDs = cpui[static_cast<unsigned>(Registers::EAX)];
+
+    for (auto i = static_cast<int>(INITIAL_EAX_VALUE::EAX_80000000H); i <= numOFExIDs; ++i)
+    {
+        __cpuidex(cpui.data(), i, 0);
+        extData.push_back(cpui);
+    }
+
+    if (numOFExIDs >= static_cast<int>(INITIAL_EAX_VALUE::EAX_80000004H))
+    {
+        Get_Brand_ID(extData);
+        Display_Brand_ID();
+    }
+
+
 }
 
 void CPUID_EAX_1_EAX::printVersionInfoInEAX() const
@@ -157,7 +176,7 @@ constexpr int CPUID_EAX_1_EAX::Get_Model_ID(const unsigned long verInfoByCPUIDin
     // Now, let's get the extended model ID (EAX:[19-16])
     startingPos = 16;
     // Create a mask to set the bits (EAX:[19-16])
-    mask = ((11 << numOfBitsToExtract) - 1) << startingPos;
+    mask = ((1 << numOfBitsToExtract) - 1) << startingPos;
     auto extendedModelID = (verInfoByCPUIDinEAX & mask) >> startingPos;
 
     if (0x6 == familyID || 0xF == familyID)
@@ -173,7 +192,18 @@ constexpr int CPUID_EAX_1_EAX::Get_Model_ID(const unsigned long verInfoByCPUIDin
 
 void CPUID_EAX_1_EAX::Get_Vendor_ID(const unsigned long ebx, const unsigned long ecx, const unsigned long edx) const
 {
-    vendorIDInHex << std::hex << byteSwap(ebx) << byteSwap(ecx) << byteSwap(edx);
+    vendorBrandIDInHex << std::hex << byteSwap(ebx) << byteSwap(ecx) << byteSwap(edx);
+}
+
+void CPUID_EAX_1_EAX::Get_Brand_ID(const std::vector <std::array<int, 4>> &extendedData) const
+{
+    for (auto row = 2; row < 5; ++row)
+    {
+        for (auto col = 0; col < 4; ++col)
+        {
+            vendorBrandIDInHex << byteSwap(extendedData[row][col]);
+        }
+    }
 }
 
 void CPUID_EAX_1_EAX::Display_Family(const int family_ID) const
@@ -218,8 +248,21 @@ constexpr unsigned long CPUID_EAX_1_EAX::byteSwap(unsigned long num) const
 void CPUID_EAX_1_EAX::Display_Vendor_ID() const
 {
     // Convert the hex to string.
-    std::string vendorID{ hexToAscii(vendorIDInHex.str()) };
+    std::string vendorID{ hexToAscii(vendorBrandIDInHex.str()) };
 
     std::cout << "Vendor ID: " << vendorID << std::endl;
+
+    vendorBrandIDInHex.str("");
+    vendorBrandIDInHex.clear();
+}
+
+void CPUID_EAX_1_EAX::Display_Brand_ID() const
+{
+    const std::string brandID{ hexToAscii(vendorBrandIDInHex.str()) };
+
+    std::cout << "Brand ID: " << brandID << std::endl;
+
+    vendorBrandIDInHex.str("");
+    vendorBrandIDInHex.clear();
 }
 

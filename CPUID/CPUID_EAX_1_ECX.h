@@ -12,9 +12,9 @@ class CPUID_EAX_1_ECX
 {
 private:
 
-    std::array<int, 4> cpui{};
 	std::vector <std::array<int, 4>> data{};
 	std::vector <std::array<int, 4>> extData{};
+    std::array<int, 4> cpui{};
 	int numOfIDs{};
 	int numOFExIDs{};
 	std::bitset<32> cpuid_EAX_1_ECX{};

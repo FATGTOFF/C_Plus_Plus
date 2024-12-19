@@ -78,6 +78,50 @@ enum class CPUID_EAX_1_EAX_BITS : unsigned
     Reserved_BIT_31,
 };
 
+enum class INITIAL_EAX_VALUE : unsigned
+{
+    EAX_00H = 0x00,
+    EAX_01H = 0x01,
+    EAX_02H = 0x02,
+    EAX_03H = 0x03,
+    EAX_04H = 0x04,
+    EAX_05H = 0x05,
+    EAX_06H = 0x06,
+    EAX_07H = 0x07,
+    EAX_09H = 0x09,
+    EAX_0AH = 0x0A,
+    EAX_0BH = 0x0B,
+    EAX_0DH = 0x0D,
+    EAX_0FH = 0x0F,
+    EAX_10H = 0x10,
+    EAX_12H = 0x12,
+    EAX_14H = 0x14,
+    EAX_15H = 0x15,
+    EAX_16H = 0x16,
+    EAX_17H = 0x17,
+    EAX_18H = 0x18,
+    EAX_19H = 0x19,
+    EAX_1AH = 0x1A,
+    EAX_1BH = 0x1B,
+    EAX_1CH = 0x1C,
+    EAX_1DH = 0x1D,
+    EAX_1EH = 0x1E,
+    EAX_20H = 0x20,
+    EAX_23H = 0x23,
+    EAX_24H = 0x24,
+
+    // Extended Function CPUID Information
+    EAX_80000000H = 0x80000000,
+    EAX_80000001H = 0x80000001,
+    EAX_80000002H = 0x80000002,
+    EAX_80000003H = 0x80000003,
+    EAX_80000004H = 0x80000004,
+    EAX_80000005H = 0x80000005,
+    EAX_80000006H = 0x80000006,
+    EAX_80000007H = 0x80000007,
+    EAX_80000008H = 0x80000008,
+
+};
 
 
 #endif
