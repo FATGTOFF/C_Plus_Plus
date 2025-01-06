@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include=".\Sources\Gallow.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Sources\Dictionary.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Sources\Hangman.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Sources\main.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include=".\Headers\Debug.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Headers\Dictionary.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Headers\Gallow.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Headers\Hangman.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{9dc83816-2d5c-4cf7-b7e4-b56d7170c6ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{f2b79c34-3b07-40a4-afb1-34476dc0e569}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
