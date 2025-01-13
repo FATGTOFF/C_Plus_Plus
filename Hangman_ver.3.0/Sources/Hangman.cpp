@@ -61,6 +61,8 @@ void Hangman::displayTitle()
 	ci.bVisible = FALSE;
 	SetConsoleCursorInfo(outPut, &ci);
 
+	SetConsoleTextAttribute(outPut, FOREGROUND_INTENSITY | FOREGROUND_GREEN);
+
 		SetConsoleCursorPosition(outPut, goTo(16, 7));
 		std::cout << "Welcome to...\n";
 		SetConsoleCursorPosition(outPut, goTo(0, 8));
@@ -141,15 +143,51 @@ bool Hangman::tryAgain()
 
 Hangman::Hangman()
 {
-	SetConsoleCursorInfo(outPut, &ci);
-	SetConsoleTitleA("HANGMAN");
-	MoveWindow(hWnd, 500, 100, 800, 500, TRUE);
-	displayTitle();
 
-	dictionary.loadAllData();
-	gallow.displayGallow();
+	logger->openLoggerFile();
 
 #ifdef DEBUG_HANGMAN
+	std::cout << "Hangman: Memory address of fileOutPut: " << &logger->fileOutPut() << std::endl;
+#endif
+
+	if (dictionary.loadAllData())
+	{
+		logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+			<< "Loaded the data\n";
+	}
+	else
+	{
+		logger->closeProgram();
+		logger->printErrorMessage(GetLastError());
+		std::exit(GetLastError());
+	}
+
+	SetConsoleCursorInfo(outPut, &ci);
+
+	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+		<< "SetConsoleCursorInfo called\n";
+	SetConsoleTitleA("HANGMAN");
+
+	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+		<< "Set console title to HANGMAN\n";
+
+	MoveWindow(hWnd, 500, 100, 800, 500, TRUE);
+
+	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+		<< "Move the window\n";
+
+	displayTitle();
+
+	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+		<< "Display the title\n";
+
+	gallow.displayGallow();
+
+	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+		<< "Gallow displayed\n";
+
+#ifdef DEBUG_HANGMAN
+
 	std::ofstream listOfWords{};
 	listOfWords.open("listOfWords_Randomized.txt", std::ios_base::app);
 
@@ -177,6 +215,12 @@ Hangman::Hangman()
 
 }
 
+Hangman::~Hangman()
+{
+	logger->closeProgram();
+}
+
+
 bool Hangman::play()
 {
 	std::string unk(word.length(), '*');
@@ -184,6 +228,8 @@ bool Hangman::play()
 	ci.bVisible = TRUE;
 	ci.dwSize = 100;
 	SetConsoleCursorInfo(output, &ci);
+
+	SetConsoleTextAttribute(output, FOREGROUND_INTENSITY | FOREGROUND_GREEN);
 
 	while (countWrongGuess < MAX_TRIES)
 	{
@@ -197,14 +243,14 @@ bool Hangman::play()
 			std::cout << "Please, only input a SINGLE character (letter, number or space)\n";
 			std::getline(std::cin, answer);
 		}
-
+		 
 		clearScreen(0, 0);
 
 		if (letterFill(*answer.c_str(), word, unk) == 0)
 		{
 			SetConsoleTextAttribute(output, FOREGROUND_INTENSITY | FOREGROUND_RED);
 
-			std::cout << "Sorry, but there is no [" << answer << "] in this word.\n";
+			//std::cout << "Sorry, but there is no [" << answer << "] in this word.\n";
 			++countWrongGuess;
 			if (countWrongGuess == 1)
 				gallow.displayHead();
@@ -220,11 +266,32 @@ bool Hangman::play()
 
 			else if (countWrongGuess == 5)
 				gallow.displayLeftLeg();
+
+			std::cout << "Sorry, but there is no [" << answer << "] in this word.\n";
 		}
 
 		else
 		{
 			SetConsoleTextAttribute(output, FOREGROUND_INTENSITY | FOREGROUND_GREEN);
+
+			if (countWrongGuess == 0)
+				gallow.displayGallow();
+
+			if (countWrongGuess == 1)
+				gallow.displayHead();
+
+			else if (countWrongGuess == 2)
+				gallow.displayLeftArm();
+
+			else if (countWrongGuess == 3)
+				gallow.displayRightArm();
+
+			else if (countWrongGuess == 4)
+				gallow.displayRightLeg();
+
+			else if (countWrongGuess == 5)
+				gallow.displayLeftLeg();
+
 			std::cout << "Good job! [" << answer << "] is in the word.\n";
 		}
 
@@ -254,6 +321,7 @@ bool Hangman::play()
 
 			if (tryAgain())
 			{
+
 				return true;
 			}
 			else

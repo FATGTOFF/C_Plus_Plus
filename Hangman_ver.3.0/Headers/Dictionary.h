@@ -1,7 +1,12 @@
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
+// Required to avoid conflict with max().
+#define NOMINMAX
+
 #include "Debug.h"
+#include "Logger.h"
+#include "SharedMemory.h"
 #include <algorithm> // For the use of the replace function.
 #include <array>
 #include <cctype>
@@ -13,7 +18,8 @@
 #include <string>
 #include <vector>
 
-class Dictionary
+
+class Dictionary : public SharedMemory
 {
 private:
 	/*
@@ -103,6 +109,7 @@ private:
 		Data_File_Format() = default;
 	};
 
+	const Logger* logger = getLoggerMemAddress();
 	const std::array<const char*, 4> indexFileNames{ ".\\Text_Files\\index.adj", ".\\Text_Files\\index.adv", 
 		".\\Text_Files\\index.noun", ".\\Text_Files\\index.verb" };
 	const std::array<const char*, 4> dataFileNames{ ".\\Text_Files\\data.adj", ".\\Text_Files\\data.adv", 
@@ -121,24 +128,25 @@ private:
 		const std::vector<Data_File_Format>& data_file_format_word,
 		const std::string& wordToSearch) const;
 	void findTheGlossary(const std::vector<Data_File_Format>& data_file_format_word,
-		const std::string& wordToSearch, const char syntacticCategory) const;
+		const std::string_view wordToSearch, const char syntacticCategory) const;
 	void loadIndexFileFormatData(std::ifstream& inFile,
 		std::vector<Index_File_Format>& index_file_format, std::size_t& countLinesOfData) const;
 	void loadDataFileFormatData(std::ifstream& inFile,
 		std::vector<Data_File_Format>& data_file_format_word, std::size_t& countLinesOfData) const;
 
 	bool foundNoun(const std::vector<Index_File_Format>& index_file_format_word,
-		const std::vector<Data_File_Format>& data_file_format_word, const std::string& dataToSearch) const;
+		const std::vector<Data_File_Format>& data_file_format_word, const std::string_view dataToSearch) const;
 	bool foundVerb(const std::vector<Index_File_Format>& index_file_format_word,
-		const std::vector<Data_File_Format>& data_file_format_word, const std::string& dataToSearch) const;
+		const std::vector<Data_File_Format>& data_file_format_word, const std::string_view dataToSearch) const;
 	bool foundAdjective(const std::vector<Index_File_Format>& index_file_format_word,
-		const std::vector<Data_File_Format>& data_file_format_word, const std::string& dataToSearch) const;
+		const std::vector<Data_File_Format>& data_file_format_word, const std::string_view dataToSearch) const;
 	bool foundAdverb(const std::vector<Index_File_Format>& index_file_format_word,
-		const std::vector<Data_File_Format>& data_file_format_word, const std::string& dataToSearch) const;
+		const std::vector<Data_File_Format>& data_file_format_word, const std::string_view dataToSearch) const;
 
 	std::size_t randomNumber(std::size_t) const;
 
 public:
+
 	Dictionary() = default;
 	~Dictionary() = default;
 
@@ -147,8 +155,7 @@ public:
 	std::size_t getTotalCountOfWords() const;
 
 	void findTheWord(const std::string& wordToSearch) const;
-	void loadAllData();
-
+	bool loadAllData();
 };
 
 #endif

@@ -1,5 +1,6 @@
 #include "Hangman.h"
 
+
 #ifdef DEBUG_HANGMAN
 int numOfHeapAllocations = 0;
 int numOfDeletes = 0;
@@ -30,9 +31,6 @@ int main()
 #endif
 
 	bool keepLooping{ true };
-
-	//DWORD recordLastError{ GetLastError() };
-	//std::cout << recordLastError << std::endl;
 
 	while (keepLooping)
 	{

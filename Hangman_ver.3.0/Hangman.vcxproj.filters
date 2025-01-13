@@ -13,6 +13,24 @@
     <ClCompile Include=".\Sources\main.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include=".\Logger\Sources\DateTime.cpp">
+      <Filter>Logger\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Logger\Sources\ErrorList.cpp">
+      <Filter>Logger\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Logger\Sources\GetFTimeException.cpp">
+      <Filter>Logger\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Logger\Sources\GetLocalTimeException.cpp">
+      <Filter>Logger\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Logger\Sources\GetTimeExceptionBase.cpp">
+      <Filter>Logger\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Logger\Sources\Logger.cpp">
+      <Filter>Logger\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\Headers\Debug.h">
@@ -27,10 +45,40 @@
     <ClInclude Include=".\Headers\Hangman.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include=".\Logger\Headers\DateTime.h">
+      <Filter>Logger\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Logger\Headers\ErrorList.h">
+      <Filter>Logger\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Logger\Headers\GetFTimeException.h">
+      <Filter>Logger\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Logger\Headers\GetLocalTimeException.h">
+      <Filter>Logger\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Logger\Headers\GetTimeExceptionBase.h">
+      <Filter>Logger\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Logger\Headers\Logger.h">
+      <Filter>Logger\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger\Headers\SharedMemory.h">
+      <Filter>Logger\Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
       <UniqueIdentifier>{9dc83816-2d5c-4cf7-b7e4-b56d7170c6ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logger">
+      <UniqueIdentifier>{2ce54369-fc77-4dbe-8f16-2d77816bb533}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logger\Headers">
+      <UniqueIdentifier>{c5896761-833b-4423-94fb-3fd9c801fc74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logger\Sources">
+      <UniqueIdentifier>{dfb66c4d-cd17-40fc-9260-3f68f6329a86}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources">
       <UniqueIdentifier>{f2b79c34-3b07-40a4-afb1-34476dc0e569}</UniqueIdentifier>

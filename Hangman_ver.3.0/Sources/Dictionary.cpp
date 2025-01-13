@@ -1,5 +1,6 @@
 #include "Dictionary.h"
 
+
 std::string Dictionary::getOriginalWord() const
 {
 	return originalWord;
@@ -7,17 +8,25 @@ std::string Dictionary::getOriginalWord() const
 
 std::string Dictionary::getModifiedWord() const
 {
-	auto random = randomNumber(index_file_format.size() - 1);
+
+	const auto random = randomNumber(index_file_format.size() - 1);
+
+	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() 
+		<< " - " << random << " is the selected random number\n";
+
 	originalWord = index_file_format.at(random).lemma;
+
+	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() 
+		<< " - " << originalWord << " is the selected word\n";
 
 	// Take the word and replace the -, _ and ' to spaces.
 	std::string updatedWord{ index_file_format.at(random).lemma };
 
 #ifndef DEBUG_HANGMAN
 
-		std::replace(updatedWord.begin(), updatedWord.end(), '-', ' ');
-		std::replace(updatedWord.begin(), updatedWord.end(), '_', ' ');
-		std::replace(updatedWord.begin(), updatedWord.end(), '\'', ' ');
+		std::ranges::replace(updatedWord, '-', ' ');
+		std::ranges::replace(updatedWord, '_', ' ');
+		std::ranges::replace(updatedWord, '\'', ' ');
 
 #endif
 
@@ -27,6 +36,11 @@ std::string Dictionary::getModifiedWord() const
 
 #endif
 
+	if (originalWord != updatedWord)
+	{
+		logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+		<< updatedWord << " is the modified word\n";
+	}
 
 	return updatedWord;
 }
@@ -63,6 +77,7 @@ void Dictionary::gotoLine(std::ifstream& file, const std::size_t num) const
 
 unsigned Dictionary::findStartDataLine(std::ifstream& infile) const
 {
+
 	unsigned totalCommentLines{ 0 };
 
 	License_Agreement_Format license_agreement_format{};
@@ -88,6 +103,9 @@ unsigned Dictionary::findStartDataLine(std::ifstream& infile) const
 
 		std::cout << "\nLine of Comments: " << totalCommentLines << '\n';
 #endif
+
+	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+		<< totalCommentLines << " lines of comments in the file\n";
 
 	return (totalCommentLines + 1); // Starting line with actual data in the file.
 }
@@ -121,7 +139,7 @@ void Dictionary::findTheWord(const std::vector<Index_File_Format>& index_file_fo
 }
 
 void Dictionary::findTheGlossary(const std::vector<Data_File_Format>& data_file_format_word, 
-	const std::string& wordtosearch, const char syntacticCategory) const
+	const std::string_view wordtosearch, const char syntacticCategory) const
 {
 
 	for (size_t count = 0; count < data_file_format_word.size(); ++count)
@@ -129,6 +147,9 @@ void Dictionary::findTheGlossary(const std::vector<Data_File_Format>& data_file_
 		if (data_file_format_word.at(count).synset_offset == wordtosearch && data_file_format_word.at(count).ss_type == syntacticCategory)
 		{
 			std::cout << data_file_format_word.at(count).gloss << '\n';
+			logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+				<< " Glossary for " << wordtosearch << " is " << data_file_format_word.at(count).gloss << "\n";
+			
 			return;
 		}
 	}
@@ -138,6 +159,7 @@ void Dictionary::findTheGlossary(const std::vector<Data_File_Format>& data_file_
 void Dictionary::loadIndexFileFormatData(std::ifstream& inFile, 
 	std::vector<Index_File_Format>& index_file_format_word, std::size_t& countLinesOfData) const
 {
+
 	const auto startDataLine{ findStartDataLine(inFile) };
 	std::string lineOfData{};
 
@@ -145,10 +167,13 @@ void Dictionary::loadIndexFileFormatData(std::ifstream& inFile,
 
 	while (std::getline(inFile, lineOfData))
 	{
+
+#ifdef DEBUG_HANGMAN
 		if (countLinesOfData % 10000 == 0)
 		{
 			std::cout << ".";
 		}
+#endif
 
 		std::istringstream inStringStream(lineOfData);
 		index_file_format_word.emplace_back();
@@ -222,11 +247,13 @@ void Dictionary::loadDataFileFormatData(std::ifstream& inFile,
 
 	while (std::getline(inFile, data_file_format_word.at(countLinesOfData).gloss))
 	{
+
+#ifdef DEBUG_HANGMAN
 		if (countLinesOfData % 10000 == 0)
 		{
 			std::cout << ".";
 		}
-
+#endif
 		++countLinesOfData;
 		data_file_format_word.emplace_back();
 		inFile >> data_file_format_word.at(countLinesOfData).synset_offset;
@@ -235,18 +262,25 @@ void Dictionary::loadDataFileFormatData(std::ifstream& inFile,
 		inFile.ignore(std::numeric_limits<std::streamsize>::max(), '|');
 
 	}
+
 }
 
-void Dictionary::loadAllData()
+bool Dictionary::loadAllData()
 {
 
 #ifdef DEBUG_HANGMAN
 
-	std::cout << "Loading the Index File Data";
+	std::cout << "Dictionary: Memory address of fileOutPut: " << &logger->fileOutPut() << std::endl;
+
+	std::cout << "Loading the Index File Data\n";
 
 #else
+	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+		<< "Program started\n";
 
-	std::cout << "Loading the words";
+	//std::cout << "Loading the words\n";
+	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+		<< " Loading the words\n";
 
 #endif
 
@@ -259,7 +293,10 @@ void Dictionary::loadAllData()
 		if (inIndexFile.fail())
 		{
 			std::cerr << "Error opening the file.\n";
-			return;
+			logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+				<< indexFileNames.at(iter) << " could not open\n";
+
+			return false;
 		}
 
 #ifdef DEBUG_HANGMAN
@@ -267,6 +304,8 @@ void Dictionary::loadAllData()
 		std::cout << "\nLoading data from " << indexFileNames.at(iter) << '\n';
 
 #endif
+		logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+			<< " Loading data from " << indexFileNames.at(iter) << '\n';
 		loadIndexFileFormatData(inIndexFile, index_file_format, countLinesOfIndexData);
 
 		inIndexFile.close();
@@ -274,7 +313,7 @@ void Dictionary::loadAllData()
 
 #ifdef DEBUG_HANGMAN
 
-		std::cout << "\nLoading the Data File";
+		std::cout << "\nLoading the Data File\n";
 #endif
 
 	for (std::size_t iter = 0; iter < dataFileNames.size(); ++iter)
@@ -283,8 +322,11 @@ void Dictionary::loadAllData()
 
 		if (inDataFile.fail())
 		{
-			std::cerr << "Error opening the file.\n";
-			return;
+			std::cerr << "\nError opening the file.\n";
+			logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+				<< dataFileNames.at(iter) << " could not open\n";
+
+			return false;
 		}
 
 #ifdef DEBUG_HANGMAN
@@ -292,7 +334,8 @@ void Dictionary::loadAllData()
 		std::cout << "\nLoading data from " << dataFileNames.at(iter) << '\n';
 
 #endif
-
+		logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+			<< " Loading data from " << dataFileNames.at(iter) << '\n';
 		loadDataFileFormatData(inDataFile, data_file_format, countLinesOfDataFile);
 
 		inDataFile.close();
@@ -304,13 +347,16 @@ void Dictionary::loadAllData()
 		std::cout << "\nIndex File Data Total Count: " << countLinesOfIndexData << std::endl;
 		std::cout << "Data File Total Count: " << countLinesOfDataFile << std::endl;
 #else
-		std::cout << "\n" << countLinesOfIndexData << " words loaded!\n";
+		//std::cout << "\n" << countLinesOfIndexData << " words loaded!\n";
 #endif
+		logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
+			<< countLinesOfIndexData << " words loaded!\n";
 
+		return true;
 }
 
 bool Dictionary::foundNoun(const std::vector<Index_File_Format>& index_file_format_word, 
-	const std::vector<Data_File_Format>& data_file_format_word, const std::string& dataToSearch) const
+	const std::vector<Data_File_Format>& data_file_format_word, const std::string_view dataToSearch) const
 {
 	std::size_t countFoundNouns{ 0 };
 
@@ -348,7 +394,7 @@ bool Dictionary::foundNoun(const std::vector<Index_File_Format>& index_file_form
 }
 
 bool Dictionary::foundVerb(const std::vector<Index_File_Format>& index_file_format_word, 
-	const std::vector<Data_File_Format>& data_file_format_word, const std::string& dataToSearch) const
+	const std::vector<Data_File_Format>& data_file_format_word, const std::string_view dataToSearch) const
 {
 	std::size_t countFoundVerbs{ 0 };
 	for (size_t elementPos = 0; elementPos < index_file_format_word.size(); ++elementPos)
@@ -385,7 +431,7 @@ bool Dictionary::foundVerb(const std::vector<Index_File_Format>& index_file_form
 }
 
 bool Dictionary::foundAdjective(const std::vector<Index_File_Format>& index_file_format_word, 
-	const std::vector<Data_File_Format>& data_file_format_word, const std::string& dataToSearch) const
+	const std::vector<Data_File_Format>& data_file_format_word, const std::string_view dataToSearch) const
 {
 	std::size_t countFoundAdjectives{ 0 };
 	for (size_t elementPos = 0; elementPos < index_file_format_word.size(); ++elementPos)
@@ -424,7 +470,7 @@ bool Dictionary::foundAdjective(const std::vector<Index_File_Format>& index_file
 }
 
 bool Dictionary::foundAdverb(const std::vector<Index_File_Format>& index_file_format_word, 
-	const std::vector<Data_File_Format>& data_file_format_word, const std::string& dataToSearch) const
+	const std::vector<Data_File_Format>& data_file_format_word, const std::string_view dataToSearch) const
 {
 	std::size_t countFoundAdverbs{ 0 };
 	for (size_t elementPos = 0; elementPos < index_file_format_word.size(); ++elementPos)

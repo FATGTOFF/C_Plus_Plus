@@ -23,12 +23,25 @@
     <ClInclude Include=".\Headers\Dictionary.h" />
     <ClInclude Include=".\Headers\Gallow.h" />
     <ClInclude Include=".\Headers\Hangman.h" />
+    <ClInclude Include=".\Logger\Headers\DateTime.h" />
+    <ClInclude Include=".\Logger\Headers\ErrorList.h" />
+    <ClInclude Include=".\Logger\Headers\GetFTimeException.h" />
+    <ClInclude Include=".\Logger\Headers\GetLocalTimeException.h" />
+    <ClInclude Include=".\Logger\Headers\GetTimeExceptionBase.h" />
+    <ClInclude Include=".\Logger\Headers\Logger.h" />
+    <ClInclude Include="Logger\Headers\SharedMemory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".\Sources\Dictionary.cpp" />
     <ClCompile Include=".\Sources\Gallow.cpp" />
     <ClCompile Include=".\Sources\Hangman.cpp" />
     <ClCompile Include=".\Sources\main.cpp" />
+    <ClCompile Include=".\Logger\Sources\DateTime.cpp" />
+    <ClCompile Include=".\Logger\Sources\ErrorList.cpp" />
+    <ClCompile Include=".\Logger\Sources\GetFTimeException.cpp" />
+    <ClCompile Include=".\Logger\Sources\GetLocalTimeException.cpp" />
+    <ClCompile Include=".\Logger\Sources\GetTimeExceptionBase.cpp" />
+    <ClCompile Include=".\Logger\Sources\Logger.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -82,6 +95,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -116,7 +137,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>.\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Headers;.\Logger\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,7 +154,8 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>.\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Headers;.\Logger\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

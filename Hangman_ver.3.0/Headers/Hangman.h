@@ -7,6 +7,8 @@
 #include "Debug.h"
 #include "Dictionary.h"
 #include "Gallow.h"
+#include "Logger.h"
+#include "SharedMemory.h"
 #include <cctype>
 #include <iostream>
 #include <limits>
@@ -17,12 +19,14 @@
 #include <winerror.h>
 
 
-class Hangman
+class Hangman : public SharedMemory
 {
 
 private:
 
+	
 	Dictionary dictionary{};
+    const Logger *logger = getLoggerMemAddress();
 	Gallow gallow{};
 	const std::string notifyPressButton{ "Press ENTER button to continue..." };
 	std::string answer{};
@@ -44,6 +48,8 @@ private:
 
 public:
 	Hangman();
+	~Hangman();
+
 	bool play();
 };
 
