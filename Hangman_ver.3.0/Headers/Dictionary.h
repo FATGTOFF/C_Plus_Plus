@@ -109,7 +109,7 @@ private:
 		Data_File_Format() = default;
 	};
 
-	const Logger* logger = getLoggerMemAddress();
+	const Logger* logger{ getLoggerMemAddress() };
 	const std::array<const char*, 4> indexFileNames{ ".\\Text_Files\\index.adj", ".\\Text_Files\\index.adv", 
 		".\\Text_Files\\index.noun", ".\\Text_Files\\index.verb" };
 	const std::array<const char*, 4> dataFileNames{ ".\\Text_Files\\data.adj", ".\\Text_Files\\data.adv", 
@@ -128,7 +128,7 @@ private:
 		const std::vector<Data_File_Format>& data_file_format_word,
 		const std::string& wordToSearch) const;
 	void findTheGlossary(const std::vector<Data_File_Format>& data_file_format_word,
-		const std::string_view wordToSearch, const char syntacticCategory) const;
+		const std::string_view wordToSearch, const char syntacticCategory, const size_t synsetCounter) const;
 	void loadIndexFileFormatData(std::ifstream& inFile,
 		std::vector<Index_File_Format>& index_file_format, std::size_t& countLinesOfData) const;
 	void loadDataFileFormatData(std::ifstream& inFile,

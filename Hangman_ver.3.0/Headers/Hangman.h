@@ -26,7 +26,7 @@ private:
 
 	
 	Dictionary dictionary{};
-    const Logger *logger = getLoggerMemAddress();
+    const Logger *logger{ getLoggerMemAddress() };
 	Gallow gallow{};
 	const std::string notifyPressButton{ "Press ENTER button to continue..." };
 	std::string answer{};

@@ -11,13 +11,11 @@ std::string Dictionary::getModifiedWord() const
 
 	const auto random = randomNumber(index_file_format.size() - 1);
 
-	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() 
-		<< " - " << random << " is the selected random number\n";
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << random << " is the selected random number\n";
 
 	originalWord = index_file_format.at(random).lemma;
 
-	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() 
-		<< " - " << originalWord << " is the selected word\n";
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << originalWord << " is the selected word\n";
 
 	// Take the word and replace the -, _ and ' to spaces.
 	std::string updatedWord{ index_file_format.at(random).lemma };
@@ -34,12 +32,13 @@ std::string Dictionary::getModifiedWord() const
 
 		std::cout << updatedWord << '\n';
 
+		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << updatedWord << '\n';
+
 #endif
 
 	if (originalWord != updatedWord)
 	{
-		logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-		<< updatedWord << " is the modified word\n";
+		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << updatedWord << " is the modified word\n";
 	}
 
 	return updatedWord;
@@ -104,8 +103,7 @@ unsigned Dictionary::findStartDataLine(std::ifstream& infile) const
 		std::cout << "\nLine of Comments: " << totalCommentLines << '\n';
 #endif
 
-	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-		<< totalCommentLines << " lines of comments in the file\n";
+		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << totalCommentLines << " lines of comments in the file\n";
 
 	return (totalCommentLines + 1); // Starting line with actual data in the file.
 }
@@ -135,11 +133,13 @@ void Dictionary::findTheWord(const std::vector<Index_File_Format>& index_file_fo
 	if (0 == countTheFinds)
 	{
 		std::cout << word_To_Search << " was not found\n";
+
+		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << word_To_Search << " was not found\n";
 	}
 }
 
 void Dictionary::findTheGlossary(const std::vector<Data_File_Format>& data_file_format_word, 
-	const std::string_view wordtosearch, const char syntacticCategory) const
+	const std::string_view wordtosearch, const char syntacticCategory, const size_t synsetCounter) const
 {
 
 	for (size_t count = 0; count < data_file_format_word.size(); ++count)
@@ -147,8 +147,35 @@ void Dictionary::findTheGlossary(const std::vector<Data_File_Format>& data_file_
 		if (data_file_format_word.at(count).synset_offset == wordtosearch && data_file_format_word.at(count).ss_type == syntacticCategory)
 		{
 			std::cout << data_file_format_word.at(count).gloss << '\n';
-			logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-				<< " Glossary for " << wordtosearch << " is " << data_file_format_word.at(count).gloss << "\n";
+
+			switch (syntacticCategory)
+			{
+				case 'n':
+					LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << " Noun Glossary [" << synsetCounter + 1 << "] is " 
+						<< data_file_format_word.at(count).gloss << "\n";
+					break;
+				case 'v':
+					LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << " Verb Glossary [" << synsetCounter + 1 << "] is " 
+						<< data_file_format_word.at(count).gloss << "\n";
+					break;
+				case 'a':
+					LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << " Adjective Glossary [" << synsetCounter + 1 << "] is " 
+						<< data_file_format_word.at(count).gloss << "\n";
+					break;
+				case 's':
+					LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << " Adjective Satellite Glossary [" << synsetCounter + 1 << "] is " 
+						<< data_file_format_word.at(count).gloss << "\n";
+					break;
+				case 'r':
+					LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << " Adverb Glossary [" << synsetCounter + 1 << "] is " 
+						<< data_file_format_word.at(count).gloss << "\n";
+					break;
+
+				default:
+					LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << " Glossary for synset type [" << wordtosearch << "] is " 
+						<< data_file_format_word.at(count).gloss << "\n";
+					break;
+			}
 			
 			return;
 		}
@@ -190,6 +217,9 @@ void Dictionary::loadIndexFileFormatData(std::ifstream& inFile,
 			if (listOfWords.fail())
 			{
 				std::cerr << "Error creating the file.\n";
+
+				LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Error creating the file.\n";
+
 				return;
 			}
 			else
@@ -270,17 +300,24 @@ bool Dictionary::loadAllData()
 
 #ifdef DEBUG_HANGMAN
 
+	std::cout << "Dictionary: Memory address of Logger: " << logger << std::endl;
 	std::cout << "Dictionary: Memory address of fileOutPut: " << &logger->fileOutPut() << std::endl;
 
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Dictionary: Memory address of Logger: " << logger << std::endl;
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Dictionary: Memory address of fileOutPut: " << &logger->fileOutPut() << std::endl;
+
 	std::cout << "Loading the Index File Data\n";
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Loading the Index File Data\n";
 
 #else
-	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-		<< "Program started\n";
+
+	logger->fileOutPut(DateTime::TimeStamp::LOG_NO_DATE_TIME_GROUP) 
+		<< "===================================================================\n";
+	
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Program started\n";
 
 	//std::cout << "Loading the words\n";
-	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-		<< " Loading the words\n";
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << " Loading the words\n";
 
 #endif
 
@@ -293,8 +330,7 @@ bool Dictionary::loadAllData()
 		if (inIndexFile.fail())
 		{
 			std::cerr << "Error opening the file.\n";
-			logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-				<< indexFileNames.at(iter) << " could not open\n";
+			LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << indexFileNames.at(iter) << " could not open\n";
 
 			return false;
 		}
@@ -304,8 +340,7 @@ bool Dictionary::loadAllData()
 		std::cout << "\nLoading data from " << indexFileNames.at(iter) << '\n';
 
 #endif
-		logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-			<< " Loading data from " << indexFileNames.at(iter) << '\n';
+		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << " Loading data from " << indexFileNames.at(iter) << '\n';
 		loadIndexFileFormatData(inIndexFile, index_file_format, countLinesOfIndexData);
 
 		inIndexFile.close();
@@ -314,6 +349,7 @@ bool Dictionary::loadAllData()
 #ifdef DEBUG_HANGMAN
 
 		std::cout << "\nLoading the Data File\n";
+		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Loading the Data File\n";
 #endif
 
 	for (std::size_t iter = 0; iter < dataFileNames.size(); ++iter)
@@ -322,9 +358,9 @@ bool Dictionary::loadAllData()
 
 		if (inDataFile.fail())
 		{
-			std::cerr << "\nError opening the file.\n";
-			logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-				<< dataFileNames.at(iter) << " could not open\n";
+			std::cerr << "\nError opening the file " << dataFileNames.at(iter) << "\n";
+
+			LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << dataFileNames.at(iter) << " could not open\n";
 
 			return false;
 		}
@@ -334,8 +370,7 @@ bool Dictionary::loadAllData()
 		std::cout << "\nLoading data from " << dataFileNames.at(iter) << '\n';
 
 #endif
-		logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-			<< " Loading data from " << dataFileNames.at(iter) << '\n';
+		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << " Loading data from " << dataFileNames.at(iter) << '\n';
 		loadDataFileFormatData(inDataFile, data_file_format, countLinesOfDataFile);
 
 		inDataFile.close();
@@ -345,12 +380,14 @@ bool Dictionary::loadAllData()
 #ifdef DEBUG_HANGMAN
 
 		std::cout << "\nIndex File Data Total Count: " << countLinesOfIndexData << std::endl;
+		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Index File Data Total Count: " << countLinesOfIndexData << std::endl;
+
 		std::cout << "Data File Total Count: " << countLinesOfDataFile << std::endl;
+		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Data File Total Count: " << countLinesOfDataFile << std::endl;
 #else
 		//std::cout << "\n" << countLinesOfIndexData << " words loaded!\n";
 #endif
-		logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-			<< countLinesOfIndexData << " words loaded!\n";
+		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << countLinesOfIndexData << " words loaded!\n";
 
 		return true;
 }
@@ -367,16 +404,22 @@ bool Dictionary::foundNoun(const std::vector<Index_File_Format>& index_file_form
 			if (index_file_format_word.at(elementPos).synset_offset.size() == 1)
 			{
 				std::cout << "The noun " << index_file_format_word.at(elementPos).lemma << " has " << index_file_format_word.at(elementPos).synset_offset.size() << " sense\n";
+
+				LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "The noun " << index_file_format_word.at(elementPos).lemma << " has "
+					<< index_file_format_word.at(elementPos).synset_offset.size() << " sense\n";
 			}
 			else
 			{
 				std::cout << "The noun " << index_file_format_word.at(elementPos).lemma << " has " << index_file_format_word.at(elementPos).synset_offset.size() << " senses\n";
+
+				LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "The noun " << index_file_format_word.at(elementPos).lemma << " has "
+					<< index_file_format_word.at(elementPos).synset_offset.size() << " senses\n";
 			}
 
 			for (std::size_t iter = 0; iter < index_file_format_word.at(elementPos).synset_offset.size(); ++iter)
 			{
 				std::cout << "Noun Glossary [" << iter + 1 << "]: ";
-				findTheGlossary(data_file_format_word, index_file_format_word.at(elementPos).synset_offset.at(iter), index_file_format_word.at(elementPos).pos);
+				findTheGlossary(data_file_format_word, index_file_format_word.at(elementPos).synset_offset.at(iter), index_file_format_word.at(elementPos).pos, iter);
 			}
 
 			std::cout << "===================================================================\n";
@@ -404,16 +447,22 @@ bool Dictionary::foundVerb(const std::vector<Index_File_Format>& index_file_form
 			if (index_file_format_word.at(elementPos).synset_offset.size() == 1)
 			{
 				std::cout << "The verb " << index_file_format_word.at(elementPos).lemma << " has " << index_file_format_word.at(elementPos).synset_offset.size() << " sense\n";
+
+				LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "The verb " << index_file_format_word.at(elementPos).lemma << " has "
+					<< index_file_format_word.at(elementPos).synset_offset.size() << " sense\n";
 			}
 			else
 			{
 				std::cout << "The verb " << index_file_format_word.at(elementPos).lemma << " has " << index_file_format_word.at(elementPos).synset_offset.size() << " senses\n";
+
+				LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "The verb " << index_file_format_word.at(elementPos).lemma << " has "
+					<< index_file_format_word.at(elementPos).synset_offset.size() << " senses\n";
 			}
 
 			for (std::size_t iter = 0; iter < index_file_format_word.at(elementPos).synset_offset.size(); ++iter)
 			{
 				std::cout << "Verb Glossary [" << iter + 1 << "]: ";
-				findTheGlossary(data_file_format_word, index_file_format_word.at(elementPos).synset_offset.at(iter), index_file_format_word.at(elementPos).pos);
+				findTheGlossary(data_file_format_word, index_file_format_word.at(elementPos).synset_offset.at(iter), index_file_format_word.at(elementPos).pos, iter);
 			}
 
 			std::cout << "===================================================================\n";
@@ -442,17 +491,23 @@ bool Dictionary::foundAdjective(const std::vector<Index_File_Format>& index_file
 			if (index_file_format_word.at(elementPos).synset_offset.size() == 1)
 			{
 				std::cout << "The adjective " << index_file_format_word.at(elementPos).lemma << " has " << index_file_format_word.at(elementPos).synset_offset.size() << " sense\n";
+
+				LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "The adjective " << index_file_format_word.at(elementPos).lemma << " has "
+					<< index_file_format_word.at(elementPos).synset_offset.size() << " sense\n";
 			}
 			else
 			{
 				std::cout << "The adjective " << index_file_format_word.at(elementPos).lemma << " has " << index_file_format_word.at(elementPos).synset_offset.size() << " senses\n";
+
+				LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "The adjective " << index_file_format_word.at(elementPos).lemma << " has "
+					<< index_file_format_word.at(elementPos).synset_offset.size() << " senses\n";
 			}
 
 			for (std::size_t iter = 0; iter < index_file_format_word.at(elementPos).synset_offset.size(); ++iter)
 			{
 				std::cout << "Adjective Glossary [" << iter + 1 << "]: ";
-				findTheGlossary(data_file_format_word, index_file_format_word.at(elementPos).synset_offset.at(iter), 'a');
-				findTheGlossary(data_file_format_word, index_file_format_word.at(elementPos).synset_offset.at(iter), 's');
+				findTheGlossary(data_file_format_word, index_file_format_word.at(elementPos).synset_offset.at(iter), 'a', iter);
+				findTheGlossary(data_file_format_word, index_file_format_word.at(elementPos).synset_offset.at(iter), 's', iter);
 			}
 
 			std::cout << "===================================================================\n";
@@ -480,16 +535,22 @@ bool Dictionary::foundAdverb(const std::vector<Index_File_Format>& index_file_fo
 			if (index_file_format_word.at(elementPos).synset_offset.size() == 1)
 			{
 				std::cout << "The adverb " << index_file_format_word.at(elementPos).lemma << " has " << index_file_format_word.at(elementPos).synset_offset.size() << " sense\n";
+
+				LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "The adverb " << index_file_format_word.at(elementPos).lemma << " has "
+					<< index_file_format_word.at(elementPos).synset_offset.size() << " sense\n";
 			}
 			else
 			{
 				std::cout << "The adverb " << index_file_format_word.at(elementPos).lemma << " has " << index_file_format_word.at(elementPos).synset_offset.size() << " senses\n";
+
+				LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "The adverb " << index_file_format_word.at(elementPos).lemma << " has "
+					<< index_file_format_word.at(elementPos).synset_offset.size() << " senses\n";
 			}
 
 			for (std::size_t iter = 0; iter < index_file_format_word.at(elementPos).synset_offset.size(); ++iter)
 			{
 				std::cout << "Adverb Glossary [" << iter + 1 << "]: ";
-				findTheGlossary(data_file_format_word, index_file_format_word.at(elementPos).synset_offset.at(iter), index_file_format_word.at(elementPos).pos);
+				findTheGlossary(data_file_format_word, index_file_format_word.at(elementPos).synset_offset.at(iter), index_file_format_word.at(elementPos).pos, iter);
 			}
 
 			std::cout << "===================================================================\n";

@@ -161,6 +161,7 @@ std::ofstream& Logger::fileOutPut(const DateTime::TimeStamp logTimeEnum) const
         using enum DateTime::TimeStamp;
         case LOG_DAY_MON_YR_HR_MIN_SEC_MS:
             logfile << logTime.getDayMonthYrHrMinSecMs() << std::flush;
+            //logfile << "\n"/* << std::flush*/;
             break;
         case LOG_DAY_MON_YR_HR_MIN_SEC:
             logfile << logTime.getDayMonthYrHrMinSecs() << std::flush;
@@ -205,8 +206,13 @@ std::ofstream& Logger::fileOutPut(const DateTime::TimeStamp logTimeEnum) const
             logfile << logTime.getNoTimeStamp() << std::flush;
             break;
 
+            //logfile.flush();
+            //logfile << '\n' << std::flush;
     }
+    //logfile << " " << std::flush;
     logfile.flush();
+    //logfile << '\n' << std::flush;
+    //logfile << "\n"/* << std::flush*/;
     return logfile;
 }
 

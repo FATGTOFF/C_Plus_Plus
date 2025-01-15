@@ -147,13 +147,16 @@ Hangman::Hangman()
 	logger->openLoggerFile();
 
 #ifdef DEBUG_HANGMAN
+	std::cout << "Hangman: Memory address of Logger: " << logger << std::endl;
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Hangman: Memory address of Logger: " << logger << std::endl;
+
 	std::cout << "Hangman: Memory address of fileOutPut: " << &logger->fileOutPut() << std::endl;
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Hangman: Memory address of fileOutPut: " << &logger->fileOutPut() << std::endl;
 #endif
 
 	if (dictionary.loadAllData())
 	{
-		logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-			<< "Loaded the data\n";
+		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Loaded the data\n";
 	}
 	else
 	{
@@ -164,27 +167,22 @@ Hangman::Hangman()
 
 	SetConsoleCursorInfo(outPut, &ci);
 
-	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-		<< "SetConsoleCursorInfo called\n";
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "SetConsoleCursorInfo called\n";
 	SetConsoleTitleA("HANGMAN");
 
-	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-		<< "Set console title to HANGMAN\n";
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Set console title to HANGMAN\n";
 
 	MoveWindow(hWnd, 500, 100, 800, 500, TRUE);
 
-	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-		<< "Move the window\n";
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Move the window\n";
 
 	displayTitle();
 
-	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-		<< "Display the title\n";
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Display the title\n";
 
 	gallow.displayGallow();
 
-	logger->fileOutPut(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS) << "Error Code: " << GetLastError() << " - "
-		<< "Gallow displayed\n";
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Gallow displayed\n";
 
 #ifdef DEBUG_HANGMAN
 
@@ -193,7 +191,9 @@ Hangman::Hangman()
 
 	if (listOfWords.fail())
 	{
-		std::cerr << "Error creating the file.\n";
+		std::cerr << "Error creating the file listOfWords_Randomized.txt.\n";
+		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "listOfWords_Randomized.txt could not open\n";
+
 		return;
 	}
 	else
