@@ -74,8 +74,8 @@ private:
     struct tm newtime{};
     mutable std::ostringstream pBuffer{};
     mutable std::wostringstream pBuffer_w{};
-    std::string getMonth(const Month) const;
-    std::wstring getMonth_w(const Month) const;
+    constexpr std::string getMonth(const Month) const;
+    constexpr std::wstring getMonth_w(const Month) const;
     void clearPBuffer() const;
     void clearPBuffer_w() const;
 
@@ -99,11 +99,11 @@ public:
         LOG_SECS,
         LOG_MS
     };
-// Supress the warning on Time default constructor.
+// Suppress the warning on Time default constructor.
 // warning C26455: Default constructor may not throw. 
 // Declare it 'noexcept' (f.6).
 #pragma warning( disable : 26455)
-// Supress the warning on Time default constructor.
+// Suppress the warning on Time default constructor.
 // warning C26823: Dereferencing a possibly null pointer 
 // (lifetime.1).
 #pragma warning( disable : 26823)

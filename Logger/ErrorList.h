@@ -196,17 +196,18 @@ private:
 public:
 
 #if (!DEBUG_ERROR)
-   ErrorList() = default;
+    constexpr ErrorList() = default;
 #else
    ErrorList();
 #endif // !DEBUG
 
 protected:
-   int getErrorNumber() const noexcept;
-   std::string getErrorMessage(const int errNum) const;
-   std::wstring getErrorMessage_w(const int errNum) const;
+    //constexpr int getErrorNumber() const noexcept;
+    std::string getErrorMessage(const int errNum) const;
+    std::wstring getErrorMessage_w(const int errNum) const;
 
  public:
+   constexpr int getErrorNumber() const noexcept;
    void printErrorMessage(const std::string& errTypeMsg, const int errNum) const;
    void printErrorMessage_w(const std::wstring& errTypeMsg, const int errNum) const;
    void printErrorMessage(const int errNum) const;

@@ -1,11 +1,11 @@
 #include "DateTime.h"
 
-std::string DateTime::getMonth(const Month month) const
+constexpr std::string DateTime::getMonth(const Month month) const
 {
     return listOfMonths.at(month);
 }
 
-std::wstring DateTime::getMonth_w(const Month month) const
+constexpr std::wstring DateTime::getMonth_w(const Month month) const
 {
    return listOfMonths_w.at(month);
 }

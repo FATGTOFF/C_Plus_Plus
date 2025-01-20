@@ -1,21 +1,6 @@
 #include "Logger.h"
 
 
-Logger::Logger()
-{
-   logfile.open(logFileName, std::ios::app);
-   if (!logfile.is_open())
-   {
-      ErrorList::printErrorMessage(ENOENT);
-   }
-
-   logfile_w.open(logFileName, std::ios::app);
-   if (!logfile_w.is_open())
-   {
-      ErrorList::printErrorMessage(ENOENT);
-   }
-}
-
 Logger::Logger(std::string const& lFN)
 {
 
@@ -30,11 +15,6 @@ Logger::Logger(std::string const& lFN)
    {
       ErrorList::printErrorMessage(ENOENT);
    }
-}
-
-Logger::~Logger()
-{
-   closeProgram();
 }
 
 std::string Logger::getLogFileName() const
@@ -87,49 +67,34 @@ std::ostream& Logger::consoleOutPut(const DateTime::TimeStamp logTimeEnum) const
         using enum DateTime::TimeStamp;
         case LOG_DAY_MON_YR_HR_MIN_SEC_MS:
             return std::cout << logTime.getDayMonthYrHrMinSecMs() << std::flush;
-            break;
         case LOG_DAY_MON_YR_HR_MIN_SEC:
             return std::cout << logTime.getDayMonthYrHrMinSecs() << std::flush;
-            break;
         case LOG_DAY_MON_YR_HR_MIN:
             return std::cout << logTime.getDayMonthYrHrMins() << std::flush;
-            break;
         case LOG_DAY_MON_YR:
             return std::cout << logTime.getDayMonthYr() << std::flush;
-            break;
         case LOG_HR_MIN_SEC_MS:
             return std::cout << logTime.getHrMinSecMs() << std::flush;
-            break;
         case LOG_HR_MIN_SEC:
             return std::cout << logTime.getHrMinSecs() << std::flush;
-            break;
         case LOG_HR_MIN:
             return std::cout << logTime.getHrMins() << std::flush;
-            break;
         case LOG_DAY:
             return std::cout << logTime.getDay() << std::flush;
-            break;
         case LOG_MONTH:
             return std::cout << logTime.getMonth() << std::flush;
-            break;
         case LOG_YEAR:
             return std::cout << logTime.getYear() << std::flush;
-            break;
         case LOG_HRS:
             return std::cout << logTime.getHrs() << std::flush;
-            break;
         case LOG_MINS:
             return std::cout << logTime.getMins() << std::flush;
-            break;
         case LOG_SECS:
             return std::cout << logTime.getSecs() << std::flush;
-            break;
         case LOG_MS:
             return std::cout << logTime.getMills() << std::flush;
-            break;
         default:
             return std::cout << logTime.getNoTimeStamp() << std::flush;
-            break;
 
     }
 }
@@ -149,49 +114,34 @@ std::wostream& Logger::consoleOutput_w(const DateTime::TimeStamp logTimeEnum) co
         using enum DateTime::TimeStamp;
         case LOG_DAY_MON_YR_HR_MIN_SEC_MS:
             return std::wcout << logTime.getDayMonthYrHrMinSecMs_w() << std::flush;
-            break;
         case LOG_DAY_MON_YR_HR_MIN_SEC:
             return std::wcout << logTime.getDayMonthYrHrMinSecs_w() << std::flush;
-            break;
         case LOG_DAY_MON_YR_HR_MIN:
             return std::wcout << logTime.getDayMonthYrHrMins_w() << std::flush;
-            break;
         case LOG_DAY_MON_YR:
             return std::wcout << logTime.getDayMonthYr_w() << std::flush;
-            break;
         case LOG_HR_MIN_SEC_MS:
             return std::wcout << logTime.getHrMinSecMs_w() << std::flush;
-            break;
         case LOG_HR_MIN_SEC:
             return std::wcout << logTime.getHrMinSecs_w() << std::flush;
-            break;
         case LOG_HR_MIN:
             return std::wcout << logTime.getHrMins_w() << std::flush;
-            break;
         case LOG_DAY:
             return std::wcout << logTime.getDay_w() << std::flush;
-            break;
         case LOG_MONTH:
             return std::wcout << logTime.getMonth_w() << std::flush;
-            break;
         case LOG_YEAR:
             return std::wcout << logTime.getYear_w() << std::flush;
-            break;
         case LOG_HRS:
             return std::wcout << logTime.getHrs_w() << std::flush;
-            break;
         case LOG_MINS:
             return std::wcout << logTime.getMins_w() << std::flush;
-            break;
         case LOG_SECS:
             return std::wcout << logTime.getSecs_w() << std::flush;
-            break;
         case LOG_MS:
             return std::wcout << logTime.getMills_w() << std::flush;
-            break;
         default:
             return std::wcout << logTime.getNoTimeStamp_w() << std::flush;
-            break;
 
     }
 }
@@ -211,6 +161,7 @@ std::ofstream& Logger::fileOutPut(const DateTime::TimeStamp logTimeEnum) const
         using enum DateTime::TimeStamp;
         case LOG_DAY_MON_YR_HR_MIN_SEC_MS:
             logfile << logTime.getDayMonthYrHrMinSecMs() << std::flush;
+            //logfile << "\n"/* << std::flush*/;
             break;
         case LOG_DAY_MON_YR_HR_MIN_SEC:
             logfile << logTime.getDayMonthYrHrMinSecs() << std::flush;
@@ -255,15 +206,20 @@ std::ofstream& Logger::fileOutPut(const DateTime::TimeStamp logTimeEnum) const
             logfile << logTime.getNoTimeStamp() << std::flush;
             break;
 
+            //logfile.flush();
+            //logfile << '\n' << std::flush;
     }
-
+    //logfile << " " << std::flush;
+    logfile.flush();
+    //logfile << '\n' << std::flush;
+    //logfile << "\n"/* << std::flush*/;
     return logfile;
 }
 
 std::ofstream& Logger::fileOutPut() const
 {
    DateTime logTime{};
-   logfile << logTime.getNoTimeStamp();
+   logfile << logTime.getNoTimeStamp() << std::flush;
 
    return logfile;
 }
@@ -334,13 +290,59 @@ std::wofstream& Logger::fileOutPut_w() const
     return logfile_w;
 }
 
-void Logger::closeProgram() noexcept
+void Logger::openLoggerFile() const noexcept
+{
+    logfile.open(logFileName, std::ios::app);
+    if (!logfile.is_open())
+    {
+        
+        ErrorList::printErrorMessage(ENOENT);
+    }
+    else
+    {
+        if (DEBUG_LOGGER)
+        {
+            std::cout << "File " << logFileName << " open\n";
+        }
+
+    }
+
+    //logfile_w.open(logFileName, std::ios::app);
+    //if (!logfile_w.is_open())
+    //{
+    //    ErrorList::printErrorMessage(ENOENT);
+    //}
+    //else
+    //{
+    //    std::cout << "File(w) " << logFileName << " open\n";
+    //}
+}
+
+void Logger::closeLoggerFile() const noexcept
+{
+    if (DEBUG_LOGGER)
+    {
+        std::cout << "File " << logFileName << " closed\n";
+    }
+
+    logfile.flush();
+    logfile.close();
+    logfile_w.close();
+
+}
+
+void Logger::closeProgram() const noexcept
 {
    DateTime logTime{};
    // Output to the file.
-   logfile << logTime.getDayMonthYrHrMinSecMs() << "Program Closed\n";
-   logfile.flush();
-   
-   logfile.close();
-   logfile_w.close();
+   logfile << logTime.getDayMonthYrHrMinSecMs() << "Error Code: " << GetLastError() << " - " << "Program Closed\n";
+
+   closeLoggerFile();
+
+   //logfile.flush();
+   //
+   //logfile.close();
+   //logfile_w.close();
+
+   //std::exit(GetLastError());
 }
