@@ -23,7 +23,6 @@ class Hangman : public SharedMemory
 {
 
 private:
-
 	
 	Dictionary dictionary{};
     const Logger *logger{ getLoggerMemAddress() };
