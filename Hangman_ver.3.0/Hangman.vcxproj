@@ -36,12 +36,14 @@
     <ClCompile Include=".\Sources\Gallow.cpp" />
     <ClCompile Include=".\Sources\Hangman.cpp" />
     <ClCompile Include=".\Sources\main.cpp" />
-    <ClCompile Include=".\Logger\Sources\DateTime.cpp" />
-    <ClCompile Include=".\Logger\Sources\ErrorList.cpp" />
-    <ClCompile Include=".\Logger\Sources\GetFTimeException.cpp" />
-    <ClCompile Include=".\Logger\Sources\GetLocalTimeException.cpp" />
-    <ClCompile Include=".\Logger\Sources\GetTimeExceptionBase.cpp" />
-    <ClCompile Include=".\Logger\Sources\Logger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Logger\OLs_Release\DateTime.obj" />
+    <Object Include="Logger\OLs_Release\ErrorList.obj" />
+    <Object Include="Logger\OLs_Release\GetFTimeException.obj" />
+    <Object Include="Logger\OLs_Release\GetLocalTimeException.obj" />
+    <Object Include="Logger\OLs_Release\GetTimeExceptionBase.obj" />
+    <Object Include="Logger\OLs_Release\Logger.obj" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

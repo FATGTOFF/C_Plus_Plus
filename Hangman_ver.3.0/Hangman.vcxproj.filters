@@ -13,24 +13,6 @@
     <ClCompile Include=".\Sources\main.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include=".\Logger\Sources\DateTime.cpp">
-      <Filter>Logger\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include=".\Logger\Sources\ErrorList.cpp">
-      <Filter>Logger\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include=".\Logger\Sources\GetFTimeException.cpp">
-      <Filter>Logger\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include=".\Logger\Sources\GetLocalTimeException.cpp">
-      <Filter>Logger\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include=".\Logger\Sources\GetTimeExceptionBase.cpp">
-      <Filter>Logger\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include=".\Logger\Sources\Logger.cpp">
-      <Filter>Logger\Sources</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\Headers\Debug.h">
@@ -83,5 +65,13 @@
     <Filter Include="Sources">
       <UniqueIdentifier>{f2b79c34-3b07-40a4-afb1-34476dc0e569}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Logger\OLs_Release\DateTime.obj" />
+    <Object Include="Logger\OLs_Release\ErrorList.obj" />
+    <Object Include="Logger\OLs_Release\GetFTimeException.obj" />
+    <Object Include="Logger\OLs_Release\GetLocalTimeException.obj" />
+    <Object Include="Logger\OLs_Release\GetTimeExceptionBase.obj" />
+    <Object Include="Logger\OLs_Release\Logger.obj" />
   </ItemGroup>
 </Project>
