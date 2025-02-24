@@ -26,6 +26,12 @@ std::string Dictionary::getModifiedWord() const
 		std::ranges::replace(updatedWord, '_', ' ');
 		std::ranges::replace(updatedWord, '\'', ' ');
 
+		if (originalWord != updatedWord)
+		{
+			LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << updatedWord << " is the modified word\n";
+		}
+
+
 #endif
 
 #ifdef DEBUG_HANGMAN
@@ -35,11 +41,6 @@ std::string Dictionary::getModifiedWord() const
 		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << updatedWord << '\n';
 
 #endif
-
-	if (originalWord != updatedWord)
-	{
-		LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << updatedWord << " is the modified word\n";
-	}
 
 	return updatedWord;
 }
@@ -110,7 +111,7 @@ unsigned Dictionary::findStartDataLine(std::ifstream& infile) const
 
 void Dictionary::findTheWord(const std::vector<Index_File_Format>& index_file_format_word, 
 	const std::vector<Data_File_Format>& data_file_format_word, const std::string& word_To_Search) const
-{
+{          
 	std::size_t countTheFinds{ 0 };
 
 	if (foundNoun(index_file_format_word, data_file_format_word, word_To_Search))

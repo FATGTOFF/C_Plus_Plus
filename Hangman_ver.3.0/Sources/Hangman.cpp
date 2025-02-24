@@ -63,6 +63,19 @@ void Hangman::displayTitle()
 
 	SetConsoleTextAttribute(outPut, FOREGROUND_INTENSITY | FOREGROUND_GREEN);
 
+#ifdef DEBUG_HANGMAN
+	std::cout << "Welcome to...\n";
+	std::cout << "\t\tHANGMAN\n";
+
+	CONSOLE_SCREEN_BUFFER_INFO csbi{};
+	COORD getCurrentCursorPositionFromConsole{};
+	if (GetConsoleScreenBufferInfo(outPut, &csbi))
+	{
+		getCurrentCursorPositionFromConsole = csbi.dwCursorPosition;
+	}
+
+#else
+
 		SetConsoleCursorPosition(outPut, goTo(16, 7));
 		std::cout << "Welcome to...\n";
 		SetConsoleCursorPosition(outPut, goTo(0, 8));
@@ -73,7 +86,7 @@ void Hangman::displayTitle()
 		std::cout << "\t\t| |  | |/ ____ \\| |\\  | |__| | |  | |/ ____ \\| |\\  |\n";
 		std::cout << "\t\t|_|  |_/_/    \\_\\_| \\_|\\_____|_|  |_/_/    \\_\\_| \\_|\n";
 		SetConsoleCursorPosition(outPut, goTo(16, 15));
-		std::cout << notifyPressButton << '\n';
+#endif
 
 	while (salida == false)
 	{
@@ -88,7 +101,11 @@ void Hangman::displayTitle()
 
 		else if (!GetAsyncKeyState(VK_RETURN))
 		{
+#ifndef DEBUG_HANGMAN
 			SetConsoleCursorPosition(outPut, goTo(16, 15));
+#else
+			SetConsoleCursorPosition(outPut, getCurrentCursorPositionFromConsole);
+#endif
 			if (flag ^= 1)
 				WriteFile(outPut, notifyPressButton.c_str(),
 					static_cast<DWORD>(notifyPressButton.length()), &written, nullptr);
@@ -97,10 +114,11 @@ void Hangman::displayTitle()
 					static_cast<DWORD>(notifyPressButton.length()), &written, nullptr);
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
 		}
 
-
 	}
+
 }
 
 COORD Hangman::goTo(const short xCoord, const short yCoord) const
@@ -147,6 +165,12 @@ Hangman::Hangman()
 	logger->openLoggerFile();
 
 #ifdef DEBUG_HANGMAN
+
+	logger->fileOutPut(DateTime::TimeStamp::LOG_NO_DATE_TIME_GROUP)
+		<< "===================================================================\n";
+
+	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Program started\n";
+
 	std::cout << "Hangman: Memory address of Logger: " << logger << std::endl;
 	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Hangman: Memory address of Logger: " << logger << std::endl;
 
@@ -180,7 +204,9 @@ Hangman::Hangman()
 
 	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Display the title\n";
 
+#ifndef DEBUG_HANGMAN
 	gallow.displayGallow();
+#endif
 
 	LOG_TO_FILE_DAY_MON_YR_HR_MIN_SEC_MS << "Gallow displayed\n";
 
@@ -207,12 +233,10 @@ Hangman::Hangman()
 
 	listOfWords.close();
 
-#else
-
-	word = dictionary.getModifiedWord();
+	gallow.displayGallow();
 
 #endif
-
+	word = dictionary.getModifiedWord();
 }
 
 Hangman::~Hangman()
