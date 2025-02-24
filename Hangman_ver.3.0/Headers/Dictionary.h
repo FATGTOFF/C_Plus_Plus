@@ -32,6 +32,8 @@ private:
 		char firstChar{};
 		char secondChar{};
 		char thirdChar{};
+
+		License_Agreement_Format() = default;
 	};
 
 
