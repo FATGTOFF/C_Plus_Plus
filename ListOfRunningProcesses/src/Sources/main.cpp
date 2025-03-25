@@ -158,16 +158,31 @@ int rounds(const double num)
 
 double ConvertKelvinToFahrenheit(const double tempInKelvin)
 {
+	if (tempInKelvin < 0)
+	{
+		return 0;
+	}
+
 	return (tempInKelvin * (9.0/5.0)) - 459.67;
 }
 
 LONGLONG ConvertBytesToKB(const LONGLONG num)
 {
+	if (num < 0)
+	{
+		return 0;
+	}
+
 	return num / 1024;
 }
 
 LONGLONG ConvertKBToMB(const LONGLONG num)
 {
+	if (num < 0)
+	{
+		return 0;
+	}
+
 	return ConvertBytesToKB(num) / 1024;
 }
 
