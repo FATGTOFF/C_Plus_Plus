@@ -9,6 +9,6 @@ int main()
 
    log.consoleOutPut() << "This is a test console Output\n";
    log.fileOutPut() << "This is a test file Output\n";
-	logger.log("Hello world!");
+   logger.log("Hello world!");
 
 }
