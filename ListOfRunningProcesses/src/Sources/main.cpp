@@ -144,7 +144,7 @@ void DisplayThermalTemperature(const Logger& log)
 			<< std::setw(6) << ConvertKelvinToFahrenheit(tempVal.at(whichThermalZone).doubleValue) << " (F degs)" << std::endl;
 
 		log.fileOutPut_w(DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC) << ',' << "PC Thermal Temperature Zone [" << (whichThermalZone + 1) << "]: " << ',' 
-			<< tempVal.at(whichThermalZone).doubleValue << " (K degs) " << ',' << ConvertKelvinToFahrenheit(tempVal.at(whichThermalZone).doubleValue) << " (F degs)" << std::endl;
+			<< tempVal.at(whichThermalZone).doubleValue << ',' << ConvertKelvinToFahrenheit(tempVal.at(whichThermalZone).doubleValue) << std::endl;
 
 		static_cast<void>(PdhCloseQuery(tempQuery.at(whichThermalZone)));
 	}
@@ -326,6 +326,10 @@ int main()
 	log.fileOutPut_w() << "Date/Time" << ','
 		<< "PID Name" << ',' << "PID ID" << ',' << "Working set size (KB)"
 	    << ',' << "Working set size (MB)" << std::endl;
+
+	logTemperature.fileOutPut_w() << "Date/Time" << ','
+		<< "PC Thermal Temperature Zone" << ',' << "Temp (K degs)" << ',' << "Temp (F degs)"
+		<< std::endl;
 
 	if (keepLooping == static_cast<int>(continuousLoopEnum::MULTIPLE_LOOPS))
 	{
