@@ -161,7 +161,6 @@ std::ofstream& Logger::fileOutPut(const DateTime::TimeStamp logTimeEnum) const
         using enum DateTime::TimeStamp;
         case LOG_DAY_MON_YR_HR_MIN_SEC_MS:
             logfile << logTime.getDayMonthYrHrMinSecMs() << std::flush;
-            //logfile << "\n"/* << std::flush*/;
             break;
         case LOG_DAY_MON_YR_HR_MIN_SEC:
             logfile << logTime.getDayMonthYrHrMinSecs() << std::flush;
@@ -205,14 +204,9 @@ std::ofstream& Logger::fileOutPut(const DateTime::TimeStamp logTimeEnum) const
         default:
             logfile << logTime.getNoTimeStamp() << std::flush;
             break;
-
-            //logfile.flush();
-            //logfile << '\n' << std::flush;
     }
-    //logfile << " " << std::flush;
     logfile.flush();
-    //logfile << '\n' << std::flush;
-    //logfile << "\n"/* << std::flush*/;
+
     return logfile;
 }
 
@@ -290,7 +284,7 @@ std::wofstream& Logger::fileOutPut_w() const
     return logfile_w;
 }
 
-void Logger::openLoggerFile() const noexcept
+void Logger::openLoggerFile() const
 {
     logfile.open(logFileName, std::ios::app);
     if (!logfile.is_open())
@@ -307,18 +301,9 @@ void Logger::openLoggerFile() const noexcept
 
     }
 
-    //logfile_w.open(logFileName, std::ios::app);
-    //if (!logfile_w.is_open())
-    //{
-    //    ErrorList::printErrorMessage(ENOENT);
-    //}
-    //else
-    //{
-    //    std::cout << "File(w) " << logFileName << " open\n";
-    //}
 }
 
-void Logger::closeLoggerFile() const noexcept
+void Logger::closeLoggerFile() const
 {
     if (DEBUG_LOGGER)
     {
@@ -331,18 +316,11 @@ void Logger::closeLoggerFile() const noexcept
 
 }
 
-void Logger::closeProgram() const noexcept
+void Logger::closeProgram() const
 {
    DateTime logTime{};
    // Output to the file.
    logfile << logTime.getDayMonthYrHrMinSecMs() << "Error Code: " << GetLastError() << " - " << "Program Closed\n";
 
    closeLoggerFile();
-
-   //logfile.flush();
-   //
-   //logfile.close();
-   //logfile_w.close();
-
-   //std::exit(GetLastError());
 }

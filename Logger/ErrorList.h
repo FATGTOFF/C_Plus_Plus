@@ -202,12 +202,11 @@ public:
 #endif // !DEBUG
 
 protected:
-    //constexpr int getErrorNumber() const noexcept;
     std::string getErrorMessage(const int errNum) const;
     std::wstring getErrorMessage_w(const int errNum) const;
 
  public:
-   constexpr int getErrorNumber() const noexcept;
+   constexpr int getErrorNumber() const;
    void printErrorMessage(const std::string& errTypeMsg, const int errNum) const;
    void printErrorMessage_w(const std::wstring& errTypeMsg, const int errNum) const;
    void printErrorMessage(const int errNum) const;

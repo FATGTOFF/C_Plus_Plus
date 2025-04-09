@@ -13,16 +13,15 @@ ErrorList::ErrorList()
 }
 #endif // DEBUG
 
-constexpr int ErrorList::getErrorNumber() const noexcept
+constexpr int ErrorList::getErrorNumber() const
 {
    return errorNumber;
 }
 
 std::string ErrorList::getErrorMessage(const int errNum) const
 {
-   //const auto findErrorNumber = errorMessageList.find(errNum);
-   
-   if (errorMessageList.contains(errNum)/*findErrorNumber*/)
+
+   if (errorMessageList.contains(errNum))
    {
       errorMessage = errorMessageList.at(errNum);
    }
@@ -36,8 +35,6 @@ std::string ErrorList::getErrorMessage(const int errNum) const
 
 std::wstring ErrorList::getErrorMessage_w(const int errNum) const
 {
-   //const auto findErrorNumber = errorMessageList.find(errNum);
-
    if (errorMessageList.contains(errNum))
    {
       errorMessage_w = errorMessageList_w.at(errNum);

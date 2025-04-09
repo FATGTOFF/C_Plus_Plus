@@ -69,7 +69,7 @@ private:
        std::make_unique<GetLocalTimeException>()
     };
 
-    long long aclock{};
+    time_t aclock{};
     struct _timeb tstruct{};
     struct tm newtime{};
     mutable std::ostringstream pBuffer{};
