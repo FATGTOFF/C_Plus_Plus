@@ -21,6 +21,8 @@
 #define IDC_STATIC_WON                  1012
 #define IDC_BUTTON10                    1013
 #define IDC_BUTTON_RESET                1013
+#define IDC_STATIC_PLAYER_NUM_TURN      1014
+#define IDC_BUTTON_CLOSE                1015
 
 // Next default values for new objects
 // 
@@ -28,7 +30,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        130
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1014
+#define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

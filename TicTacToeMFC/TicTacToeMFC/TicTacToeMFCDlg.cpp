@@ -3,10 +3,10 @@
 //
 
 #include "pch.h"
+#include "afxdialogex.h"
 #include "framework.h"
 #include "TicTacToeMFC.h"
 #include "TicTacToeMFCDlg.h"
-#include "afxdialogex.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -25,11 +25,10 @@ public:
 	enum { IDD = IDD_ABOUTBOX };
 #endif
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+protected:
+    void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 // Implementation
-protected:
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -82,27 +81,30 @@ void CTicTacToeMFCDlg::DoDataExchange(CDataExchange* pDX)
 
    playerLabel = reinterpret_cast<CEdit*>(GetDlgItem(IDC_STATIC_PLAYER));
    winLabel = reinterpret_cast<CEdit*>(GetDlgItem(IDC_STATIC_WON));
-   playerLabel->ShowWindow(true);
+   playerNumlabel = reinterpret_cast<CStatic*>(GetDlgItem(IDC_STATIC_PLAYER_NUM_TURN));
+
+   playerLabel->ShowWindow(false);
+   playerNumlabel->ShowWindow(false);
    winLabel->ShowWindow(false);
 
    pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_1)) = 
-      reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON1));
+       reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON1));
    pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_2)) =
-      reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON2));
+       reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON2));
    pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_3)) =
-      reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON3));
+       reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON3));
    pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_4)) =
-      reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON4));
+       reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON4));
    pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5)) =
-      reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON5));
+       reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON5));
    pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_6)) =
-      reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON6));
+       reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON6));
    pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_7)) =
-      reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON7));
+       reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON7));
    pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_8)) =
-      reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON8));
+       reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON8));
    pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_9)) =
-      reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON9));
+       reinterpret_cast<CButton*>(GetDlgItem(IDC_BUTTON9));
 
    for (auto numOfbutton = static_cast<std::size_t>(Button_Number::BUTTON_NUM_1);
       numOfbutton < static_cast<std::size_t>(Button_Number::TOTAL_NUM_OF_BUTTONS);
@@ -114,38 +116,37 @@ void CTicTacToeMFCDlg::DoDataExchange(CDataExchange* pDX)
          pButton.at(numOfbutton)->SetWindowTextW(nullptr);
          pButton.at(numOfbutton)->SetFont(&m_font);
          buttonLabel.at(numOfbutton) = nullptr;
-         player = 1;
       }
    }
 
-   printToLabel(IDC_EDIT_PLAYER_NUM, std::to_string(player));
+   printToLabel(std::to_string(player));
 }
 
 BEGIN_MESSAGE_MAP(CTicTacToeMFCDlg, CDialogEx)
-	ON_WM_SYSCOMMAND()
-	ON_WM_PAINT()
-	ON_WM_QUERYDRAGICON()
-   ON_BN_CLICKED(IDC_BUTTON1, &CTicTacToeMFCDlg::OnBnClickedButton1)
-   ON_BN_CLICKED(IDC_BUTTON2, &CTicTacToeMFCDlg::OnBnClickedButton2)
-   ON_BN_CLICKED(IDC_BUTTON3, &CTicTacToeMFCDlg::OnBnClickedButton3)
-   ON_BN_CLICKED(IDC_BUTTON4, &CTicTacToeMFCDlg::OnBnClickedButton4)
-   ON_BN_CLICKED(IDC_BUTTON5, &CTicTacToeMFCDlg::OnBnClickedButton5)
-   ON_BN_CLICKED(IDC_BUTTON6, &CTicTacToeMFCDlg::OnBnClickedButton6)
-   ON_BN_CLICKED(IDC_BUTTON7, &CTicTacToeMFCDlg::OnBnClickedButton7)
-   ON_BN_CLICKED(IDC_BUTTON8, &CTicTacToeMFCDlg::OnBnClickedButton8)
-   ON_BN_CLICKED(IDC_BUTTON9, &CTicTacToeMFCDlg::OnBnClickedButton9)
+   ON_WM_SYSCOMMAND()
+   ON_WM_PAINT()
+   ON_WM_QUERYDRAGICON()
+   ON_BN_CLICKED(IDC_BUTTON1,      &CTicTacToeMFCDlg::OnBnClickedButton1)
+   ON_BN_CLICKED(IDC_BUTTON2,      &CTicTacToeMFCDlg::OnBnClickedButton2)
+   ON_BN_CLICKED(IDC_BUTTON3,      &CTicTacToeMFCDlg::OnBnClickedButton3)
+   ON_BN_CLICKED(IDC_BUTTON4,      &CTicTacToeMFCDlg::OnBnClickedButton4)
+   ON_BN_CLICKED(IDC_BUTTON5,      &CTicTacToeMFCDlg::OnBnClickedButton5)
+   ON_BN_CLICKED(IDC_BUTTON6,      &CTicTacToeMFCDlg::OnBnClickedButton6)
+   ON_BN_CLICKED(IDC_BUTTON7,      &CTicTacToeMFCDlg::OnBnClickedButton7)
+   ON_BN_CLICKED(IDC_BUTTON8,      &CTicTacToeMFCDlg::OnBnClickedButton8)
+   ON_BN_CLICKED(IDC_BUTTON9,      &CTicTacToeMFCDlg::OnBnClickedButton9)
    ON_BN_CLICKED(IDC_BUTTON_RESET, &CTicTacToeMFCDlg::OnBnClickedButtonReset)
+   ON_BN_CLICKED(IDC_BUTTON_CLOSE, &CTicTacToeMFCDlg::OnBnClickedButtonClose)
 END_MESSAGE_MAP()
 
 
 // CTicTacToeMFCDlg message handlers
 
-void CTicTacToeMFCDlg::printToLabel(const int nameID, const std::string& textToPrint) const
+void CTicTacToeMFCDlg::printToLabel(const std::string& textToPrint) const
 {
-   auto label = reinterpret_cast<CEdit*>(GetDlgItem(nameID));
    const std::string pBuffer = textToPrint.c_str();
    const std::wstring w_pBuffer{ pBuffer.begin(), pBuffer.end() };
-   label->SetWindowTextW(w_pBuffer.c_str());
+   playerNumlabel->SetWindowTextW(w_pBuffer.c_str());
 }
 
 bool CTicTacToeMFCDlg::determineWinner() const
@@ -156,6 +157,7 @@ bool CTicTacToeMFCDlg::determineWinner() const
        checkDiagonal01() || checkDiagonal02())
    {
       playerLabel->ShowWindow(true);
+      playerNumlabel->ShowWindow(true);
       winLabel->ShowWindow(true);
 
       for (auto numOfbutton = static_cast<std::size_t>(Button_Number::BUTTON_NUM_1); 
@@ -167,10 +169,40 @@ bool CTicTacToeMFCDlg::determineWinner() const
 
       return true;
    }
-   else
-   {
-      return false;
-   }
+
+   return false;
+}
+
+std::size_t CTicTacToeMFCDlg::randomNumber(const std::size_t max) const
+{
+    std::mt19937 rng(std::random_device{}());
+    std::uniform_int_distribution<std::size_t> distrib(0, max);
+
+    const std::size_t random = distrib(rng);
+
+    return random;
+}
+
+std::size_t CTicTacToeMFCDlg::randomNumber(const std::size_t min, const std::size_t max) const
+{
+    std::mt19937 rng(std::random_device{}());
+    std::uniform_int_distribution<std::size_t> distrib(min, max);
+
+    const std::size_t random = distrib(rng);
+
+    return random;
+}
+
+void CTicTacToeMFCDlg::determinePlayerTurn()
+{
+    if (determineWinner())
+    {
+        player = 2;
+    }
+    else
+    {
+        player = 1;
+    }
 }
 
 bool CTicTacToeMFCDlg::checkRow01() const
@@ -182,10 +214,8 @@ bool CTicTacToeMFCDlg::checkRow01() const
       return (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_1)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_2))) &&
              (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_2)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_3)));
    }
-   else
-   {
-      return false;
-   }
+
+   return false;
 }
 
 bool CTicTacToeMFCDlg::checkRow02() const
@@ -197,11 +227,8 @@ bool CTicTacToeMFCDlg::checkRow02() const
       return (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_4)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5))) &&
              (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_6)));
    }
-   else
-   {
-      return false;
-   }
 
+   return false;
 }
 
 bool CTicTacToeMFCDlg::checkRow03() const
@@ -213,11 +240,8 @@ bool CTicTacToeMFCDlg::checkRow03() const
       return (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_7)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_8))) &&
              (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_8)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_9)));
    }
-   else
-   {
-      return false;
-   }
 
+   return false;
 }
 
 bool CTicTacToeMFCDlg::checkCol01() const
@@ -229,10 +253,8 @@ bool CTicTacToeMFCDlg::checkCol01() const
       return (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_1)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_4))) &&
              (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_4)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_7)));
    }
-   else
-   {
-      return false;
-   }
+
+   return false;
 }
 
 bool CTicTacToeMFCDlg::checkCol02() const
@@ -244,10 +266,8 @@ bool CTicTacToeMFCDlg::checkCol02() const
       return (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_2)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5))) &&
              (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_8)));
    }
-   else
-   {
-      return false;
-   }
+
+   return false;
 }
 
 bool CTicTacToeMFCDlg::checkCol03() const
@@ -259,10 +279,8 @@ bool CTicTacToeMFCDlg::checkCol03() const
       return (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_3)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_6))) &&
              (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_6)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_9)));
    }
-   else
-   {
-      return false;
-   }
+
+   return false;
 }
 
 bool CTicTacToeMFCDlg::checkDiagonal01() const
@@ -274,10 +292,8 @@ bool CTicTacToeMFCDlg::checkDiagonal01() const
       return (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_1)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5))) &&
              (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_9)));
    }
-   else
-   {
-      return false;
-   }
+
+   return false;
 }
 
 bool CTicTacToeMFCDlg::checkDiagonal02() const
@@ -289,10 +305,153 @@ bool CTicTacToeMFCDlg::checkDiagonal02() const
       return (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_3)) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5))) &&
              (buttonLabel.at(4) == buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_7)));
    }
-   else
-   {
-      return false;
-   }
+
+   return false;
+}
+
+bool CTicTacToeMFCDlg::allButtonsFilled() const
+{
+    return (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_1)) != nullptr &&
+            buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_2)) != nullptr &&
+            buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_3)) != nullptr &&
+            buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_4)) != nullptr &&
+            buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5)) != nullptr &&
+            buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_6)) != nullptr &&
+            buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_7)) != nullptr &&
+            buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_8)) != nullptr &&
+            buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_9)) != nullptr);
+}
+
+bool CTicTacToeMFCDlg::computerTurn(const std::size_t computerSelect)
+{
+
+    switch (computerSelect)
+    {
+        case static_cast<std::size_t>(Button_Number::BUTTON_NUM_1):
+            if (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_1)) == nullptr)
+            {
+                computerSelectedButton(Button_Number::BUTTON_NUM_1);
+                return false;
+            }
+            break;
+        case static_cast<std::size_t>(Button_Number::BUTTON_NUM_2):
+            if (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_2)) == nullptr)
+            {
+                computerSelectedButton(Button_Number::BUTTON_NUM_2);
+                return false;
+            }
+            break;
+        case static_cast<std::size_t>(Button_Number::BUTTON_NUM_3):
+            if (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_3)) == nullptr)
+            {
+                computerSelectedButton(Button_Number::BUTTON_NUM_3);
+                return false;
+            }
+            break;
+        case static_cast<std::size_t>(Button_Number::BUTTON_NUM_4):
+            if (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_4)) == nullptr)
+            {
+                computerSelectedButton(Button_Number::BUTTON_NUM_4);
+                return false;
+            }
+            break;
+        case static_cast<std::size_t>(Button_Number::BUTTON_NUM_5):
+            if (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5)) == nullptr)
+            {
+                computerSelectedButton(Button_Number::BUTTON_NUM_5);
+                return false;
+            }
+            break;
+        case static_cast<std::size_t>(Button_Number::BUTTON_NUM_6):
+            if (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_6)) == nullptr)
+            {
+                computerSelectedButton(Button_Number::BUTTON_NUM_6);
+                return false;
+            }
+            break;
+        case static_cast<std::size_t>(Button_Number::BUTTON_NUM_7):
+            if (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_7)) == nullptr)
+            {
+                computerSelectedButton(Button_Number::BUTTON_NUM_7);
+                return false;
+            }
+            break;
+        case static_cast<std::size_t>(Button_Number::BUTTON_NUM_8):
+            if (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_8)) == nullptr)
+            {
+                computerSelectedButton(Button_Number::BUTTON_NUM_8);
+                return false;
+            }
+            break;
+        case static_cast<std::size_t>(Button_Number::BUTTON_NUM_9):
+            if (buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_9)) == nullptr)
+            {
+                computerSelectedButton(Button_Number::BUTTON_NUM_9);
+                return false;
+            }
+            break;
+
+        default:
+            break;
+    }
+
+    return true;
+}
+
+void CTicTacToeMFCDlg::computerSelectedButton(const Button_Number buttonNumber)
+{
+
+    pButton.at(static_cast<unsigned>(buttonNumber))->SetWindowTextW(O);
+    buttonLabel.at(static_cast<unsigned>(buttonNumber)) = O;
+    pButton.at(static_cast<unsigned>(buttonNumber))->EnableWindow(false);
+}
+
+void CTicTacToeMFCDlg::playerSelectedButton(const Button_Number buttonNumber)
+{
+
+    if (pButton.at(static_cast<unsigned>(buttonNumber)))
+    {
+        CString buttonText;
+        pButton.at(static_cast<unsigned>(buttonNumber))->GetWindowTextW(buttonText);
+
+        if (2 == player)
+        {
+            pButton.at(static_cast<unsigned>(buttonNumber))->SetWindowTextW(O);
+            buttonLabel.at(static_cast<unsigned>(buttonNumber)) = O;
+
+            if (!determineWinner() && !allButtonsFilled())
+            {
+                player = 1;
+            }
+        }
+        else
+        {
+            pButton.at(static_cast<unsigned>(buttonNumber))->SetWindowTextW(X);
+            buttonLabel.at(static_cast<unsigned>(buttonNumber)) = X;
+            pButton.at(static_cast<unsigned>(buttonNumber))->EnableWindow(false);
+            computerSelects();
+        }
+
+        printToLabel(std::to_string(player));
+
+    }
+}
+
+void CTicTacToeMFCDlg::computerSelects()
+{
+
+    if (!determineWinner() && !allButtonsFilled())
+    {
+        player = 2;
+
+        bool keepLooping{ true };
+        std::this_thread::sleep_for(std::chrono::seconds(randomNumber(1, 2)));
+        while (keepLooping)
+        {
+            keepLooping = computerTurn(randomNumber(static_cast<std::size_t>(Button_Number::BUTTON_NUM_9)));
+            determinePlayerTurn();
+        }
+    }
 }
 
 BOOL CTicTacToeMFCDlg::OnInitDialog()
@@ -375,341 +534,67 @@ void CTicTacToeMFCDlg::OnPaint()
 //  the minimized window.
 HCURSOR CTicTacToeMFCDlg::OnQueryDragIcon()
 {
-	return static_cast<HCURSOR>(m_hIcon);
+	return m_hIcon;
 }
-
-
 
 void CTicTacToeMFCDlg::OnBnClickedButton1()
 {
-
-   if (pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_1)))
-   {
-      CString buttonText;
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_1))->GetWindowTextW(buttonText);
-
-      if (2 == player)
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_1))->SetWindowTextW(O);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_1)) = O;
-
-         if (!determineWinner())
-         {
-            player = 1;
-         }
-      }
-      else
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_1))->SetWindowTextW(X);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_1)) = X;
-
-         if (!determineWinner())
-         {
-            player = 2;
-         }
-      }
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_1))->EnableWindow(false);
-
-      printToLabel(IDC_EDIT_PLAYER_NUM, std::to_string(player));
-   }
-
+    playerSelectedButton(Button_Number::BUTTON_NUM_1);
 }
 
 
 void CTicTacToeMFCDlg::OnBnClickedButton2()
 {
-
-   if (pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_2)))
-   {
-      CString buttonText;
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_2))->GetWindowTextW(buttonText);
-
-      if (2 == player)
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_2))->SetWindowTextW(O);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_2)) = O;
-
-         if (!determineWinner())
-         {
-            player = 1;
-         }
-      }
-      else
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_2))->SetWindowTextW(X);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_2)) = X;
-
-         if (!determineWinner())
-         {
-            player = 2;
-         }
-      }
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_2))->EnableWindow(false);
-
-      printToLabel(IDC_EDIT_PLAYER_NUM, std::to_string(player));
-   }
+    playerSelectedButton(Button_Number::BUTTON_NUM_2);
 }
 
 
 void CTicTacToeMFCDlg::OnBnClickedButton3()
 {
-
-   if (pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_3)))
-   {
-      CString buttonText;
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_3))->GetWindowTextW(buttonText);
-
-      if (2 == player)
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_3))->SetWindowTextW(O);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_3)) = O;
-
-         if (!determineWinner())
-         {
-            player = 1;
-         }
-      }
-      else
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_3))->SetWindowTextW(X);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_3)) = X;
-
-         if (!determineWinner())
-         {
-            player = 2;
-         }
-      }
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_3))->EnableWindow(false);
-
-      printToLabel(IDC_EDIT_PLAYER_NUM, std::to_string(player));
-   }
+    playerSelectedButton(Button_Number::BUTTON_NUM_3);
 }
 
 
 void CTicTacToeMFCDlg::OnBnClickedButton4()
 {
-
-   if (pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_4)))
-   {
-      CString buttonText;
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_4))->GetWindowTextW(buttonText);
-
-      if (2 == player)
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_4))->SetWindowTextW(O);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_4)) = O;
-
-         if (!determineWinner())
-         {
-            player = 1;
-         }
-      }
-      else
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_4))->SetWindowTextW(X);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_4)) = X;
-
-         if (!determineWinner())
-         {
-            player = 2;
-         }
-      }
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_4))->EnableWindow(false);
-
-
-
-      printToLabel(IDC_EDIT_PLAYER_NUM, std::to_string(player));
-   }
+    playerSelectedButton(Button_Number::BUTTON_NUM_4);
 }
 
 
 void CTicTacToeMFCDlg::OnBnClickedButton5()
 {
-
-   if (pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5)))
-   {
-      CString buttonText;
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5))->GetWindowTextW(buttonText);
-
-      if (2 == player)
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5))->SetWindowTextW(O);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5)) = O;
-
-         if (!determineWinner())
-         {
-            player = 1;
-         }
-      }
-      else
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5))->SetWindowTextW(X);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5)) = X;
-
-         if (!determineWinner())
-         {
-            player = 2;
-         }
-      }
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_5))->EnableWindow(false);
-
-      printToLabel(IDC_EDIT_PLAYER_NUM, std::to_string(player));
-   }
+    playerSelectedButton(Button_Number::BUTTON_NUM_5);
 }
 
 
 void CTicTacToeMFCDlg::OnBnClickedButton6()
 {
-
-   if (pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_6)))
-   {
-      CString buttonText;
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_6))->GetWindowTextW(buttonText);
-
-      if (2 == player)
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_6))->SetWindowTextW(O);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_6)) = O;
-
-
-         if (!determineWinner())
-         {
-            player = 1;
-         }
-      }
-      else
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_6))->SetWindowTextW(X);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_6)) = X;
-
-
-         if (!determineWinner())
-         {
-            player = 2;
-         }
-      }
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_6))->EnableWindow(false);
-
-
-      printToLabel(IDC_EDIT_PLAYER_NUM, std::to_string(player));
-   }
+    playerSelectedButton(Button_Number::BUTTON_NUM_6);
 }
 
 
 void CTicTacToeMFCDlg::OnBnClickedButton7()
 {
-
-   if (pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_7)))
-   {
-      CString buttonText;
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_7))->GetWindowTextW(buttonText);
-
-      if (2 == player)
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_7))->SetWindowTextW(O);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_7)) = O;
-
-
-         if (!determineWinner())
-         {
-            player = 1;
-         }
-      }
-      else
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_7))->SetWindowTextW(X);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_7)) = X;
-
-
-         if (!determineWinner())
-         {
-            player = 2;
-         }
-      }
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_7))->EnableWindow(false);
-
-
-      printToLabel(IDC_EDIT_PLAYER_NUM, std::to_string(player));
-   }
+    playerSelectedButton(Button_Number::BUTTON_NUM_7);
 }
 
 
 void CTicTacToeMFCDlg::OnBnClickedButton8()
 {
-
-   if (pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_8)))
-   {
-      CString buttonText;
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_8))->GetWindowTextW(buttonText);
-
-      if (2 == player)
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_8))->SetWindowTextW(O);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_8)) = O;
-
-         if (!determineWinner())
-         {
-            player = 1;
-         }
-      }
-      else
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_8))->SetWindowTextW(X);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_8)) = X;
-
-         if (!determineWinner())
-         {
-            player = 2;
-         }
-      }
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_8))->EnableWindow(false);
-
-
-      printToLabel(IDC_EDIT_PLAYER_NUM, std::to_string(player));
-   }
+    playerSelectedButton(Button_Number::BUTTON_NUM_8);
 }
 
 
 void CTicTacToeMFCDlg::OnBnClickedButton9()
 {
-
-   if (pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_9)))
-   {
-      CString buttonText;
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_9))->GetWindowTextW(buttonText);
-
-      if (2 == player)
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_9))->SetWindowTextW(O);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_9)) = O;
-
-         if (!determineWinner())
-         {
-            player = 1;
-         }
-
-      }
-      else
-      {
-         pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_9))->SetWindowTextW(X);
-         buttonLabel.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_9)) = X;
-
-         if (!determineWinner())
-         {
-            player = 2;
-         }
-      }
-      pButton.at(static_cast<unsigned>(Button_Number::BUTTON_NUM_9))->EnableWindow(false);
-
-
-      printToLabel(IDC_EDIT_PLAYER_NUM, std::to_string(player));
-   }
+    playerSelectedButton(Button_Number::BUTTON_NUM_9);
 }
 
 
 void CTicTacToeMFCDlg::OnBnClickedButtonReset()
 {
-   playerLabel->ShowWindow(true);
+   playerLabel->ShowWindow(false);
+   playerNumlabel->ShowWindow(false);
    winLabel->ShowWindow(false);
 
    for (auto numOfbutton = static_cast<std::size_t>(Button_Number::BUTTON_NUM_1);
@@ -722,6 +607,10 @@ void CTicTacToeMFCDlg::OnBnClickedButtonReset()
    }
 
    player = 1;
-   printToLabel(IDC_EDIT_PLAYER_NUM, std::to_string(player));
 
+}
+
+void CTicTacToeMFCDlg::OnBnClickedButtonClose()
+{
+    CDialogEx::OnCancel();
 }
