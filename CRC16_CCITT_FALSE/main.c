@@ -27,7 +27,7 @@ typedef struct
     uint_16     checksum;            // 240   
 
 } INPUT_MSG;
-//#pragma pack()
+#pragma pack()
 
 // Function to swap bytes of a 16-bit value
 static uint_16 swap_bytes(uint_16 value)
