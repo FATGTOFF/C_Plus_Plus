@@ -292,59 +292,59 @@ int main()
     }
     printf("\n");
 
-    //crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_1, sizeof(test_data_1), CRC16_SEED_VALUE);
-    //printf("#1 (BCU CRC Calc): %04X\n", crc);
+    crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_1, sizeof(test_data_1), CRC16_SEED_VALUE);
+    printf("#1 (BCU CRC Calc): %04X\n", crc);
 
-    //crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_1, sizeof(test_data_1), CRC16_SEED_VALUE);
-    //printf("#1 (RCU CRC Calc): %04X\n\n", crc);
+    crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_1, sizeof(test_data_1), CRC16_SEED_VALUE);
+    printf("#1 (RCU CRC Calc): %04X\n\n", crc);
 
-    //crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_2, sizeof(test_data_2), CRC16_SEED_VALUE);
-    //printf("#2 (BCU CRC Calc): %04X\n", crc);
+    crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_2, sizeof(test_data_2), CRC16_SEED_VALUE);
+    printf("#2 (BCU CRC Calc): %04X\n", crc);
 
-    //crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_2, sizeof(test_data_2), CRC16_SEED_VALUE);
-    //printf("#2 (RCU CRC Calc): %04X\n\n", crc);
+    crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_2, sizeof(test_data_2), CRC16_SEED_VALUE);
+    printf("#2 (RCU CRC Calc): %04X\n\n", crc);
 
-    //crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_3, sizeof(test_data_3), CRC16_SEED_VALUE);
-    //printf("#3 (BCU CRC Calc): %04X\n", crc);
+    crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_3, sizeof(test_data_3), CRC16_SEED_VALUE);
+    printf("#3 (BCU CRC Calc): %04X\n", crc);
 
-    //crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_3, sizeof(test_data_3), CRC16_SEED_VALUE);
-    //printf("#3 (RCU CRC Calc): %04X\n\n", crc);
+    crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_3, sizeof(test_data_3), CRC16_SEED_VALUE);
+    printf("#3 (RCU CRC Calc): %04X\n\n", crc);
 
-    //crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_4, sizeof(test_data_4), CRC16_SEED_VALUE);
-    //printf("#4 (BCU CRC Calc): %04X\n", crc);
+    crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_4, sizeof(test_data_4), CRC16_SEED_VALUE);
+    printf("#4 (BCU CRC Calc): %04X\n", crc);
 
-    //crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_4, sizeof(test_data_4), CRC16_SEED_VALUE);
-    //printf("#4 (RCU CRC Calc): %04X\n\n", crc);
+    crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_4, sizeof(test_data_4), CRC16_SEED_VALUE);
+    printf("#4 (RCU CRC Calc): %04X\n\n", crc);
 
-    //crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_5, sizeof(test_data_5), CRC16_SEED_VALUE);
-    //printf("#5 (BCU CRC Calc): %04X\n", crc);
+    crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_5, sizeof(test_data_5), CRC16_SEED_VALUE);
+    printf("#5 (BCU CRC Calc): %04X\n", crc);
 
-    //crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_5, sizeof(test_data_5), CRC16_SEED_VALUE);
-    //printf("#5 (RCU CRC Calc): %04X\n\n", crc);
+    crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_5, sizeof(test_data_5), CRC16_SEED_VALUE);
+    printf("#5 (RCU CRC Calc): %04X\n\n", crc);
 
-    //crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_6, sizeof(test_data_6), CRC16_SEED_VALUE);
-    //printf("#6 (BCU CRC Calc): %04X\n", crc);
+    crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_6, sizeof(test_data_6), CRC16_SEED_VALUE);
+    printf("#6 (BCU CRC Calc): %04X\n", crc);
 
-    //crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_6, sizeof(test_data_6), CRC16_SEED_VALUE);
-    //printf("#6 (RCU CRC Calc): %04X\n\n", crc);
+    crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_6, sizeof(test_data_6), CRC16_SEED_VALUE);
+    printf("#6 (RCU CRC Calc): %04X\n\n", crc);
 
-    //crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_7, sizeof(test_data_7), CRC16_SEED_VALUE);
-    //printf("#7 (BCU CRC Calc): %04X\n", crc);
+    crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_7, sizeof(test_data_7), CRC16_SEED_VALUE);
+    printf("#7 (BCU CRC Calc): %04X\n", crc);
 
-    //crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_7, sizeof(test_data_7), CRC16_SEED_VALUE);
-    //printf("#7 (RCU CRC Calc): %04X\n\n", crc);
+    crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_7, sizeof(test_data_7), CRC16_SEED_VALUE);
+    printf("#7 (RCU CRC Calc): %04X\n\n", crc);
 
-    //crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_8, sizeof(test_data_8), CRC16_SEED_VALUE);
-    //printf("#8 (BCU CRC Calc): %04X\n", crc);
+    crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_8, sizeof(test_data_8), CRC16_SEED_VALUE);
+    printf("#8 (BCU CRC Calc): %04X\n", crc);
 
-    //crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_8, sizeof(test_data_8), CRC16_SEED_VALUE);
-    //printf("#8 (RCU CRC Calc): %04X\n\n", crc);
+    crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_8, sizeof(test_data_8), CRC16_SEED_VALUE);
+    printf("#8 (RCU CRC Calc): %04X\n\n", crc);
 
-    //crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_9, sizeof(test_data_9), CRC16_SEED_VALUE);
-    //printf("#9 (BCU CRC Calc): %04X\n", crc);
+    crc = Compute_CRC16_Bytes_NOT_Swapped((uchar*)test_data_9, sizeof(test_data_9), CRC16_SEED_VALUE);
+    printf("#9 (BCU CRC Calc): %04X\n", crc);
 
-    //crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_9, sizeof(test_data_9), CRC16_SEED_VALUE);
-    //printf("#9 (RCU CRC Calc): %04X\n\n", crc);
+    crc = Compute_CRC16_Bytes_Swapped((uchar*)test_data_9, sizeof(test_data_9), CRC16_SEED_VALUE);
+    printf("#9 (RCU CRC Calc): %04X\n\n", crc);
 
 
     const uint_8 CRC_Buffer_Length = sizeof(inputMsgformat) - sizeof(inputMsgformat.checksum);
