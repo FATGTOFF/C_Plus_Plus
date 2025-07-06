@@ -7,7 +7,7 @@
 #include <sstream>
 #include <string>
 
-constexpr bool DEBUG_LOGGER{ true };
+constexpr bool DEBUG_LOGGER{ false };
 
 constexpr DateTime::TimeStamp GET_DAY_MON_YR_HR_MIN_SEC_MS()
 {
@@ -84,7 +84,7 @@ class Logger : public ErrorList
 {
 private:
 
-   const std::string logFileName{ "LogFile.txt" };
+   /*const*/ std::string logFileName{ "LogFile.txt" };
    mutable std::ofstream logfile{};
    mutable std::wofstream logfile_w{};
    mutable std::ostringstream logEntry{};
@@ -92,11 +92,11 @@ private:
 
 public:
 
-   explicit Logger() = default;
-   explicit Logger(std::string const&);
+   explicit Logger();
+   explicit Logger(std::string_view const&);
    explicit Logger(const Logger& copyConstructorMember) = default;
    Logger(Logger&& moveConstructorMember) = default;
-   ~Logger() = default;
+   ~Logger();
 
    std::string getLogFileName() const;
    void log(const std::string&);
@@ -109,8 +109,9 @@ public:
    std::ofstream& fileOutPut() const;
    std::wofstream& fileOutPut_w(const DateTime::TimeStamp) const;
    std::wofstream& fileOutPut_w() const;
-   void openLoggerFile() const;
-   void closeLoggerFile() const;
+   bool openLoggerFile() const;
+   bool openLoggerFile_W() const;
+   void closeLoggerFile() const noexcept;
    void closeProgram() const;
 
 };

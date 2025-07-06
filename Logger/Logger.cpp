@@ -1,20 +1,26 @@
 #include "Logger.h"
 
-
-Logger::Logger(std::string const& lFN)
+Logger::Logger()
 {
+    if (!openLoggerFile())
+    {
+        static_cast<void>(openLoggerFile_W());
+    }
+}
 
-   logfile.open(lFN, std::ios::app);
-   if (!logfile.is_open())
+Logger::Logger(std::string_view const& lFN)
+{
+   logFileName = lFN;
+   if (!openLoggerFile())
    {
-      ErrorList::printErrorMessage(ENOENT);
+       static_cast<void>(openLoggerFile_W());
    }
 
-   logfile_w.open(lFN, std::ios::app);
-   if (!logfile_w.is_open())
-   {
-      ErrorList::printErrorMessage(ENOENT);
-   }
+}
+
+Logger::~Logger()
+{
+    closeLoggerFile();
 }
 
 std::string Logger::getLogFileName() const
@@ -284,26 +290,45 @@ std::wofstream& Logger::fileOutPut_w() const
     return logfile_w;
 }
 
-void Logger::openLoggerFile() const
+/*void*/ bool Logger::openLoggerFile() const
 {
-    logfile.open(logFileName, std::ios::app);
+    logfile.open(getLogFileName(), std::ios::app);
     if (!logfile.is_open())
     {
-        
         ErrorList::printErrorMessage(ENOENT);
+        return false;
     }
     else
     {
         if (DEBUG_LOGGER)
         {
-            std::cout << "File " << logFileName << " open\n";
+            std::cout << "File " << getLogFileName() << " open\n";
         }
+        return true;
 
     }
 
 }
 
-void Logger::closeLoggerFile() const
+bool Logger::openLoggerFile_W() const
+{
+    logfile_w.open(getLogFileName(), std::ios::app);
+    if (!logfile_w.is_open())
+    {
+        ErrorList::printErrorMessage(ENOENT);
+        return false;
+    }
+    else
+    {
+        if (DEBUG_LOGGER)
+        {
+            std::cout << "File " << getLogFileName() << " open\n";
+        }
+        return true;
+    }
+}
+
+void Logger::closeLoggerFile() const noexcept
 {
     if (DEBUG_LOGGER)
     {
@@ -322,5 +347,5 @@ void Logger::closeProgram() const
    // Output to the file.
    logfile << logTime.getDayMonthYrHrMinSecMs() << "Error Code: " << GetLastError() << " - " << "Program Closed\n";
 
-   closeLoggerFile();
+   //closeLoggerFile();
 }
