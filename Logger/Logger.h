@@ -8,75 +8,76 @@
 #include <string>
 
 constexpr bool DEBUG_LOGGER{ false };
+using DateTimeStamp = DateTime::TimeStamp;
 
-constexpr DateTime::TimeStamp GET_DAY_MON_YR_HR_MIN_SEC_MS()
+constexpr DateTimeStamp GET_DAY_MON_YR_HR_MIN_SEC_MS()
 {
-    return DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS;
+	return DateTimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC_MS;
 }
 
-constexpr DateTime::TimeStamp GET_DAY_MON_YR_HR_MIN_SEC()
+constexpr DateTimeStamp GET_DAY_MON_YR_HR_MIN_SEC()
 {
-	return DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC;
+	return DateTimeStamp::LOG_DAY_MON_YR_HR_MIN_SEC;
 }
 
-constexpr DateTime::TimeStamp GET_DAY_MON_YR_HR_MIN()
+constexpr DateTimeStamp GET_DAY_MON_YR_HR_MIN()
 {
-	return DateTime::TimeStamp::LOG_DAY_MON_YR_HR_MIN;
+	return DateTimeStamp::LOG_DAY_MON_YR_HR_MIN;
 }
 
-constexpr DateTime::TimeStamp GET_DAY_MON_YR()
+constexpr DateTimeStamp GET_DAY_MON_YR()
 {
-	return DateTime::TimeStamp::LOG_DAY_MON_YR;
+	return DateTimeStamp::LOG_DAY_MON_YR;
 }
 
-constexpr DateTime::TimeStamp GET_HR_MIN_SEC_MS()
+constexpr DateTimeStamp GET_HR_MIN_SEC_MS()
 {
-	return DateTime::TimeStamp::LOG_HR_MIN_SEC_MS;
+	return DateTimeStamp::LOG_HR_MIN_SEC_MS;
 }
 
-constexpr DateTime::TimeStamp GET_HR_MIN_SEC()
+constexpr DateTimeStamp GET_HR_MIN_SEC()
 {
-	return DateTime::TimeStamp::LOG_HR_MIN_SEC;
+	return DateTimeStamp::LOG_HR_MIN_SEC;
 }
 
-constexpr DateTime::TimeStamp GET_HR_MIN()
+constexpr DateTimeStamp GET_HR_MIN()
 {
-	return DateTime::TimeStamp::LOG_HR_MIN;
+	return DateTimeStamp::LOG_HR_MIN;
 }
 
-constexpr DateTime::TimeStamp GET_DAY()
+constexpr DateTimeStamp GET_DAY()
 {
-	return DateTime::TimeStamp::LOG_DAY;
+	return DateTimeStamp::LOG_DAY;
 }
 
-constexpr DateTime::TimeStamp GET_MONTH()
+constexpr DateTimeStamp GET_MONTH()
 {
-	return DateTime::TimeStamp::LOG_MONTH;
+	return DateTimeStamp::LOG_MONTH;
 }
 
-constexpr DateTime::TimeStamp GET_YEAR()
+constexpr DateTimeStamp GET_YEAR()
 {
-	return DateTime::TimeStamp::LOG_YEAR;
+	return DateTimeStamp::LOG_YEAR;
 }
 
-constexpr DateTime::TimeStamp GET_HRS()
+constexpr DateTimeStamp GET_HRS()
 {
-	return DateTime::TimeStamp::LOG_HRS;
+	return DateTimeStamp::LOG_HRS;
 }
 
-constexpr DateTime::TimeStamp GET_MINS()
+constexpr DateTimeStamp GET_MINS()
 {
-	return DateTime::TimeStamp::LOG_MINS;
+	return DateTimeStamp::LOG_MINS;
 }
 
-constexpr DateTime::TimeStamp GET_SECS()
+constexpr DateTimeStamp GET_SECS()
 {
-	return DateTime::TimeStamp::LOG_SECS;
+	return DateTimeStamp::LOG_SECS;
 }
 
-constexpr DateTime::TimeStamp GET_MS()
+constexpr DateTimeStamp GET_MS()
 {
-	return DateTime::TimeStamp::LOG_MS;
+	return DateTimeStamp::LOG_MS;
 }
 
 
@@ -84,7 +85,7 @@ class Logger : public ErrorList
 {
 private:
 
-   /*const*/ std::string logFileName{ "LogFile.txt" };
+   std::string logFileName{ "LogFile.txt" };
    mutable std::ofstream logfile{};
    mutable std::wofstream logfile_w{};
    mutable std::ostringstream logEntry{};
@@ -101,17 +102,17 @@ public:
    std::string getLogFileName() const;
    void log(const std::string&);
    void log(const std::wstring&);
-   std::ostream& consoleOutPut(const DateTime::TimeStamp) const;
+   std::ostream& consoleOutPut(const DateTimeStamp) const;
    std::ostream& consoleOutPut() const;
-   std::wostream& consoleOutput_w(const DateTime::TimeStamp) const;
+   std::wostream& consoleOutput_w(const DateTimeStamp) const;
    std::wostream& consoleOutput_w() const;
-   std::ofstream& fileOutPut(const DateTime::TimeStamp) const;
+   std::ofstream& fileOutPut(const DateTimeStamp) const;
    std::ofstream& fileOutPut() const;
-   std::wofstream& fileOutPut_w(const DateTime::TimeStamp) const;
+   std::wofstream& fileOutPut_w(const DateTimeStamp) const;
    std::wofstream& fileOutPut_w() const;
-   bool openLoggerFile() const;
-   bool openLoggerFile_W() const;
-   void closeLoggerFile() const noexcept;
+   void openLoggerFile() const;
+   void openLoggerFile_w() const;
+   void closeLoggerFile() const;
    void closeProgram() const;
 
 };

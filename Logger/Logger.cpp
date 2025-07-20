@@ -2,25 +2,20 @@
 
 Logger::Logger()
 {
-    if (!openLoggerFile())
-    {
-        static_cast<void>(openLoggerFile_W());
-    }
+    openLoggerFile();
+    openLoggerFile_w();
 }
 
 Logger::Logger(std::string_view const& lFN)
 {
    logFileName = lFN;
-   if (!openLoggerFile())
-   {
-       static_cast<void>(openLoggerFile_W());
-   }
-
+   openLoggerFile();
+   openLoggerFile_w();
 }
 
 Logger::~Logger()
 {
-    closeLoggerFile();
+    closeProgram();
 }
 
 std::string Logger::getLogFileName() const
@@ -64,12 +59,13 @@ void Logger::log(const std::wstring& logMessage)
    logEntry_w.clear();
 }
 
-std::ostream& Logger::consoleOutPut(const DateTime::TimeStamp logTimeEnum) const
+std::ostream& Logger::consoleOutPut(const DateTimeStamp logTimeEnum) const
 {
     DateTime logTime{};
 
     switch (logTimeEnum)
     {
+
         using enum DateTime::TimeStamp;
         case LOG_DAY_MON_YR_HR_MIN_SEC_MS:
             return std::cout << logTime.getDayMonthYrHrMinSecMs() << std::flush;
@@ -111,12 +107,13 @@ std::ostream& Logger::consoleOutPut() const
    return std::cout << logTime.getNoTimeStamp();
 }
 
-std::wostream& Logger::consoleOutput_w(const DateTime::TimeStamp logTimeEnum) const
+std::wostream& Logger::consoleOutput_w(const DateTimeStamp logTimeEnum) const
 {
     DateTime logTime{};
 
     switch (logTimeEnum)
     {
+
         using enum DateTime::TimeStamp;
         case LOG_DAY_MON_YR_HR_MIN_SEC_MS:
             return std::wcout << logTime.getDayMonthYrHrMinSecMs_w() << std::flush;
@@ -158,12 +155,13 @@ std::wostream& Logger::consoleOutput_w() const
    return std::wcout << logTime.getNoTimeStamp_w();
 }
 
-std::ofstream& Logger::fileOutPut(const DateTime::TimeStamp logTimeEnum) const
+std::ofstream& Logger::fileOutPut(const DateTimeStamp logTimeEnum) const
 {
     DateTime logTime{};
 
     switch (logTimeEnum)
     {
+
         using enum DateTime::TimeStamp;
         case LOG_DAY_MON_YR_HR_MIN_SEC_MS:
             logfile << logTime.getDayMonthYrHrMinSecMs() << std::flush;
@@ -224,7 +222,7 @@ std::ofstream& Logger::fileOutPut() const
    return logfile;
 }
 
-std::wofstream& Logger::fileOutPut_w(const DateTime::TimeStamp logTimeEnum) const
+std::wofstream& Logger::fileOutPut_w(const DateTimeStamp logTimeEnum) const
 {
    DateTime logTime{};
 
@@ -290,13 +288,12 @@ std::wofstream& Logger::fileOutPut_w() const
     return logfile_w;
 }
 
-/*void*/ bool Logger::openLoggerFile() const
+void Logger::openLoggerFile() const
 {
     logfile.open(getLogFileName(), std::ios::app);
     if (!logfile.is_open())
     {
         ErrorList::printErrorMessage(ENOENT);
-        return false;
     }
     else
     {
@@ -304,19 +301,17 @@ std::wofstream& Logger::fileOutPut_w() const
         {
             std::cout << "File " << getLogFileName() << " open\n";
         }
-        return true;
 
     }
 
 }
 
-bool Logger::openLoggerFile_W() const
+void Logger::openLoggerFile_w() const
 {
     logfile_w.open(getLogFileName(), std::ios::app);
     if (!logfile_w.is_open())
     {
         ErrorList::printErrorMessage(ENOENT);
-        return false;
     }
     else
     {
@@ -324,11 +319,10 @@ bool Logger::openLoggerFile_W() const
         {
             std::cout << "File " << getLogFileName() << " open\n";
         }
-        return true;
     }
 }
 
-void Logger::closeLoggerFile() const noexcept
+void Logger::closeLoggerFile() const
 {
     if (DEBUG_LOGGER)
     {
@@ -337,6 +331,8 @@ void Logger::closeLoggerFile() const noexcept
 
     logfile.flush();
     logfile.close();
+
+    logfile_w.flush();
     logfile_w.close();
 
 }
@@ -347,5 +343,5 @@ void Logger::closeProgram() const
    // Output to the file.
    logfile << logTime.getDayMonthYrHrMinSecMs() << "Error Code: " << GetLastError() << " - " << "Program Closed\n";
 
-   //closeLoggerFile();
+   closeLoggerFile();
 }
