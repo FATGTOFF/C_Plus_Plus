@@ -109,7 +109,7 @@ public:
 #pragma warning( disable : 26823)
    DateTime();
 
-   std::string getDayMonthYrHrMinSecMs() const;
+   std::string getDayMonthYrHrMinSecMs() const noexcept(true);
    std::wstring getDayMonthYrHrMinSecMs_w() const;
    std::string getDayMonthYrHrMinSecs() const;
    std::wstring getDayMonthYrHrMinSecs_w() const;

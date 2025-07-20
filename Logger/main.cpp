@@ -4,7 +4,7 @@
 
 int main()
 {
-	Logger logger;
+	Logger logger{};
 	Logger log("Log_Test.txt");
 
    log.consoleOutPut(GET_DAY_MON_YR_HR_MIN_SEC_MS()) << "This is a test console Output GET_DAY_MON_YR_HR_MIN_SEC_MS()\n";

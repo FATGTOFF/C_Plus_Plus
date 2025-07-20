@@ -25,6 +25,7 @@ void DateTime::clearPBuffer_w() const
 DateTime::DateTime() : ErrorList()
 {
 
+    using enum DateTime::TypesOfTimeException;
     // Set time zone from TZ environment variable. If TZ is not set,
     // the operating system is queried to obtain the default value
     // for the variable.
@@ -32,28 +33,28 @@ DateTime::DateTime() : ErrorList()
 
    static_cast<void>(_time64(&aclock));
 
-    exceptionsTypes.at(static_cast<int>(TypesOfTimeException::FTimeException))->setErrorNumber(_ftime64_s(&tstruct));
-    if (0 != exceptionsTypes.at(static_cast<int>(TypesOfTimeException::FTimeException))->getTimeException())
+    exceptionsTypes.at(static_cast<int>(FTimeException))->setErrorNumber(_ftime64_s(&tstruct));
+    if (0 != exceptionsTypes.at(static_cast<int>(FTimeException))->getTimeException())
     {
         ErrorList errorList{};
-        errorList.printErrorMessage(exceptionsTypes.at(static_cast<int>(TypesOfTimeException::FTimeException))->what(),
-            exceptionsTypes.at(static_cast<int>(TypesOfTimeException::FTimeException))->getTimeException());
-        throw GetFTimeException(exceptionsTypes.at(static_cast<int>(TypesOfTimeException::FTimeException))->getTimeException());
+        errorList.printErrorMessage(exceptionsTypes.at(static_cast<int>(FTimeException))->what(),
+            exceptionsTypes.at(static_cast<int>(FTimeException))->getTimeException());
+        throw GetFTimeException(exceptionsTypes.at(static_cast<int>(FTimeException))->getTimeException());
     }
 
-    exceptionsTypes.at(static_cast<int>(TypesOfTimeException::LocalTimeException))->setErrorNumber(_localtime64_s(&newtime, &aclock));
-    if (0 != exceptionsTypes.at(static_cast<int>(TypesOfTimeException::LocalTimeException))->getTimeException())
+    exceptionsTypes.at(static_cast<int>(LocalTimeException))->setErrorNumber(_localtime64_s(&newtime, &aclock));
+    if (0 != exceptionsTypes.at(static_cast<int>(LocalTimeException))->getTimeException())
     {
         ErrorList errorList{};
-        errorList.printErrorMessage(exceptionsTypes.at(static_cast<int>(TypesOfTimeException::LocalTimeException))->what(),
-            exceptionsTypes.at(static_cast<int>(TypesOfTimeException::LocalTimeException))->getTimeException());
-        throw GetLocalTimeException(exceptionsTypes.at(static_cast<int>(TypesOfTimeException::LocalTimeException))->getTimeException());
+        errorList.printErrorMessage(exceptionsTypes.at(static_cast<int>(LocalTimeException))->what(),
+            exceptionsTypes.at(static_cast<int>(LocalTimeException))->getTimeException());
+        throw GetLocalTimeException(exceptionsTypes.at(static_cast<int>(LocalTimeException))->getTimeException());
 
     }
 
 }
 
-std::string DateTime::getDayMonthYrHrMinSecMs() const
+std::string DateTime::getDayMonthYrHrMinSecMs() const noexcept(true)
 {
     clearPBuffer();
 
